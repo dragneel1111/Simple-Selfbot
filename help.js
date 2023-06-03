@@ -301,11 +301,11 @@ return`──「 *INFO OWNER* 」──
  • *Hoby:* Turu
  • *Askot:* Padangpanjang
 
-_iam developer bot whatsapp._
+_i am not a programmer_
 
  *Sosial Media*
  • *Whatsapp:* 081234795656
- • *Instagram:* @_rafly1111
+ • *Instagram:* @_raphael.11
  • *Github:* dragneel1111
  `
 }

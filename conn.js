@@ -126,8 +126,6 @@ module.exports = async (conn, msg, m, setting, store) => {
       var pp_user = 'https://i.ibb.co/0M6Hppv/3626e36344a1.jpg'
     }
 
-    const PathAuto = "./function/menuPath/"
-
     function mentions(teks, mems = [], id) {
       if (id == null || id == undefined || id == false) {
         let res = conn.sendMessage(from, { text: teks, mentions: mems })
@@ -322,12 +320,12 @@ Video sedang dikirim...`)
       }
         break
       case 'owner':
-        var owner_Nya = setting.ownerNumber
+        var owner_Nya = setting.ChatOwner
         sendContact(from, owner_Nya, setting.ownerName, msg)
-        adReply('https://api.whatsapp.com/send/?phone=6281234795656&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0',
+        adReply('https://api.whatsapp.com/send/?phone=447466989823&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0',
           'Rafly¹¹',
-          'My Owner',
-          msg)
+          'Creator of Sedative Selfbot',
+          ftokoo)
         break
 
       // DOWNLOADER
