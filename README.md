@@ -21,6 +21,5 @@
 * [`WhatsApp Group`](https://chat.whatsapp.com/GDTlnAnrCPfEPsXK1XkEvB)
   
 ## ```Thanks to ✨```
-* [`Adiwajshing/baileys`](https://github.com/adiwajshing/baileys)
 * [`Rafly11⁩`](https://github.com/dragneel1111)
 
