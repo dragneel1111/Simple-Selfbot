@@ -194,23 +194,23 @@ module.exports = async (conn, msg, m, setting, store) => {
         })
     }
 
-    const adReply2 = async ( teks, pid, judul, isi, quo ) => {
+    const adReply2 = async (teks, pid, judul, isi, quo) => {
       await conn.sendMessage(from, {
         video: pid,
         gifPlayback: true,
         caption: teks,
         contextInfo: {
-				forwardingScore: 9999,
-				externalAdReply: { 
-          showAdAttribution: true,
-					title: judul,
-					body: isi,
-					description: setting.group.judul,
-					thumbnail: fs.readFileSync('./sticker/thumb.jpg'),
-				}
-			}
-    }, {quoted: quo})
-  }
+          forwardingScore: 9999,
+          externalAdReply: {
+            showAdAttribution: true,
+            title: judul,
+            body: isi,
+            description: setting.group.judul,
+            thumbnail: fs.readFileSync('./sticker/thumb.jpg'),
+          }
+        }
+      }, { quoted: quo })
+    }
 
     const ftokoo = {
       key: {
@@ -225,10 +225,10 @@ module.exports = async (conn, msg, m, setting, store) => {
               mimetype: "image/jpeg",
               jpegThumbnail: fs.readFileSync('./sticker/thumb2.jpg'),
             },
-            title: `${pushname}`,
+            title: setting.botName,
             description: `${pushname}`,
-            currencyCode: "IDR",
-            priceAmount1000: `666666666666`,
+            currencyCode: "USD",
+            priceAmount1000: `6666666666`,
             retailerId: "Rafly",
             productImageCount: 1,
           },
@@ -300,7 +300,10 @@ Video sedang dikirim...`)
     }
 
     if (chats.startsWith("Test") && fromMe) {
-      adReply(`*Status:* Online\n*Runtime:* ${runtime(process.uptime())}`, setting.botName, `Create by ${setting.ownerName}`)
+      var cptn = `*NOTHING HERE*\n\nJust simple selfbot with downloader feature:v\n\n`
+      cptn += `*Runtime:* ${runtime(process.uptime())}`
+      var vid = fs.readFileSync('./sticker/menu.mp4')
+      adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
       console.log(color('[ STATUS CHECK ]', 'green'))
     }
 
@@ -314,10 +317,10 @@ Video sedang dikirim...`)
         break
 
       case 'menu': case 'help':
-        var cptn = `*NOTHING HERE*\n\nJust simple selfbot with downloader feature:v`
-       var vid = fs.readFileSync('./sticker/menu.mp4')
-        //await conn.sendMessage(from, {video: fs.readFileSync('./sticker/menu.mp4'), caption: cptn, gifPlayback: true, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg')}, {quoted: ftokoo})
-      adReply2(cptn, vid, setting.group.judul, pushname, ftokoo)
+        var cptn = `*NOTHING HERE*\n\nJust simple selfbot with downloader feature:v\n\n`
+        cptn += `*Runtime:* ${runtime(process.uptime())}`
+        var vid = fs.readFileSync('./sticker/menu.mp4')
+        adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
         break
 
       case 'infobot':
@@ -845,8 +848,8 @@ _Wait Mengirim file..._
           await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split("@")[0]}.jpeg`)
           let stci = fs.readFileSync(`./sticker/${sender.split("@")[0]}.jpeg`)
           let stc = new Sticker(stci, {
-            pack: setting.botName, // The pack name
-            author: pushname, // The author name
+            pack: '', // The pack name
+            author: setting.group.judul, // The author name
             type: StickerTypes.FULL, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -860,8 +863,8 @@ _Wait Mengirim file..._
           await conn.downloadAndSaveMediaMessage(msg, "video", `./sticker/${sender.split("@")[0]}.mp4`)
           let stcg = fs.readFileSync(`./sticker/${sender.split("@")[0]}.mp4`)
           let sticker = new Sticker(stcg, {
-            pack: setting.botName, // The pack name
-            author: pushname, // The author name
+            pack: '', // The pack name
+            author: setting.group.judul, // The author name
             type: StickerTypes.FULL, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -879,8 +882,8 @@ _Wait Mengirim file..._
           await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split("@")[0]}.jpeg`)
           let stci = fs.readFileSync(`./sticker/${sender.split("@")[0]}.jpeg`)
           let stc = new Sticker(stci, {
-            pack: setting.botName, // The pack name
-            author: pushname, // The author name
+            pack: '', // The pack name
+            author: setting.group.judul, // The author name
             type: StickerTypes.CROPPED, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -894,8 +897,8 @@ _Wait Mengirim file..._
           await conn.downloadAndSaveMediaMessage(msg, "video", `./sticker/${sender.split("@")[0]}.mp4`)
           let stcg = fs.readFileSync(`./sticker/${sender.split("@")[0]}.mp4`)
           let sticker = new Sticker(stcg, {
-            pack: setting.botName, // The pack name
-            author: pushname, // The author name
+            pack: '', // The pack name
+            author: setting.group.judul, // The author name
             type: StickerTypes.CROPPED, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -1224,30 +1227,30 @@ _Wait Mengirim file..._
 
       case 'otakudesu-latest':
       case 'otakulast':
-        await fetchJson("https://weebs-nime.kimiakomtol.repl.co/otakudesu/ongoing/page/1").then(async(res) => {
-          var teks = `Otakudesu Ongoing\n\n`
+        await fetchJson("https://weebs-nime.kimiakomtol.repl.co/otakudesu/ongoing/page/1").then(async (res) => {
+         var teks = `Otakudesu Ongoing\n\n`
           for (let g of res.ongoing) {
-          teks += `• *Title* : ${g.title}\n`
-          teks += `• *Total Episode* : ${g.total_episode}\n`
-          teks += `• *Link* : ${g.url}\n\n────────────────────────\n\n`
-          } 
-         reply(teks)
-          })
+            teks += `• *Title* : ${g.title}\n`
+            teks += `• *Total Episode* : ${g.total_episode}\n`
+            teks += `• *Link* : ${g.url}\n\n────────────────────────\n\n`
+          }
+          reply(teks)
+        })
         break
 
       case 'otakudesu-detail':
       case 'otakudet':
-          if (!q) return reply(`Contoh penggunaan:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
-           await fetchJson(`https://weebs-nime.kimiakomtol.repl.co/otakudesu/detail?url=${q}`).then(async(res) => {
-        var teks = `${res.anime_detail.title}\n\n`
-        for ( let g of res.episode_list) {
-        teks += `• *Title:* ${g.episode_title}\n`
-        teks += `• *Date:* ${g.episode_date}\n`
-        teks += `• *Link:* ${g.episode_url}\n────────────────────────\n\n`
-        }
-        reply(teks)
-      })
-          break
+        if (!q) return reply(`Contoh penggunaan:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
+        await fetchJson(`https://weebs-nime.kimiakomtol.repl.co/otakudesu/detail?url=${q}`).then(async (res) => {
+          var teks = `${res.anime_detail.title}\n\n`
+          for (let g of res.episode_list) {
+            teks += `• *Title:* ${g.episode_title}\n`
+            teks += `• *Date:* ${g.episode_date}\n`
+            teks += `• *Link:* ${g.episode_url}\n────────────────────────\n\n`
+          }
+          reply(teks)
+        })
+        break
 
       // cerpen
 
