@@ -46,6 +46,7 @@ async function sedative() {
 
 		const conn = makeWASocket({
 			printQRInTerminal: true,
+			markOnlineOnConnect: false,
 			logger: logg({ level: 'fatal' }),
 			browser: ['SEDATIVE MD-Rafly11', 'Safari', '1.0.0'],
 			auth: state,

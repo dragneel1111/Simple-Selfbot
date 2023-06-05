@@ -140,6 +140,9 @@ module.exports = async (conn, msg, m, setting, store) => {
       return '```' + string + '```'
     }
 
+    const more = String.fromCharCode(8206)
+    const readmore = more.repeat(4001)
+
     function parseMention(text = '') {
       return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map(v => v[1] + '@s.whatsapp.net')
     }
@@ -225,11 +228,11 @@ module.exports = async (conn, msg, m, setting, store) => {
               mimetype: "image/jpeg",
               jpegThumbnail: fs.readFileSync('./sticker/thumb2.jpg'),
             },
-            title: setting.botName,
-            description: `${pushname}`,
+            title: setting.group.judul,
+            description: `a`,
             currencyCode: "USD",
             priceAmount1000: `6666666666`,
-            retailerId: "Rafly",
+            retailerId: "a",
             productImageCount: 1,
           },
           businessOwnerJid: `0@s.whatsapp.net`,
@@ -303,7 +306,7 @@ Video sedang dikirim...`)
       var cptn = `*NOTHING HERE*\n\nJust simple selfbot with downloader feature:v\n\n`
       cptn += `*Runtime:* ${runtime(process.uptime())}`
       var vid = fs.readFileSync('./sticker/menu.mp4')
-      adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
+      adReply2(cptn, vid, setting.botName, `Create by ${setting.ownerName}`, ftokoo)
       console.log(color('[ STATUS CHECK ]', 'green'))
     }
 
@@ -317,8 +320,30 @@ Video sedang dikirim...`)
         break
 
       case 'menu': case 'help':
-        var cptn = `*NOTHING HERE*\n\nJust simple selfbot with downloader feature:v\n\n`
-        cptn += `*Runtime:* ${runtime(process.uptime())}`
+        var cptn = `*Just Simple Selfbot*\n${readmore}\n`
+        cptn += `_Maker_\n`
+        cptn += `• ${prefix}sticker\n`
+        cptn += `• ${prefix}take\n`
+        cptn += `• ${prefix}stickermeme\n\n`
+        cptn += `_Downloader_\n`
+        cptn += `• ${prefix}play\n`
+        cptn += `• ${prefix}ytmp3\n`
+        cptn += `• ${prefix}ytmp4\n`
+        cptn += `• ${prefix}igdl\n`
+        cptn += `• ${prefix}tiktok\n`
+        cptn += `• ${prefix}mediafire\n\n`
+        cptn += `_Weaboo_\n`
+        cptn += `• ${prefix}genshin\n`
+        cptn += `• ${prefix}ppcp\n`
+        cptn += `• ${prefix}otakudesu-latest\n`
+        cptn += `• ${prefix}otakudesu-detail\n\n`
+        cptn += `_Tools_\n`
+        cptn += `• ${prefix}owner\n`
+        cptn += `• ${prefix}info\n`
+        cptn += `• ${prefix}tourl\n`
+        cptn += `• ${prefix}fitnah\n`
+        cptn += `• ${prefix}hidetag\n\n`
+        cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
         var vid = fs.readFileSync('./sticker/menu.mp4')
         adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
         break
@@ -375,6 +400,18 @@ Video sedang dikirim...`)
         }
         break
 
+      case 'play':
+        if (!q) return reply(`Contoh:\n${prefix + command} kokoronashi`)
+        var data = await fetchJson(`https://mfarels.my.id/api/play?q=${q}`)
+        var cptn = `_*Downloading...*_\n\n`
+        cptn += `*Judul:* ${data.judul}\n`
+        cptn += `*Channel:* ${data.channel}\n`
+        cptn += `*Link:* ${data.videoUrl}\n`
+        adReply(cptn, data.judul, `Durasi: ${data.durasi}`, ftokoo)
+        var hasil = await getBuffer(data.download)
+        await conn.sendMessage(from, { document: hasil, mimetype: "audio/mp4", fileName: data.judul })
+        break
+
       case 'ytmp3':
       case 'mp3':
         if (!q) return reply(`contoh\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
@@ -397,22 +434,12 @@ Video sedang dikirim...`)
         conn.sendMessage(sender, { audio: { url: tts }, mimetype: 'audio/mpeg', ptt: true }, { quoted: msg })
       }
         break
-      case 'tiktok': {
-        if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSRG695C8/')
-        reply(mess.wait)
-        fetchJson(`https://saipulanuar.ga/api/download/tiktok2?url=${q}&apikey=dyJhXvqe`)
-          .then(tt_res => {
-            reply(`𝗧𝗜𝗞𝗧𝗢𝗞 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗
-  
-  𝙅𝙪𝙙𝙪𝙡: ${tt_res.result.judul}
-  𝙎𝙤𝙪𝙧𝙘𝙚: ${q}
-  
-  Video sedang dikirim...`)
-            conn.sendMessage(from, { video: { url: tt_res.result.video.link2 } }, { quotes: msg })
-          }).catch((err) => {
-            reply('Terjadi Kesalahan!!\nUrl tidak valid')
-          })
-      }
+      case 'tiktok': 
+        if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
+        var data = await fetchJson(`https://mfarels.my.id/api/tiktokv4?url=${q}`)
+        adReply('_*Downloading...*_', 'Tiktok Donwload', 'please wait...')
+        var hasil = await getBuffer(data.result.video)
+        await conn.sendMessage(from, { video: hasil, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') } )
         break
       case 'mediafire':
         if (!q) return reply('*Contoh:*\n#mediafire https://www.mediafire.com/file/451l493otr6zca4/V4.zip/file')
@@ -797,13 +824,12 @@ _Wait Mengirim file..._
       case 'stikermeme':
       case 'stickermeme':
       case 'memestiker':
-
-        var atas = q.split('|')[0]
-        var bawah = q.split('|')[1]
-        if (!atas) return reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
-        if (!bawah) return reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
+      case 'stcmeme':
+        anu = q.split("|");
+        var tengah = `‎`
+        var atas = anu[0] !== "" ? anu[0] : `${tengah}`;
+        if (!q) return reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
         if (isImage || isQuotedImage) {
-          reply(mess.wait)
           var media = await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/${sender.split('@')[0]}.jpg`)
           var media_url = (await TelegraPh(media))
           var meme_url = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${media_url}`
@@ -812,7 +838,8 @@ _Wait Mengirim file..._
           fs.unlinkSync(media)
         } else {
           reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
-        }
+        
+      }
         break
       case 'swm':
       case 'stikerwm':
@@ -1228,7 +1255,7 @@ _Wait Mengirim file..._
       case 'otakudesu-latest':
       case 'otakulast':
         await fetchJson("https://weebs-nime.kimiakomtol.repl.co/otakudesu/ongoing/page/1").then(async (res) => {
-         var teks = `Otakudesu Ongoing\n\n`
+          var teks = `Otakudesu Ongoing\n\n`
           for (let g of res.ongoing) {
             teks += `• *Title* : ${g.title}\n`
             teks += `• *Total Episode* : ${g.total_episode}\n`
