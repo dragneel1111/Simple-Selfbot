@@ -26,7 +26,9 @@ const { listmenu, ownermenu, listcerpen, listtextpro, listephoto, rulesBot, dona
 const { jadibot, listJadibot } = require('./function/jadibot')
 
 //scraper
-const { instagram, music } = require("@xct007/frieren-scraper")
+const { instagram } = require("@xct007/frieren-scraper")
+const { File } = require("megajs")
+const urlexpand = require("urlexpand")
 
 // database virtex
 const { philips } = require('./function/virtex/philips')
@@ -321,8 +323,10 @@ Video sedang dikirim...`)
 
       case 'menu': case 'help':
         var cptn = `*Just Simple Selfbot*\n${readmore}\n`
-        cptn += `_Maker_\n`
+        cptn += `_Convert_\n`
         cptn += `• ${prefix}sticker\n`
+        cptn += `• ${prefix}toimg\n`
+        cptn += `• ${prefix}tovideo\n`
         cptn += `• ${prefix}take\n`
         cptn += `• ${prefix}stickermeme\n\n`
         cptn += `_Downloader_\n`
@@ -331,7 +335,8 @@ Video sedang dikirim...`)
         cptn += `• ${prefix}ytmp4\n`
         cptn += `• ${prefix}igdl\n`
         cptn += `• ${prefix}tiktok\n`
-        cptn += `• ${prefix}mediafire\n\n`
+        cptn += `• ${prefix}mediafire\n`
+        cptn += `• ${prefix}mega\n\n`
         cptn += `_Weaboo_\n`
         cptn += `• ${prefix}genshin\n`
         cptn += `• ${prefix}ppcp\n`
@@ -387,6 +392,19 @@ Video sedang dikirim...`)
           })
         break
 
+      case 'mega':
+        if (!q) return reply(`contoh:\n${prefix + command} https://mega.nz/file/0FUA2bzb#vSu3Ud9Ft_HDz6zPvfIg_y62vE1qF8EmoYT3kY16zxo`)
+        var file = File.fromURL(q)
+        await file.loadAttributes()
+        adReply(`*_Please wait a few minutes..._*`, file.name, 'downloading...')
+        var data = await file.downloadBuffer()
+        if (/mp4/.test(data)) {
+          await conn.sendMessage(from, { document: data, mimetype: "video/mp4", fileName: file.name }, { quoted: msg })
+        } else {
+          await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: file.name }, { quoted: msg })
+        }
+        break
+
       case 'instagram':
       case 'igdl':
       case 'ig':
@@ -418,7 +436,7 @@ Video sedang dikirim...`)
         data = await fetchJson(`https://mfarels.my.id/api/ytmp3?url=${q}`)
         var aud = await getBuffer(data.url)
         adReply('_*Downloading...*_', data.title, data.channel)
-        conn.sendMessage(from, { document: aud, mimetype: "audio/mp4", fileName: data.title }, { quoted: msg })
+        conn.sendMessage(from, { document: aud, mimetype: "audio/mp4", fileName: `${data.title}.mp3` }, { quoted: msg })
         break
       case 'ytmp4':
       case 'mp4':
@@ -434,12 +452,12 @@ Video sedang dikirim...`)
         conn.sendMessage(sender, { audio: { url: tts }, mimetype: 'audio/mpeg', ptt: true }, { quoted: msg })
       }
         break
-      case 'tiktok': 
+      case 'tiktok':
         if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
         var data = await fetchJson(`https://mfarels.my.id/api/tiktokv4?url=${q}`)
         adReply('_*Downloading...*_', 'Tiktok Donwload', 'please wait...')
         var hasil = await getBuffer(data.result.video)
-        await conn.sendMessage(from, { video: hasil, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') } )
+        await conn.sendMessage(from, { video: hasil, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') })
         break
       case 'mediafire':
         if (!q) return reply('*Contoh:*\n#mediafire https://www.mediafire.com/file/451l493otr6zca4/V4.zip/file')
@@ -762,6 +780,8 @@ _Wait Mengirim file..._
         }
         break
 
+
+
       // CONVERT
       case 'toimg': case 'toimage':
 
@@ -828,18 +848,19 @@ _Wait Mengirim file..._
         anu = q.split("|");
         var tengah = `‎`
         var atas = anu[0] !== "" ? anu[0] : `${tengah}`;
+        var bawah = q.split('|')[1]
         if (!q) return reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
         if (isImage || isQuotedImage) {
           var media = await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/${sender.split('@')[0]}.jpg`)
           var media_url = (await TelegraPh(media))
           var meme_url = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${media_url}`
-          var opt = { packname: 'SedativeBot', author: 'By Rafly11' }
+          var opt = { packname: ``, author: setting.group.judul }
           conn.sendImageAsSticker(from, meme_url, msg, opt)
           fs.unlinkSync(media)
         } else {
           reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
-        
-      }
+
+        }
         break
       case 'swm':
       case 'stikerwm':
@@ -1278,6 +1299,7 @@ _Wait Mengirim file..._
           reply(teks)
         })
         break
+
 
       // cerpen
 
