@@ -153,7 +153,8 @@ module.exports = async (conn, msg, m, setting, store) => {
             title: judul,
             body: isi,
             mediaType: 3, "thumbnail":
-              fs.readFileSync('./sticker/thumb.jpg')
+              fs.readFileSync('./sticker/thumb.jpg'),
+            sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
           }
         }
       },
@@ -334,8 +335,8 @@ Video sedang dikirim...`)
       case 'owner':
         var owner_Nya = setting.ChatOwner
         sendContact(from, owner_Nya, setting.ownerName, msg)
-        adReply('https://api.whatsapp.com/send/?phone=447466989823&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0',
-          'Rafly¹¹',
+        adReply(`https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`,
+          setting.ownerName,
           'Creator of Sedative Selfbot',
           ftokoo)
         break
@@ -363,7 +364,7 @@ Video sedang dikirim...`)
           await conn.sendMessage(from, { document: data, mimetype: "video/x-matroska", fileName: `${file.name}.mkv` }, { quoted: msg })
         } else if (/pdf/.test(data)) {
           await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: `${file.name}.pdf` }, { quoted: msg })
-        } 
+        }
         break
 
       case 'instagram':
@@ -575,13 +576,13 @@ _Wait Mengirim file..._
         if (!isBotGroupAdmins) return
         if (isImage || isQuotedImage) {
           await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/setpp.jpg`)
-        await sleep(2000)
+          await sleep(2000)
           var media = './sticker/setpp.jpg'
-        await conn.updateProfilePicture(from, { url: media })
-        await sleep(2000)
-        reply('Sukses mengganti foto profile group')
-      }
-      fs.unlinkSync(media)
+          await conn.updateProfilePicture(from, { url: media })
+          await sleep(2000)
+          reply('Sukses mengganti foto profile group')
+        }
+        fs.unlinkSync(media)
         break
       case 'setnamegrup': case 'setnamegc':
         if (!isGroup) return reply(mess.OnlyGrup)
@@ -741,7 +742,7 @@ _Wait Mengirim file..._
       case 'readmore':
         var txt1 = q.split('|')[0]
         var txt2 = q.split('|')[1]
-        await conn.sendMessage(from, { text: `${txt1}${readmore}${txt2}`})
+        await conn.sendMessage(from, { text: `${txt1}${readmore}${txt2}` })
         break
 
 
@@ -1257,7 +1258,7 @@ _Wait Mengirim file..._
         })
         break
 
-      
+
       case 'jadibot': {
         if (isGroup) return reply('Gunakan bot di privat chat')
         jadibot(conn, msg, from)
