@@ -154,7 +154,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             body: isi,
             mediaType: 3, "thumbnail":
               fs.readFileSync('./sticker/thumb.jpg'),
-            sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
+            //sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
           }
         }
       },
@@ -206,6 +206,26 @@ module.exports = async (conn, msg, m, setting, store) => {
         },
       },
     };
+
+    const adOwner = async (quo) => {
+      conn.sendMessage(from, {
+        text: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`,
+        contextInfo: {
+          "externalAdReply":
+          {
+            title: setting.ownerName,
+            body: `Creator of ${setting.botName}`,
+            mediaType: 3, "thumbnail":
+              fs.readFileSync('./sticker/thumb.jpg'),
+            sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
+          }
+        }
+      },
+        {
+          sendEphemeral: true,
+          quoted: quo
+        })
+    }
 
     /*if (isGroup && isAntiLink) {
       if (!isBotGroupAdmins) return
@@ -270,11 +290,15 @@ Video sedang dikirim...`)
     }
 
     if (chats.startsWith("Test") && fromMe) {
-      var cptn = `*NOTHING HERE*\n\nJust simple selfbot with downloader feature:v\n\n`
-      cptn += `*Runtime:* ${runtime(process.uptime())}`
-      var vid = fs.readFileSync('./sticker/menu.mp4')
-      adReply2(cptn, vid, setting.botName, `Create by ${setting.ownerName}`, ftokoo)
-      console.log(color('[ STATUS CHECK ]', 'green'))
+      adReply(`*SELFBOT ONLINE* ✅
+
+• Owner : ${setting.ownerName}
+• Botname : ${setting.botName}
+• Library : Baileys
+• Runtime : ${runtime(process.uptime())}
+`,
+          `${tanggal}`, `${jam}`, ftokoo)
+      console.log(color('[ STATUS CHECK ][ STATUS CHECK ][ STATUS CHECK ]', 'green'))
     }
 
 
@@ -309,8 +333,8 @@ Video sedang dikirim...`)
         cptn += `• ${prefix}otakudesu-detail\n\n`
         cptn += `_Tools_\n`
         cptn += `• ${prefix}owner\n`
-        cptn += `• ${prefix}info\n`
         cptn += `• ${prefix}tourl\n`
+        cptn += `• ${prefix}infogroup\n`
         cptn += `• ${prefix}fitnah\n`
         cptn += `• ${prefix}hidetag\n\n`
         cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
@@ -318,16 +342,6 @@ Video sedang dikirim...`)
         adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
         break
 
-      case 'infobot':
-      case 'info':
-        adReply(`𝗕𝗢𝗧 𝗜𝗡𝗙𝗢
-• Owner : ${setting.ownerName}
-• Botname : ${setting.botName}
-• Library : Baileys
-• Runtime : ${runtime(process.uptime())}
-`,
-          `${tanggal}`, `${jam}`, ftokoo)
-        break
       case 'runtime':
       case 'tes':
         reply(`*Runtime :* ${runtime(process.uptime())}`)
@@ -335,10 +349,7 @@ Video sedang dikirim...`)
       case 'owner':
         var owner_Nya = setting.ChatOwner
         sendContact(from, owner_Nya, setting.ownerName, msg)
-        adReply(`https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`,
-          setting.ownerName,
-          'Creator of Sedative Selfbot',
-          ftokoo)
+        adOwner(ftokoo)
         break
 
       // DOWNLOADER
@@ -701,10 +712,7 @@ _Wait Mengirim file..._
 • *ID:* ${from}
 • *Name:* ${groupName}
 • *Member:* ${groupMembers.length}
-• *Total Admin:* ${groupAdmins.length}
-• *Welcome:* ${isWelcome ? "aktif" : "tidak"}
-• *Antilink:* ${isAntiLink ? "aktif" : "tidak"}
-• *Tiktok Auto:* ${isAutoDownTT ? "aktif" : "tidak"}`
+• *Total Admin:* ${groupAdmins.length}`
         reply(cekgcnya)
         break
       case 'react': {
