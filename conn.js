@@ -150,6 +150,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         contextInfo: {
           "externalAdReply":
           {
+            showAdAttribution: true,
             title: judul,
             body: isi,
             mediaType: 3, "thumbnail":
@@ -931,6 +932,7 @@ _Wait Mengirim file..._
           fs.unlinkSync(`./sticker/${sender.split("@")[0]}.mp4`)
         }
         break
+
       case 'joker':
       case 'digital':
       case 'nulis':
