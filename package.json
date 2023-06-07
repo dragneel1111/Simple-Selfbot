@@ -29,7 +29,6 @@
     "node-fetch": "2.6.1",
     "node-webpmux": "^3.1.1",
     "scrape-primbon": "^1.1.0",
-    "urlexpand": "0.0.2",
     "util":"^0.12.5",
     "qrcode": "^1.5.0",
     "qrcode-terminal": "^0.12.0",
