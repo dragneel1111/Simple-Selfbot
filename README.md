@@ -1,7 +1,7 @@
 <p align="center">
-<img src="https://telegra.ph/file/434a4cb9d7e56cf3417b1.jpg" width="50%" style="margin-left: auto;margin-right: auto;display: block;">
+<img src="https://telegra.ph/file/8ee5eb9e4d730d319629e.jpg" width="50%" style="margin-left: auto;margin-right: auto;display: block;">
 </p>
-<h1 align="center">SELFBOT - RAFLY11</h1>
+<h1 align="center">Simple Selfbot - Rafly11</h1>
 <p align="center">
  <a href="#"><img title="Sedative SelfBot" src="https://img.shields.io/badge/Sedative Bot-green?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
 </p>
@@ -21,5 +21,7 @@
 * [`WhatsApp Group`](https://chat.whatsapp.com/GDTlnAnrCPfEPsXK1XkEvB)
   
 ## ```Thanks to ✨```
-* [`Rafly11⁩`](https://github.com/dragneel1111)
+* [`Rafly11⁩`]
+* [`Baileys`]
+* [`MRoy25`]
 
