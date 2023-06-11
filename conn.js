@@ -9,11 +9,13 @@ const { BufferJSON,
 const { downloadContentFromMessage,
   generateWAMessage,
   generateWAMessageFromContent,
-  MessageType } = require("@adiwajshing/baileys")
+  MessageType,
+  generateProfilePicture,
+  updateProfilePicture } = require("@adiwajshing/baileys")
 const { exec, spawn } = require("child_process");
 const { color, bgcolor, pickRandom, randomNomor } = require('./function/Data_Server_Bot/Console_Data')
-const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl, generateProfilePicture } = require("./function/func_Server");
-const { TelegraPh, UploadFileUgu, AnonFiles } = require("./function/uploader_Media");
+const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl } = require("./function/func_Server");
+const { TelegraPh } = require("./function/uploader_Media");
 const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGroup, sendResponList, updateResponList, getDataResponList } = require('./function/func_Addlist');
 const { media_JSON, mess_JSON, setting_JSON, antilink_JSON, server_eror_JSON, welcome_JSON, db_respon_list_JSON, auto_downloadTT_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
@@ -199,7 +201,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             title: setting.group.judul,
             description: `a`,
             currencyCode: "USD",
-            priceAmount1000: `6666666666`,
+            priceAmount1000: `111111`,
             retailerId: "a",
             productImageCount: 1,
           },
@@ -354,16 +356,6 @@ Video sedang dikirim...`)
         break
 
       // DOWNLOADER
-      case 'pinterest':
-        if (!q) return reply(`Contoh:\n${prefix + command} loli`)
-        reply(mess.wait)
-        fetchJson(`https://saipulanuar.ga/api/search/pinterest?query=${q}&apikey=jPHjZpQF`)
-          .then(pin => {
-            var media = pickRandom(pin.result)
-            conn.sendMessage(from, { image: { url: media }, caption: `Done *${q}*` }, { quoted: msg })
-          })
-        break
-
       case 'mega':
         if (!q) return reply(`contoh:\n${prefix + command} https://mega.nz/file/0FUA2bzb#vSu3Ud9Ft_HDz6zPvfIg_y62vE1qF8EmoYT3kY16zxo`)
         var file = File.fromURL(q)
@@ -385,6 +377,7 @@ Video sedang dikirim...`)
         if (!q) return reply(`Contoh:\n${prefix + command} https://www.instagram.com/reel/Cs3wXG-goqR/?igshid=MzRlODBiNWFlZA==`)
         var data = await instagram.v1(`${q}`)
         var hasil = await getBuffer(data[0].url)
+        adReply('*Please wait...*', 'Instagram Downloader')
         if (/mp4/.test(hasil)) {
           await conn.sendMessage(from, { video: hasil, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') })
         } else {
@@ -536,7 +529,8 @@ _Wait Mengirim file..._
         if (!isAlreadyResponListGroup(from, db_respon_list)) return reply(`Maaf, untuk key *${args1}* belum terdaftar di group ini`)
         updateResponList(from, args1, args2, false, '-', db_respon_list)
         reply(`Berhasil update List menu : *${args1}*`)
-      case 'setppbot':
+      break
+        case 'setppbot':
         if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#setppbot* atau reply gambar yang sudah dikirim dengan pesan *#setppbot*`)
         await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/ppbot.jpg`)
         var media = `./sticker/ppbot.jpg`
@@ -1241,8 +1235,8 @@ _Wait Mengirim file..._
         }
         break
 
-      case 'otakudesu-latest':
-      case 'otakulast':
+      case 'otakudesu':
+        if (args[0].includes("latest")) {
         await fetchJson("https://weebs-nime.kimiakomtol.repl.co/otakudesu/ongoing/page/1").then(async (res) => {
           var teks = `Otakudesu Ongoing\n\n`
           for (let g of res.ongoing) {
@@ -1252,12 +1246,9 @@ _Wait Mengirim file..._
           }
           reply(teks)
         })
-        break
-
-      case 'otakudesu-detail':
-      case 'otakudet':
-        if (!q) return reply(`Contoh penggunaan:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
-        await fetchJson(`https://weebs-nime.kimiakomtol.repl.co/otakudesu/detail?url=${q}`).then(async (res) => {
+      } else if (args[0].includes("detail")) {
+        if (!args[1]) return reply(`Contoh penggunaan:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
+        await fetchJson(`https://weebs-nime.kimiakomtol.repl.co/otakudesu/detail?url=${args[1]}`).then(async (res) => {
           var teks = `${res.anime_detail.title}\n\n`
           for (let g of res.episode_list) {
             teks += `• *Title:* ${g.episode_title}\n`
@@ -1266,6 +1257,7 @@ _Wait Mengirim file..._
           }
           reply(teks)
         })
+      }
         break
 
 
