@@ -286,10 +286,17 @@ Video sedang dikirim...`)
 
     // Logs;
     if (!isGroup && isCmd && fromMe) {
-      console.log(color('[PRIVATE]', 'cyan'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
+      console.log(color('[CMD PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
     }
     if (isGroup && isCmd && fromMe) {
-      console.log(color('[GROUP]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupName))
+      console.log(color('[CMD GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupName))
+    }
+
+    if (!isGroup && !isCmd && fromMe) {
+      console.log(color('[CHAT PC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`), 'from', color(pushname))
+    }
+    if (isGroup && !isCmd && fromMe) {
+      console.log(color('[CHAT GC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`), 'from', color(pushname), 'in', color(groupName))
     }
 
     if (chats.startsWith("Test") && fromMe) {
@@ -301,7 +308,7 @@ Video sedang dikirim...`)
 • Runtime : ${runtime(process.uptime())}
 `,
           `${tanggal}`, `${jam}`, ftokoo)
-      console.log(color('[ STATUS CHECK ][ STATUS CHECK ][ STATUS CHECK ]', 'green'))
+      console.log(color(`[ RUNTIME: ${runtime(process.uptime())} ] ${tanggal}`, 'cyan'))
     }
 
 
