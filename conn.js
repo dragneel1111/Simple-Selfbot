@@ -15,7 +15,7 @@ const { color, bgcolor, pickRandom, randomNomor } = require('./function/Data_Ser
 const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl } = require("./function/func_Server");
 const { TelegraPh } = require("./function/uploader_Media");
 const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGroup, sendResponList, updateResponList, getDataResponList } = require('./function/func_Addlist');
-const { media_JSON, mess_JSON, setting_JSON, server_eror_JSON, welcome_JSON, db_respon_list_JSON, auto_downloadTT_JSON } = require('./function/Data_Location.js')
+const { media_JSON, mess_JSON, setting_JSON, server_eror_JSON, db_respon_list_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { bioskop, bioskopNow, latinToAksara, aksaraToLatin, gempa, gempaNow, jadwalTV, listJadwalTV, jadwalsholat } = require('@bochilteam/scraper')
@@ -42,9 +42,7 @@ const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter')
 const mess = mess_JSON
 const setting = setting_JSON
 const server_eror = server_eror_JSON
-const welcomeJson = welcome_JSON
 const db_respon_list = db_respon_list_JSON
-const auto_downloadTT = auto_downloadTT_JSON
 
 moment.tz.setDefault("Asia/Jakarta").locale("id");
 module.exports = async (conn, msg, m, setting, store) => {

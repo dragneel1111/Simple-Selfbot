@@ -95,12 +95,6 @@ async function sedative() {
 		})
 
 		conn.ev.on('group-participants.update', async (update) => {
-			const isWelcome = welcome_JSON
-			if (!isWelcome.includes(update.id)) return
-			groupResponse_Demote(conn, update)
-			groupResponse_Promote(conn, update)
-			groupResponse_Welcome(conn, update)
-			groupResponse_Remove(conn, update)
 			console.log(update)
 		})
 
