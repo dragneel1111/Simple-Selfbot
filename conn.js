@@ -332,8 +332,8 @@ Video sedang dikirim...`)
         cptn += `_Weaboo_\n`
         cptn += `• ${prefix}genshin\n`
         cptn += `• ${prefix}ppcp\n`
-        cptn += `• ${prefix}otakudesu-latest\n`
-        cptn += `• ${prefix}otakudesu-detail\n\n`
+        cptn += `• ${prefix}otakudesu latest\n`
+        cptn += `• ${prefix}otakudesu detail\n\n`
         cptn += `_Tools_\n`
         cptn += `• ${prefix}owner\n`
         cptn += `• ${prefix}tourl\n`
@@ -1236,7 +1236,7 @@ _Wait Mengirim file..._
         break
 
       case 'otakudesu':
-        if (args[0].includes("latest")) {
+        if (args[0].includes("latest") || args[0].includes("Latest")) {
         await fetchJson("https://weebs-nime.kimiakomtol.repl.co/otakudesu/ongoing/page/1").then(async (res) => {
           var teks = `Otakudesu Ongoing\n\n`
           for (let g of res.ongoing) {
