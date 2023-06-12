@@ -9,15 +9,13 @@ const { BufferJSON,
 const { downloadContentFromMessage,
   generateWAMessage,
   generateWAMessageFromContent,
-  MessageType,
-  generateProfilePicture,
-  updateProfilePicture } = require("@adiwajshing/baileys")
+  MessageType } = require("@adiwajshing/baileys")
 const { exec, spawn } = require("child_process");
 const { color, bgcolor, pickRandom, randomNomor } = require('./function/Data_Server_Bot/Console_Data')
 const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl } = require("./function/func_Server");
 const { TelegraPh } = require("./function/uploader_Media");
 const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGroup, sendResponList, updateResponList, getDataResponList } = require('./function/func_Addlist');
-const { media_JSON, mess_JSON, setting_JSON, antilink_JSON, server_eror_JSON, welcome_JSON, db_respon_list_JSON, auto_downloadTT_JSON } = require('./function/Data_Location.js')
+const { media_JSON, mess_JSON, setting_JSON, server_eror_JSON, welcome_JSON, db_respon_list_JSON, auto_downloadTT_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { bioskop, bioskopNow, latinToAksara, aksaraToLatin, gempa, gempaNow, jadwalTV, listJadwalTV, jadwalsholat } = require('@bochilteam/scraper')
@@ -84,16 +82,7 @@ module.exports = async (conn, msg, m, setting, store) => {
     const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
     const isGroupAdmins = groupAdmins.includes(sender)
 
-    const isWelcome = isGroup ? welcomeJson.includes(from) : false
-    const isAutoDownTT = auto_downloadTT.includes(from) ? true : false
-
     const quoted = msg.quoted ? msg.quoted : msg
-    var dataGroup = (type === 'buttonsResponseMessage') ? msg.message.buttonsResponseMessage.selectedButtonId : ''
-    var dataPrivate = (type === "messageContextInfo") ? (msg.message.buttonsResponseMessage?.selectedButtonId || msg.message.listResponseMessage?.singleSelectReply.selectedRowId) : ''
-    const isButton = dataGroup.length !== 0 ? dataGroup : dataPrivate
-    var dataListG = (type === "listResponseMessage") ? msg.message.listResponseMessage.singleSelectReply.selectedRowId : ''
-    var dataList = (type === 'messageContextInfo') ? (msg.message.buttonsResponseMessage?.selectedButtonId || msg.message.listResponseMessage?.singleSelectReply.selectedRowId) : ''
-    const isListMessage = dataListG.length !== 0 ? dataListG : dataList
 
     const isImage = (type == 'imageMessage')
     const isQuotedMsg = (type == 'extendedTextMessage')
@@ -157,8 +146,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             body: isi,
             mediaType: 3, "thumbnail":
               fs.readFileSync('./sticker/thumb.jpg'),
-            //sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
-          }
+            }
         }
       },
         {
@@ -230,38 +218,6 @@ module.exports = async (conn, msg, m, setting, store) => {
         })
     }
 
-    /*if (isGroup && isAntiLink) {
-      if (!isBotGroupAdmins) return
-      if (chats.includes('papale.markontol')) {
-        reply(`\`\`\`「 Detect Link 」\`\`\`\n\nAnda tidak akan dikick bot karena yang anda kirim adalah link group yg ada di group ini`)
-      } else if (isUrl(chats)) {
-        let bvl = `\`\`\`「 Detect Link 」\`\`\`\n\nAdmin telah mengirim link, admin dibebaskan untuk mengirim link apapun`
-        if (isGroupAdmins) return reply(bvl)
-        if (fromMe) return reply(bvl)
-        if (isOwner) return reply(bvl)
-        await conn.sendMessage(from, { delete: msg.key })
-        mentions(`「 ANTILINK 」\n\n@${sender.split('@')[0]} Kamu mengirim link group, maaf bot akan kick kamu dari grup`, [sender])
-        await sleep(3000)
-        conn.groupParticipantsUpdate(from, [sender], "remove")
-      }
-    }*/
-
-    if (isAutoDownTT && fromMe) {
-      if (chats.match(/(tiktok.com)/gi)) {
-        reply('Url tiktok terdekteksi\nWait mengecek data url.')
-        await sleep(3000)
-        var tt_res = await fetchJson(`https://saipulanuar.ga/api/download/tiktok2?url=${chats}&apikey=jPHjZpQF`)
-        reply(`𝗧𝗜𝗞𝗧𝗢𝗞 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗
-
-𝙅𝙪𝙙𝙪𝙡: ${tt_res.result.judul}
-𝙎𝙤𝙪𝙧𝙘𝙚: ${chats}
-
-Video sedang dikirim...`)
-        conn.sendMessage(sender, { video: { url: tt_res.result.video.link1 }, caption: 'No Watermark!' }, { quotes: msg })
-        if (isGroup) return conn.sendMessage(from, { text: 'Media sudah dikirim lewat chat pribadi bot.' }, { quoted: msg })
-      }
-    }
-
     if (!isCmd && isGroup && isAlreadyResponList(from, chats, db_respon_list)) {
       var get_data_respon = getDataResponList(from, chats, db_respon_list)
       if (get_data_respon.isImage === false) {
@@ -284,19 +240,16 @@ Video sedang dikirim...`)
       return conn.sendMessage(from, { contacts: { displayName: name, contacts: [{ vcard }] }, mentions: mn ? mn : [] }, { quoted: quoted })
     }
 
-    // Logs;
+    // Logs cmd
     if (!isGroup && isCmd && fromMe) {
       console.log(color('[CMD PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
     }
     if (isGroup && isCmd && fromMe) {
       console.log(color('[CMD GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupName))
     }
-
-    if (!isGroup && !isCmd && fromMe) {
-      console.log(color('[CHAT PC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`), 'from', color(pushname))
-    }
-    if (isGroup && !isCmd && fromMe) {
-      console.log(color('[CHAT GC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`), 'from', color(pushname), 'in', color(groupName))
+    // Logs chats
+    if (!isGroup && !isCmd && !fromMe) {
+      console.log(color('[CHAT PC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`), 'from', color(from))
     }
 
     if (chats.startsWith("Test") && fromMe) {
@@ -310,8 +263,6 @@ Video sedang dikirim...`)
           `${tanggal}`, `${jam}`, ftokoo)
       console.log(color(`[ RUNTIME: ${runtime(process.uptime())} ] ${tanggal}`, 'cyan'))
     }
-
-
 
     if (!fromMe) return
     switch (command) {
@@ -644,21 +595,6 @@ _Wait Mengirim file..._
         groupMembers.map(i => mem.push(i.id))
         conn.sendMessage(from, { text: q ? q : '', mentions: mem })
         break
-      case 'welcome': {
-        if (!isGroup) return reply('Khusus Group!')
-        if (!args[0]) return reply(`Kirim perintah #${command} _options_\nOptions : on & off\nContoh : #${command} on`)
-        if (args[0] == 'ON' || args[0] == 'on' || args[0] == 'On') {
-          if (isWelcome) return reply('Sudah aktif✓')
-          welcomeJson.push(from)
-          fs.writeFileSync('./database/welcome.json', JSON.stringify(welcomeJson))
-          reply('Suksess mengaktifkan welcome di group:\n' + groupName)
-        } else if (args[0] == 'OFF' || args[0] == 'OF' || args[0] == 'Of' || args[0] == 'Off' || args[0] == 'of' || args[0] == 'off') {
-          welcomeJson.splice(from, 1)
-          fs.writeFileSync('./database/welcome.json', JSON.stringify(welcomeJson))
-          reply('Success menonaktifkan welcome di group:\n' + groupName)
-        } else { reply('Kata kunci tidak ditemukan!') }
-      }
-        break
 
       case 'promote':
         if (!isGroup) return reply(mess.OnlyGrup)
@@ -674,21 +610,6 @@ _Wait Mengirim file..._
         } else {
           reply(`Tag atau balas pesan member yang ingin dijadikan admin\n\n*Contoh:*\n${prefix + command} @tag`)
         }
-        break
-      case 'tiktokauto': {
-        if (!args[0]) return reply(`Kirim perintah #${command} _options_\nOptions : on & off\nContoh : #${command} on`)
-        if (args[0] == 'ON' || args[0] == 'on' || args[0] == 'On') {
-          if (isAutoDownTT) return reply('Auto download tiktok sudah aktif')
-          auto_downloadTT.push(from)
-          fs.writeFileSync('./database/tiktokDown.json', JSON.stringify(auto_downloadTT, null, 2))
-          reply('Berhasil mengaktifkan auto download tiktok')
-        } else if (args[0] == 'OFF' || args[0] == 'OF' || args[0] == 'Of' || args[0] == 'Off' || args[0] == 'of' || args[0] == 'off') {
-          if (!isAutoDownTT) return reply('Auto download tiktok belum aktif')
-          auto_downloadTT.splice(anu, 1)
-          fs.writeFileSync('./database/tiktokDown.json', JSON.stringify(auto_downloadTT, null, 2))
-          reply('Berhasil mematikan auto download tiktok')
-        } else { reply('Kata kunci tidak ditemukan!') }
-      }
         break
       case 'demote':
         if (!isGroup) return reply(mess.OnlyGrup)
