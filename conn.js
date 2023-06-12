@@ -250,6 +250,18 @@ module.exports = async (conn, msg, m, setting, store) => {
       console.log(color('[CHAT PC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`), 'from', color(from))
     }
 
+    // Eval
+    if (chats.startsWith("> ") && fromMe) {
+      console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`KYAA RAPLY KYUNN`))
+      try {
+          let evaled = await eval(chats.slice(1))
+        if (typeof evaled !== 'string') evaled = require("util").inspect(evaled)
+       reply(`${evaled}`)
+      } catch (err) {
+        reply(`${err}`)
+      }
+     }
+
     if (chats.startsWith("Test") && fromMe) {
       adReply(`*SELFBOT ONLINE* ✅
 
