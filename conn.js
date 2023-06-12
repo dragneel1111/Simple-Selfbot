@@ -57,7 +57,7 @@ module.exports = async (conn, msg, m, setting, store) => {
     const from = msg.key.remoteJid
     const time = moment(new Date()).format("HH:mm");
     var chats = (type === 'conversation' && msg.message.conversation) ? msg.message.conversation : (type === 'imageMessage') && msg.message.imageMessage.caption ? msg.message.imageMessage.caption : (type === 'videoMessage') && msg.message.videoMessage.caption ? msg.message.videoMessage.caption : (type === 'extendedTextMessage') && msg.message.extendedTextMessage.text ? msg.message.extendedTextMessage.text : (type === 'buttonsResponseMessage') && quotedMsg.fromMe && msg.message.buttonsResponseMessage.selectedButtonId ? msg.message.buttonsResponseMessage.selectedButtonId : (type === 'templateButtonReplyMessage') && quotedMsg.fromMe && msg.message.templateButtonReplyMessage.selectedId ? msg.message.templateButtonReplyMessage.selectedId : (type === 'messageContextInfo') ? (msg.message.buttonsResponseMessage?.selectedButtonId || msg.message.listResponseMessage?.singleSelectReply.selectedRowId) : (type == 'listResponseMessage') && quotedMsg.fromMe && msg.message.listResponseMessage.singleSelectReply.selectedRowId ? msg.message.listResponseMessage.singleSelectReply.selectedRowId : ""
-    if (chats == undefined) { chats = '' }
+    if (chats == undefined) { chats = 'undifined' }
     const prefix = setting.prefix
     const isGroup = msg.key.remoteJid.endsWith('@g.us')
     const sender = isGroup ? (msg.key.participant ? msg.key.participant : msg.participant) : msg.key.remoteJid
@@ -240,15 +240,23 @@ module.exports = async (conn, msg, m, setting, store) => {
     }
 
     // Logs cmd
+
     if (!isGroup && isCmd && fromMe) {
-      console.log(color('[CMD PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
+      console.log(color('[COMMAND PC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
     }
     if (isGroup && isCmd && fromMe) {
-      console.log(color('[CMD GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupName))
+      console.log(color('[COMMAND GC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupName))
     }
     // Logs chats
     if (!isGroup && !isCmd && !fromMe) {
-      console.log(color('[CHAT PC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`), 'from', color(from))
+      console.log(color('[CHAT PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(from))
+    }
+    if (isGroup && !isCmd && !fromMe && chats) {
+      if (!chats.slice(100)) {
+        console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(pushname), 'in', color(groupName))
+      } else if (chats.slice(100)) {
+        console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(pushname), 'in', color(groupName))
+      }
     }
 
     // Eval
