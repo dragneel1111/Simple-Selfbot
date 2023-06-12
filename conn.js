@@ -202,8 +202,9 @@ module.exports = async (conn, msg, m, setting, store) => {
         contextInfo: {
           "externalAdReply":
           {
+            showAdAttribution: true,
             title: setting.ownerName,
-            body: `Creator of ${setting.botName}`,
+            body: ``,
             mediaType: 3, "thumbnail":
               fs.readFileSync('./sticker/thumb.jpg'),
             sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
