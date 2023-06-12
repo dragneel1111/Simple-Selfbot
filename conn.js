@@ -144,7 +144,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             body: isi,
             mediaType: 3, "thumbnail":
               fs.readFileSync('./sticker/thumb.jpg'),
-            }
+          }
         }
       },
         {
@@ -254,23 +254,24 @@ module.exports = async (conn, msg, m, setting, store) => {
     if (chats.startsWith("> ") && fromMe) {
       console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`KYAA RAPLY KYUNN`))
       try {
-          let evaled = await eval(chats.slice(1))
+        let evaled = await eval(chats.slice(1))
         if (typeof evaled !== 'string') evaled = require("util").inspect(evaled)
-       reply(`${evaled}`)
+        reply(`${evaled}`)
       } catch (err) {
         reply(`${err}`)
       }
-     }
+    }
 
     if (chats.startsWith("Test") && fromMe) {
       adReply(`*SELFBOT ONLINE* ✅
 
 • Owner : ${setting.ownerName}
 • Botname : ${setting.botName}
+• Prefix : ${prefix}
 • Library : Baileys
 • Runtime : ${runtime(process.uptime())}
 `,
-          `${tanggal}`, `${jam}`, ftokoo)
+        `${tanggal}`, `${jam}`, ftokoo)
       console.log(color(`[ RUNTIME: ${runtime(process.uptime())} ] ${tanggal}`, 'cyan'))
     }
 
@@ -307,7 +308,18 @@ module.exports = async (conn, msg, m, setting, store) => {
         cptn += `• ${prefix}tourl\n`
         cptn += `• ${prefix}infogroup\n`
         cptn += `• ${prefix}fitnah\n`
+        cptn += `• ${prefix}readmore\n`
         cptn += `• ${prefix}hidetag\n\n`
+        cptn += `_Owner Tools_\n`
+        cptn += `• ${prefix}setprefix\n`
+        cptn += `• ${prefix}setmenu\n`
+        cptn += `• ${prefix}setthumb\n`
+        cptn += `• ${prefix}setthumb2\n`
+        cptn += `• ${prefix}error\n`
+        cptn += `• ${prefix}clear\n`
+        cptn += `• ${prefix}sendsesi\n`
+        cptn += `• ${prefix}addrespon\n`
+        cptn += `• ${prefix}delrespon\n\n`
         cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
         var vid = fs.readFileSync('./sticker/menu.mp4')
         adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
@@ -445,6 +457,17 @@ _Wait Mengirim file..._
         reply('Done')
         break
 
+      case 'setprefix':
+        setting.prefix = args[0]
+        fs.writeFileSync('./config.json', JSON.stringify(setting, null, 2))
+        reply('done')
+        break
+      case 'setownername':
+        setting.ownerName = args[0]
+        fs.writeFileSync('./config.json', JSON.stringify(setting, null, 2))
+        reply('done')
+        break
+
       case 'mysesi': case 'sendsesi': case 'session': {
         reply('please wait..')
         await sleep(3000)
@@ -490,15 +513,7 @@ _Wait Mengirim file..._
         delResponList(from, q, db_respon_list)
         reply(`Sukses delete list message dengan key *${q}*`)
         break
-      case 'update':
-        var args1 = q.split("@")[0]
-        var args2 = q.split("@")[1]
-        if (!q.includes("@")) return reply(`Gunakan dengan cara #${command} *key@response*\n\n_Contoh_\n\n#${command} tes@apa`)
-        if (!isAlreadyResponListGroup(from, db_respon_list)) return reply(`Maaf, untuk key *${args1}* belum terdaftar di group ini`)
-        updateResponList(from, args1, args2, false, '-', db_respon_list)
-        reply(`Berhasil update List menu : *${args1}*`)
-      break
-        case 'setppbot':
+      case 'setppbot':
         if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#setppbot* atau reply gambar yang sudah dikirim dengan pesan *#setppbot*`)
         await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/ppbot.jpg`)
         var media = `./sticker/ppbot.jpg`
@@ -1175,27 +1190,27 @@ _Wait Mengirim file..._
 
       case 'otakudesu':
         if (args[0].includes("latest") || args[0].includes("Latest")) {
-        await fetchJson("https://weebs-nime.kimiakomtol.repl.co/otakudesu/ongoing/page/1").then(async (res) => {
-          var teks = `Otakudesu Ongoing\n\n`
-          for (let g of res.ongoing) {
-            teks += `• *Title* : ${g.title}\n`
-            teks += `• *Total Episode* : ${g.total_episode}\n`
-            teks += `• *Link* : ${g.url}\n\n────────────────────────\n\n`
-          }
-          reply(teks)
-        })
-      } else if (args[0].includes("detail")) {
-        if (!args[1]) return reply(`Contoh penggunaan:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
-        await fetchJson(`https://weebs-nime.kimiakomtol.repl.co/otakudesu/detail?url=${args[1]}`).then(async (res) => {
-          var teks = `${res.anime_detail.title}\n\n`
-          for (let g of res.episode_list) {
-            teks += `• *Title:* ${g.episode_title}\n`
-            teks += `• *Date:* ${g.episode_date}\n`
-            teks += `• *Link:* ${g.episode_url}\n────────────────────────\n\n`
-          }
-          reply(teks)
-        })
-      }
+          await fetchJson("https://weebs-nime.kimiakomtol.repl.co/otakudesu/ongoing/page/1").then(async (res) => {
+            var teks = `Otakudesu Ongoing\n\n`
+            for (let g of res.ongoing) {
+              teks += `• *Title* : ${g.title}\n`
+              teks += `• *Total Episode* : ${g.total_episode}\n`
+              teks += `• *Link* : ${g.url}\n\n────────────────────────\n\n`
+            }
+            reply(teks)
+          })
+        } else if (args[0].includes("detail")) {
+          if (!args[1]) return reply(`Contoh penggunaan:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
+          await fetchJson(`https://weebs-nime.kimiakomtol.repl.co/otakudesu/detail?url=${args[1]}`).then(async (res) => {
+            var teks = `${res.anime_detail.title}\n\n`
+            for (let g of res.episode_list) {
+              teks += `• *Title:* ${g.episode_title}\n`
+              teks += `• *Date:* ${g.episode_date}\n`
+              teks += `• *Link:* ${g.episode_url}\n────────────────────────\n\n`
+            }
+            reply(teks)
+          })
+        }
         break
 
 
