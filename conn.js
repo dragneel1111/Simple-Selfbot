@@ -240,18 +240,22 @@ module.exports = async (conn, msg, m, setting, store) => {
     }
 
     // Logs cmd
-
     if (!isGroup && isCmd && fromMe) {
       console.log(color('[COMMAND PC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
     }
     if (isGroup && isCmd && fromMe) {
       console.log(color('[COMMAND GC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupName))
     }
+
     // Logs chats
-    if (!isGroup && !isCmd && !fromMe) {
-      console.log(color('[CHAT PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(from))
+    if (!isGroup && !fromMe && chats && !isSticker && !isMedia) {
+      if (!chats.slice(100)) {
+        console.log(color('[CHAT PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(from))
+      } else if (chats.slice(100)) {
+        console.log(color('[CHAT PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(from))
+      }
     }
-    if (isGroup && !isCmd && !fromMe && chats) {
+    if (isGroup && !fromMe && chats && !isSticker && !isMedia) {
       if (!chats.slice(100)) {
         console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(pushname), 'in', color(groupName))
       } else if (chats.slice(100)) {
@@ -274,10 +278,10 @@ module.exports = async (conn, msg, m, setting, store) => {
     if (chats.startsWith("Test") && fromMe) {
       adReply(`*SELFBOT ONLINE* ✅
 
-• Owner : ${setting.ownerName}
 • Botname : ${setting.botName}
-• Prefix : ${prefix}
 • Library : Baileys
+• Prefix : ${prefix}
+• Creator : ${setting.ownerName}
 • Runtime : ${runtime(process.uptime())}
 `,
         `${tanggal}`, `${jam}`, ftokoo)
