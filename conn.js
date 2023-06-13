@@ -143,7 +143,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             title: judul,
             body: isi,
             mediaType: 3, "thumbnail":
-              fs.readFileSync('./sticker/thumb.jpg'),
+              fs.readFileSync('./sticker/adreply.jpg'),
           }
         }
       },
@@ -165,7 +165,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             title: judul,
             body: isi,
             description: setting.group.judul,
-            thumbnail: fs.readFileSync('./sticker/thumb.jpg'),
+            thumbnail: fs.readFileSync('./sticker/adreply.jpg'),
           }
         }
       }, { quoted: quo })
@@ -206,7 +206,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             title: setting.ownerName,
             body: ``,
             mediaType: 3, "thumbnail":
-              fs.readFileSync('./sticker/thumb.jpg'),
+              fs.readFileSync('./sticker/adreply.jpg'),
             sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
           }
         }
@@ -266,20 +266,20 @@ module.exports = async (conn, msg, m, setting, store) => {
     // Eval
     if (chats.startsWith("> ") && fromMe) {
       console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`Dari Owner aowkoakwoak`))
-		  const ev = (sul) => {
-            var sat = JSON.stringify(sul, null, 2)
-            var bang = util.format(sat)
-            if (sat == undefined) {
-              bang = util.format(sul)
-            }
-            return reply(bang)
-          }
-          try {
-           reply(util.format(eval(`;(async () => { ${chats.slice(1)} })()`)))
-          } catch (e) {
-           reply(util.format(e))
-          }
-		} 
+      const ev = (sul) => {
+        var sat = JSON.stringify(sul, null, 2)
+        var bang = util.format(sat)
+        if (sat == undefined) {
+          bang = util.format(sul)
+        }
+        return reply(bang)
+      }
+      try {
+        reply(util.format(eval(`;(async () => { ${chats.slice(1)} })()`)))
+      } catch (e) {
+        reply(util.format(e))
+      }
+    }
 
     if (chats.startsWith("Test") && fromMe) {
       adReply(`*SELFBOT ONLINE* ✅
@@ -475,6 +475,12 @@ _Wait Mengirim file..._
         }
         reply('Done')
         break
+        case 'setadreply':
+          if (isImage || isQuotedImage) {
+            await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/adreply.jpg`)
+          }
+          reply('Done')
+          break
 
       case 'setprefix':
         setting.prefix = args[0]
