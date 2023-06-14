@@ -378,9 +378,9 @@ module.exports = async (conn, msg, m, setting, store) => {
         var hasil = await getBuffer(data[0].url)
         adReply('*Please wait...*', 'Instagram Downloader')
         if (/mp4/.test(hasil)) {
-          await conn.sendMessage(from, { video: hasil, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') })
+          await conn.sendMessage(from, { video: hasil })
         } else {
-          await conn.sendMessage(from, { image: hasil, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') })
+          await conn.sendMessage(from, { image: hasil })
         }
         break
 
@@ -410,7 +410,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         var data = await fetchJson(`https://mfarels.my.id/api/ytmp4?url=${q}`)
         adReply('_*Downloading...*_', data.title, data.channel)
         var vid = await getBuffer(data.url)
-        conn.sendMessage(from, { video: vid, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') }, { quoted: msg })
+        conn.sendMessage(from, { video: vid, }, { quoted: msg })
         break
       case 'tts': {
         if (!q) return reply(`Contoh:\n${prefix + command} hallo bro`)
@@ -423,7 +423,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         var data = await fetchJson(`https://mfarels.my.id/api/tiktokv4?url=${q}`)
         adReply('_*Downloading...*_', 'Tiktok Donwload', 'please wait...')
         var hasil = await getBuffer(data.result.video)
-        await conn.sendMessage(from, { video: hasil, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') })
+        await conn.sendMessage(from, { video: hasil })
         break
       case 'mediafire':
         if (!q) return reply('*Contoh:*\n#mediafire https://www.mediafire.com/file/451l493otr6zca4/V4.zip/file')
