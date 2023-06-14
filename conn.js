@@ -475,12 +475,12 @@ _Wait Mengirim file..._
         }
         reply('Done')
         break
-        case 'setadreply':
-          if (isImage || isQuotedImage) {
-            await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/adreply.jpg`)
-          }
-          reply('Done')
-          break
+      case 'setadreply':
+        if (isImage || isQuotedImage) {
+          await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/adreply.jpg`)
+        }
+        reply('Done')
+        break
 
       case 'setprefix':
         setting.prefix = args[0]
@@ -699,7 +699,6 @@ _Wait Mengirim file..._
       case 'tourl': case 'upload':
         if (isVideo || isQuotedVideo) {
           await conn.downloadAndSaveMediaMessage(msg, 'video', `./sticker/${sender.split("@")[0]}.mp4`)
-          reply(mess.wait)
           let buffer_up = fs.readFileSync(`./sticker/${sender.split("@")[0]}.mp4`)
           var rand2 = 'sticker/' + getRandom('.mp4')
           fs.writeFileSync(`./${rand2}`, buffer_up)
@@ -709,7 +708,6 @@ _Wait Mengirim file..._
           fs.unlinkSync(rand2)
         } else if (isImage || isQuotedImage) {
           var mediany = await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/${sender.split("@")[0]}.jpg`)
-          reply(mess.wait)
           let buffer_up = fs.readFileSync(mediany)
           var rand2 = 'sticker/' + getRandom('.png')
           fs.writeFileSync(`./${rand2}`, buffer_up)
@@ -737,7 +735,6 @@ _Wait Mengirim file..._
           var rand1 = 'sticker/' + getRandom('.webp')
           var rand2 = 'sticker/' + getRandom('.png')
           fs.writeFileSync(`./${rand1}`, buffer)
-          reply(mess.wait)
           exec(`ffmpeg -i ./${rand1} ./${rand2}`, (err) => {
             fs.unlinkSync(`./${rand1}`)
             if (err) return reply(mess.error.api)
@@ -754,7 +751,6 @@ _Wait Mengirim file..._
         if (isSticker || isQuotedSticker) {
           await conn.downloadAndSaveMediaMessage(msg, "sticker", `./sticker/${sender.split("@")[0]}.webp`)
           let buffer = `./sticker/${sender.split("@")[0]}.webp`
-          reply(mess.wait)
           let webpToMp4 = await webp2mp4File(buffer)
           conn.sendMessage(from, { video: { url: webpToMp4.result }, caption: 'Convert Webp To Video' }, { quoted: msg })
           fs.unlinkSync(buffer)
@@ -913,7 +909,6 @@ _Wait Mengirim file..._
       case 'quobucin': {
 
         if (!q) return reply(`Contoh:\n${prefix + command} saya bukan wibu`)
-        reply(mess.wait)
         var buc = `https://saipulanuar.ga/api/textmaker/${command}?text=${q}&apikey=jPHjZpQF`
         conn.sendMessage(from, { image: { url: buc }, caption: 'Done!' }, { quoted: msg })
       }
@@ -921,7 +916,6 @@ _Wait Mengirim file..._
       case 'badgirlserti': case 'goodgirlserti': case 'bucinserti': case 'fuckgirlserti': case 'toloserti': {
         if (!q) return reply(`*Contoh:*\n${prefix + command} text`)
         var anu = await getBuffer(`https://api.lolhuman.xyz/api/${command}?apikey=${setting.api_lolkey}&name=${q}`)
-        reply(mess.wait)
         conn.sendMessage(from, { image: anu, caption: `${command}` }, { quoted: msg }).catch((err) => reply('Maaf server LolHuman sedang down'))
       }
         break
@@ -934,7 +928,6 @@ _Wait Mengirim file..._
       case "flaming": {
 
         if (!q) return reply(`_Contoh_\n${prefix + command} nama`)
-        reply(mess.wait)
         let photooxy = `https://api.nataganz.com/api/photooxy/${command}?text=${q}&apikey=Pasha`
         conn.sendMessage(from, { image: { url: photooxy }, caption: `Hasil dari ${command}` }, { quoted: msg })
       }
@@ -949,7 +942,6 @@ _Wait Mengirim file..._
           var kode_js = '-af equalizer=f=54:width_type=o:width=2:g=20'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -969,7 +961,6 @@ _Wait Mengirim file..._
           var kode_js = '-af acrusher=.1:1:64:0:log'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -989,7 +980,6 @@ _Wait Mengirim file..._
           var kode_js = '-af atempo=4/4,asetrate=44500*2/3'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1009,7 +999,6 @@ _Wait Mengirim file..._
           var kode_js = '-af volume=12'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1029,7 +1018,6 @@ _Wait Mengirim file..._
           var kode_js = '-filter:a "atempo=1.63,asetrate=44100"'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1049,7 +1037,6 @@ _Wait Mengirim file..._
           var kode_js = '-filter:a "atempo=1.6,asetrate=22100"'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1069,7 +1056,6 @@ _Wait Mengirim file..._
           var kode_js = '-filter_complex "areverse'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1089,7 +1075,6 @@ _Wait Mengirim file..._
           var kode_js = '-filter_complex "areverse"'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1109,7 +1094,6 @@ _Wait Mengirim file..._
           var kode_js = '-filter_complex "afftfilt=real=\'hypot(re,im)*sin(0)\':imag=\'hypot(re,im)*cos(0)\':win_size=512:overlap=0.75"'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1129,7 +1113,6 @@ _Wait Mengirim file..._
           var kode_js = '-filter:a "atempo=0.7,asetrate=44100"'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1149,7 +1132,6 @@ _Wait Mengirim file..._
           var kode_js = '-filter:v "minterpolate=\'mi_mode=mci:mc_mode=aobmc:vsbmc=1:fps=120\'"'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
@@ -1169,7 +1151,6 @@ _Wait Mengirim file..._
           var kode_js = '-filter:a "atempo=0.5,asetrate=65100"'
           exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
             if (err) return reply(err)
-            reply(mess.wait)
             let buff = fs.readFileSync(ran)
             conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
             fs.unlinkSync(`./${ran}`)
