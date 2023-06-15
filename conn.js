@@ -265,6 +265,15 @@ module.exports = async (conn, msg, m, setting, store) => {
 
     // Eval
     if (chats.startsWith("> ") && fromMe) {
+      console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`From Owner`))
+      try {
+        let evaled = await eval(chats.slice(1))
+        if (typeof evaled !== 'string') evaled = require("util").inspect(evaled)
+        reply(`${evaled}`)
+      } catch (err) {
+        reply(`${err}`)
+      }
+    } else if (chats.startsWith("< ") && fromMe) {
       console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`Dari Owner aowkoakwoak`))
       const ev = (sul) => {
         var sat = JSON.stringify(sul, null, 2)
@@ -363,8 +372,6 @@ module.exports = async (conn, msg, m, setting, store) => {
         var data = await file.downloadBuffer()
         if (/mp4/.test(data)) {
           await conn.sendMessage(from, { document: data, mimetype: "video/mp4", fileName: `${file.name}.mp4` }, { quoted: msg })
-        } else if (/mkv/.test(data)) {
-          await conn.sendMessage(from, { document: data, mimetype: "video/x-matroska", fileName: `${file.name}.mkv` }, { quoted: msg })
         } else if (/pdf/.test(data)) {
           await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: `${file.name}.pdf` }, { quoted: msg })
         }
@@ -415,7 +422,7 @@ module.exports = async (conn, msg, m, setting, store) => {
       case 'tts': {
         if (!q) return reply(`Contoh:\n${prefix + command} hallo bro`)
         var tts = `https://saipulanuar.ga/api/text-to-audio/tts?text=${q}&idbahasa=id&apikey=jPHjZpQF`
-        conn.sendMessage(sender, { audio: { url: tts }, mimetype: 'audio/mpeg', ptt: true }, { quoted: msg })
+        conn.sendMessage(from, { audio: { url: tts }, mimetype: 'audio/mpeg', ptt: true }, { quoted: msg })
       }
         break
       case 'tiktok':
