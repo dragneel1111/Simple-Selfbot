@@ -315,6 +315,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         cptn += `• ${prefix}sticker\n`
         cptn += `• ${prefix}toimg\n`
         cptn += `• ${prefix}tovideo\n`
+        cptn += `• ${prefix}toaudio\n`
         cptn += `• ${prefix}take\n`
         cptn += `• ${prefix}stickermeme\n\n`
         cptn += `_Downloader_\n`
@@ -816,10 +817,9 @@ _Wait Mengirim file..._
       case 'stickerwm':
       case 'takesticker':
       case 'take':
-
-        if (!q) return reply(`reply sticker dgn caption: ${prefix + command} packname|author atau balas video/foto yang sudah dikirim`)
-        var pname = q.split('|')[0]
-        var athor = q.split('|')[1]
+        anu = q.split("|");
+        var pname = `‎`
+        var athor = anu[0] !== "" ? anu[0] : `${pname}`;
         if (isSticker || isQuotedSticker) {
           await conn.downloadAndSaveMediaMessage(msg, "sticker", `./sticker/${sender.split("@")[0]}.webp`)
           var media = fs.readFileSync(`./sticker/${sender.split("@")[0]}.webp`)
