@@ -546,15 +546,6 @@ _Wait Mengirim file..._
         delResponList(from, q, db_respon_list)
         reply(`Sukses delete list message dengan key *${q}*`)
         break
-      case 'setppbot':
-        if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#setppbot* atau reply gambar yang sudah dikirim dengan pesan *#setppbot*`)
-        await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/ppbot.jpg`)
-        var media = `./sticker/ppbot.jpg`
-        conn.updateProfilePicture(botNumber, { url: media })
-        reply('Sukses Mengganti Profile Bot')
-        await sleep(2000)
-        fs.unlinkSync(media)
-        break
 
       case 'fitnah':
         if (!isGroup) return reply(mess.OnlyGrup)
@@ -593,19 +584,7 @@ _Wait Mengirim file..._
           reply('Tag atau reply orang yg mau dikick\n\n*Contoh:* #kick @tag')
         }
         break
-      case 'setppgrup': case 'setppgc':
-        if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return
-        if (isImage || isQuotedImage) {
-          await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/setpp.jpg`)
-          await sleep(2000)
-          var media = './sticker/setpp.jpg'
-          await conn.updateProfilePicture(from, { url: media })
-          await sleep(2000)
-          reply('Sukses mengganti foto profile group')
-        }
-        fs.unlinkSync(media)
-        break
+      
       case 'setnamegrup': case 'setnamegc':
         if (!isGroup) return reply(mess.OnlyGrup)
         if (!isBotGroupAdmins) return reply(mess.BotAdmin)
