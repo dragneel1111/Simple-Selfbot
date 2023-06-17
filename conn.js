@@ -15,11 +15,12 @@ const { color, bgcolor, pickRandom, randomNomor } = require('./function/Data_Ser
 const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl } = require("./function/func_Server");
 const { TelegraPh } = require("./function/uploader_Media");
 const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGroup, sendResponList, updateResponList, getDataResponList } = require('./function/func_Addlist');
-const { media_JSON, mess_JSON, setting_JSON, server_eror_JSON, db_respon_list_JSON } = require('./function/Data_Location.js')
+const { mess_JSON, setting_JSON, server_eror_JSON, db_respon_list_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { bioskop, bioskopNow, latinToAksara, aksaraToLatin, gempa, gempaNow, jadwalTV, listJadwalTV, jadwalsholat } = require('@bochilteam/scraper')
 const { jadibot, listJadibot } = require('./function/jadibot')
+
 
 //scraper
 const { instagram } = require("@xct007/frieren-scraper")
@@ -240,10 +241,10 @@ module.exports = async (conn, msg, m, setting, store) => {
     }
 
     // Logs cmd
-    if (!isGroup && isCmd && fromMe) {
+    if (!isGroup && isCmd) {
       console.log(color('[COMMAND PC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
     }
-    if (isGroup && isCmd && fromMe) {
+    if (isGroup && isCmd) {
       console.log(color('[COMMAND GC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupName))
     }
 
@@ -290,7 +291,9 @@ module.exports = async (conn, msg, m, setting, store) => {
       }
     }
 
-    if (chats.startsWith("Test") && fromMe) {
+    if (!fromMe) return
+
+    if (chats.startsWith("Test")) {
       adReply(`*SELFBOT ONLINE* ✅
 
 • Botname : ${setting.botName}
@@ -303,12 +306,8 @@ module.exports = async (conn, msg, m, setting, store) => {
       console.log(color(`[ RUNTIME: ${runtime(process.uptime())} ] ${tanggal}`, 'cyan'))
     }
 
-    if (!fromMe) return
-    switch (command) {
 
-      case "id":
-        reply(from)
-        break
+    switch (command) {
 
       case 'menu': case 'help':
         var cptn = `*Just Simple Selfbot*\n${readmore}\n`
@@ -343,6 +342,8 @@ module.exports = async (conn, msg, m, setting, store) => {
         cptn += `• ${prefix}setmenu\n`
         cptn += `• ${prefix}setthumb\n`
         cptn += `• ${prefix}setthumb2\n`
+        cptn += `• ${prefix}setadreply\n`
+        cptn += `• ${prefix}setownername\n`
         cptn += `• ${prefix}error\n`
         cptn += `• ${prefix}clear\n`
         cptn += `• ${prefix}sendsesi\n`
@@ -438,8 +439,8 @@ module.exports = async (conn, msg, m, setting, store) => {
         if (!isLinks) return reply('Link yang kamu berikan tidak valid')
         reply('*Mengunduh Media...*')
         let baby1 = await mediafireDl(`${isLinks}`)
-        if (baby1[0].size.split('MB')[0] >= 100) return reply('File Melebihi Batas ' + util.format(baby1))
-        let result4 = `-----[ *MEDIAFIRE DOWNLOADER* ]-----
+        if (baby1[0].size.split('MB')[0] >= 1000) return reply('File Melebihi Batas ' + util.format(baby1))
+        let result4 = `[ *MEDIAFIRE DOWNLOADER* ]
 
 *Name* : ${baby1[0].nama}
 *Size* : ${baby1[0].size}
@@ -447,7 +448,7 @@ module.exports = async (conn, msg, m, setting, store) => {
 
 _Wait Mengirim file..._
 `
-        reply(result4)
+        adReply(result4, `${baby1[0].nama}`, ``)
         conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: msg }).catch((err) => reply('Gagal saat mendownload File'))
         break
       case 'grupbot':
@@ -811,6 +812,7 @@ _Wait Mengirim file..._
 
         }
         break
+
       case 'swm':
       case 'stikerwm':
       case 'stickerwm':
