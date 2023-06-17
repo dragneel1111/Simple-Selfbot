@@ -584,7 +584,7 @@ _Wait Mengirim file..._
           reply('Tag atau reply orang yg mau dikick\n\n*Contoh:* #kick @tag')
         }
         break
-      
+
       case 'setnamegrup': case 'setnamegc':
         if (!isGroup) return reply(mess.OnlyGrup)
         if (!isBotGroupAdmins) return reply(mess.BotAdmin)
@@ -759,6 +759,25 @@ _Wait Mengirim file..._
             conn.sendImageAsSticker(from, data.results[0].url, msg, opt)
           }).catch((e) => reply(mess.error.api))
         break
+      case 'tomp3': case 'toaudio':
+        if (isVideo || isQuotedVideo) {
+          await conn.downloadAndSaveMediaMessage(msg, 'video', `./sticker/${sender.split("@")[0]}.mp4`)
+          let buffer_up = fs.readFileSync(`./sticker/${sender.split("@")[0]}.mp4`)
+          var rand2 = 'sticker/' + getRandom('.mp4')
+          fs.writeFileSync(`./${rand2}`, buffer_up)
+          exec(`ffmpeg -i ${media} ${rand2}`, (err) => {
+            var buffer453 = fs.readFileSync(rand2);
+            conn.sendMessage(from, {
+              audio: buffer453,
+              mimetype: "audio/mp4",
+              quoted: msg,
+            });
+            fs.unlinkSync(rand2);
+            fs.unlinkSync(`./sticker/${sender.split("@")[0]}.mp4`)
+          })
+        }
+        break;
+
       case 'emojimix2': case 'mixemoji2':
       case 'emojmix2': case 'emojinua2': {
         if (!q) return reply(`Example : ${prefix + command} 😅`)
