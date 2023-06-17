@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">Simple Selfbot - Rafly11</h1>
 <p align="center">
- <a href="#"><img title="Sedative SelfBot" src="https://img.shields.io/badge/Sedative Bot-green?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
+ <a href="#"><img title="Sedative SelfBot" src="https://img.shields.io/badge/Sedative Community-green?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
 </p>
 <p align="center">
 <a href="https://github.com/dragneel1111"><img title="Author" src="https://img.shields.io/badge/AUTHOR-Rafly11-blue.svg?style=for-the-badge&logo=github"></a>
