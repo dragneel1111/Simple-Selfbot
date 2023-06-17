@@ -412,6 +412,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         var aud = await getBuffer(data.url)
         adReply('_*Downloading...*_', data.title, data.channel)
         conn.sendMessage(from, { document: aud, mimetype: "audio/mp4", fileName: `${data.title}.mp3` }, { quoted: msg })
+        conn.sendMessage(from, { audio: aud, mimetype: "audio/mp4" }, {quoted: msg})
         break
       case 'ytmp4':
       case 'mp4':
@@ -771,6 +772,7 @@ _Wait Mengirim file..._
             conn.sendMessage(from, {
               audio: buffer453,
               mimetype: "audio/mp4",
+              ptt: true,
               quoted: msg,
             });
             fs.unlinkSync(rand2);
