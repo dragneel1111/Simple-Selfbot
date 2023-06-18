@@ -310,49 +310,53 @@ module.exports = async (conn, msg, m, setting, store) => {
     switch (command) {
 
       case 'menu': case 'help':
-        var cptn = `*Just Simple Selfbot*\n${readmore}\n`
-        cptn += `_Convert_\n`
-        cptn += `• ${prefix}sticker\n`
-        cptn += `• ${prefix}toimg\n`
-        cptn += `• ${prefix}tovideo\n`
-        cptn += `• ${prefix}toaudio\n`
-        cptn += `• ${prefix}take\n`
-        cptn += `• ${prefix}stickermeme\n\n`
-        cptn += `_Downloader_\n`
-        cptn += `• ${prefix}play\n`
-        cptn += `• ${prefix}ytmp3\n`
-        cptn += `• ${prefix}ytmp4\n`
-        cptn += `• ${prefix}igdl\n`
-        cptn += `• ${prefix}tiktok\n`
-        cptn += `• ${prefix}mediafire\n`
-        cptn += `• ${prefix}mega\n\n`
-        cptn += `_Weaboo_\n`
-        cptn += `• ${prefix}genshin\n`
-        cptn += `• ${prefix}ppcp\n`
-        cptn += `• ${prefix}otakudesu latest\n`
-        cptn += `• ${prefix}otakudesu detail\n\n`
-        cptn += `_Tools_\n`
-        cptn += `• ${prefix}owner\n`
-        cptn += `• ${prefix}tourl\n`
-        cptn += `• ${prefix}infogroup\n`
-        cptn += `• ${prefix}fitnah\n`
-        cptn += `• ${prefix}readmore\n`
-        cptn += `• ${prefix}hidetag\n\n`
-        cptn += `_Owner Tools_\n`
-        cptn += `• ${prefix}setprefix\n`
-        cptn += `• ${prefix}setmenu\n`
-        cptn += `• ${prefix}setthumb\n`
-        cptn += `• ${prefix}setthumb2\n`
-        cptn += `• ${prefix}setadreply\n`
-        cptn += `• ${prefix}setownername\n`
-        cptn += `• ${prefix}error\n`
-        cptn += `• ${prefix}clear\n`
-        cptn += `• ${prefix}sendsesi\n`
-        cptn += `• ${prefix}addrespon\n`
-        cptn += `• ${prefix}delrespon\n\n`
-        cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
-        var vid = fs.readFileSync('./sticker/menu.mp4')
-        adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
+        if (!q) {
+          var cptn = `*Just Simple Selfbot*\n${readmore}\n`
+          cptn += `_Convert_\n`
+          cptn += `• ${prefix}sticker\n`
+          cptn += `• ${prefix}toimg\n`
+          cptn += `• ${prefix}tovideo\n`
+          cptn += `• ${prefix}toaudio\n`
+          cptn += `• ${prefix}take\n`
+          cptn += `• ${prefix}stickermeme\n\n`
+          cptn += `_Downloader_\n`
+          cptn += `• ${prefix}play\n`
+          cptn += `• ${prefix}ytmp3\n`
+          cptn += `• ${prefix}ytmp4\n`
+          cptn += `• ${prefix}igdl\n`
+          cptn += `• ${prefix}tiktok\n`
+          cptn += `• ${prefix}mediafire\n`
+          cptn += `• ${prefix}mega\n\n`
+          cptn += `_Weaboo_\n`
+          cptn += `• ${prefix}genshin\n`
+          cptn += `• ${prefix}ppcp\n`
+          cptn += `• ${prefix}otakudesu latest\n`
+          cptn += `• ${prefix}otakudesu detail\n\n`
+          cptn += `_Tools_\n`
+          cptn += `• ${prefix}owner\n`
+          cptn += `• ${prefix}tourl\n`
+          cptn += `• ${prefix}infogroup\n`
+          cptn += `• ${prefix}fitnah\n`
+          cptn += `• ${prefix}readmore\n`
+          cptn += `• ${prefix}hidetag\n\n`
+          cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
+          var vid = fs.readFileSync('./sticker/menu.mp4')
+          adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
+        } else if (q.includes('owner')) {
+          var cptn = `_Owner Tools_\n`
+          cptn += `• ${prefix}setprefix\n`
+          cptn += `• ${prefix}setmenu\n`
+          cptn += `• ${prefix}setthumb\n`
+          cptn += `• ${prefix}setthumb2\n`
+          cptn += `• ${prefix}setadreply\n`
+          cptn += `• ${prefix}setownername\n`
+          cptn += `• ${prefix}error\n`
+          cptn += `• ${prefix}clear\n`
+          cptn += `• ${prefix}sendsesi\n`
+          cptn += `• ${prefix}addrespon\n`
+          cptn += `• ${prefix}delrespon\n`
+          adReply(cptn, tanggal, jam)
+        }
         break
 
       case 'runtime':
@@ -402,6 +406,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         cptn += `*Link:* ${data.videoUrl}\n`
         adReply(cptn, data.judul, `Durasi: ${data.durasi}`, ftokoo)
         var hasil = await getBuffer(data.download)
+        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4", fileName: data.judul })
         await conn.sendMessage(from, { document: hasil, mimetype: "audio/mp4", fileName: `${data.judul}.mp3` })
         break
 
@@ -412,7 +417,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         var aud = await getBuffer(data.url)
         adReply('_*Downloading...*_', data.title, data.channel)
         conn.sendMessage(from, { document: aud, mimetype: "audio/mp4", fileName: `${data.title}.mp3` }, { quoted: msg })
-        conn.sendMessage(from, { audio: aud, mimetype: "audio/mp4" }, {quoted: msg})
+        conn.sendMessage(from, { audio: aud, mimetype: "audio/mp4", fileName: data.title }, { quoted: msg })
         break
       case 'ytmp4':
       case 'mp4':
