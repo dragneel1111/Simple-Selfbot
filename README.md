@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://telegra.ph/file/3c851e7a04574082301d1.jpg" width="100%" style="margin-left: auto;margin-right: auto;display: block;">
+<img src="https://i.ibb.co/dfXVZcx/20221118-193356.jpg" width="50%" style="margin-left: auto;margin-right: auto;display: block;">
 </p>
 <h1 align="center">Simple Selfbot</h1>
 <p align="center">
