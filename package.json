@@ -9,7 +9,7 @@
   "author": "Rafly11",
   "license": "ISC",
   "dependencies": {
-    "@adiwajshing/baileys": "npm:baileys@^6.0.9",
+    "@adiwajshing/baileys": "github:WhiskeySockets/Baileys#master",
     "@adiwajshing/keyed-db": "^0.2.4",
     "@bochilteam/scraper": "^3.0.0",
     "@xct007/frieren-scraper": "0.0.2",
@@ -21,6 +21,7 @@
     "figlet": "^1.5.2",
     "form-data": "^4.0.0",
     "fluent-ffmpeg": "^2.1.2",
+    "jimp": "^0.16.1", 
     "lolcatjs": "^2.4.1",
     "link-preview-js": "3.0.4",
     "path": "^0.12.7",
