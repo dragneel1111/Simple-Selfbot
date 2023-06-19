@@ -351,6 +351,8 @@ module.exports = async (conn, msg, m, setting, store) => {
           cptn += `• ${prefix}setprefix\n`
           cptn += `• ${prefix}setmenu\n`
           cptn += `• ${prefix}setadreply\n`
+          cptn += `• ${prefix}setthumb\n`
+          cptn += `• ${prefix}setthumb2\n`
           cptn += `• ${prefix}error\n`
           cptn += `• ${prefix}clear\n`
           cptn += `• ${prefix}sendsesi\n`
