@@ -818,8 +818,8 @@ _Wait Mengirim file..._
       case 'takesticker':
       case 'take':
         anu = q.split("|");
-        var pname = `‎`
-        var athor = anu[0] !== "" ? anu[0] : `${pname}`;
+        var pname = anu[0] !== "" ? anu[0] : ``;
+        var athor = q.split('|')[1]
         if (isSticker || isQuotedSticker) {
           await conn.downloadAndSaveMediaMessage(msg, "sticker", `./sticker/${sender.split("@")[0]}.webp`)
           var media = fs.readFileSync(`./sticker/${sender.split("@")[0]}.webp`)
