@@ -145,6 +145,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             body: isi,
             mediaType: 3, "thumbnail":
               fs.readFileSync('./sticker/adreply.jpg'),
+            sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
           }
         }
       },
@@ -167,6 +168,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             body: isi,
             description: setting.group.judul,
             thumbnail: fs.readFileSync('./sticker/adreply.jpg'),
+            sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
           }
         }
       }, { quoted: quo })
@@ -348,10 +350,7 @@ module.exports = async (conn, msg, m, setting, store) => {
           var cptn = `_Owner Tools_\n`
           cptn += `• ${prefix}setprefix\n`
           cptn += `• ${prefix}setmenu\n`
-          cptn += `• ${prefix}setthumb\n`
-          cptn += `• ${prefix}setthumb2\n`
           cptn += `• ${prefix}setadreply\n`
-          cptn += `• ${prefix}setownername\n`
           cptn += `• ${prefix}error\n`
           cptn += `• ${prefix}clear\n`
           cptn += `• ${prefix}sendsesi\n`
@@ -520,12 +519,6 @@ _Wait Mengirim file..._
         fs.writeFileSync('./config.json', JSON.stringify(setting, null, 2))
         reply('done')
         break
-      case 'setownername':
-        setting.ownerName = args[0]
-        fs.writeFileSync('./config.json', JSON.stringify(setting, null, 2))
-        reply('done')
-        break
-
       case 'mysesi': case 'sendsesi': case 'session': {
         reply('please wait..')
         await sleep(3000)
