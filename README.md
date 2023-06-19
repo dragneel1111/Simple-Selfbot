@@ -1,7 +1,7 @@
 <p align="center">
 <img src="https://telegra.ph/file/3c851e7a04574082301d1.jpg" width="100%" style="margin-left: auto;margin-right: auto;display: block;">
 </p>
-<h1 align="center">Simple Selfbot - Rafly11</h1>
+<h1 align="center">Simple Selfbot</h1>
 <p align="center">
  <a href="#"><img title="Sedative SelfBot" src="https://img.shields.io/badge/Sedative Community-green?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
 </p>
