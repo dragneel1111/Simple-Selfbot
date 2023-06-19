@@ -465,13 +465,6 @@ _Wait Mengirim file..._
 
 
       // OWNER FITUR
-
-      case 'resetlist':
-        db_respon_list.splice('[]')
-        fs.writeFileSync('./database/db_ListMessage', JSON.stringify(db_respon_list, null, 1))
-        reply('Sukses Reset List Message')
-        break
-
       case 'setmenu':
         if (isVideo || isQuotedVideo) {
           await conn.downloadAndSaveMediaMessage(msg, 'video', `./sticker/menu.mp4`)
