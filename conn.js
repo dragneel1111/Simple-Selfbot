@@ -355,6 +355,8 @@ module.exports = async (conn, msg, m, setting, store) => {
           cptn += `• ${prefix}sendsesi\n`
           cptn += `• ${prefix}addrespon\n`
           cptn += `• ${prefix}delrespon\n`
+          cptn += `• ${prefix}setppbot\n`
+          cptn += `• ${prefix}setppgc\n`
           adReply(cptn, tanggal, jam)
         }
         break
