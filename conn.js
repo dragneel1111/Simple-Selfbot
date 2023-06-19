@@ -338,7 +338,8 @@ module.exports = async (conn, msg, m, setting, store) => {
           cptn += `• ${prefix}infogroup\n`
           cptn += `• ${prefix}fitnah\n`
           cptn += `• ${prefix}readmore\n`
-          cptn += `• ${prefix}hidetag\n\n`
+          cptn += `• ${prefix}hidetag\n`
+          cptn += `• ${prefix}gempa\n\n`
           cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
           var vid = fs.readFileSync('./sticker/menu.mp4')
           adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
@@ -465,8 +466,6 @@ _Wait Mengirim file..._
         conn.sendMessage(from, { text: `${setting.group.judul}\n${setting.group.link}` }, { quoted: msg })
         break
 
-
-      // OWNER FITUR
       case 'setmenu':
         if (isVideo || isQuotedVideo) {
           await conn.downloadAndSaveMediaMessage(msg, 'video', `./sticker/menu.mp4`)
@@ -496,21 +495,21 @@ _Wait Mengirim file..._
         await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split('@')[0]}.jpg`)
         var media = `./sticker/${sender.split('@')[0]}.jpg`
         var { img } = await conn.generateProfilePicture(media)
-            await conn.query({
-            tag: 'iq',
-            attrs: {
-            to: botNumber, 
-            type:'set',
+        await conn.query({
+          tag: 'iq',
+          attrs: {
+            to: botNumber,
+            type: 'set',
             xmlns: 'w:profile:picture'
-            },
-            content: [
+          },
+          content: [
             {
-            tag: 'picture',
-            attrs: { type: 'image' },
-            content: img
+              tag: 'picture',
+              attrs: { type: 'image' },
+              content: img
             }
-            ]
-            })
+          ]
+        })
         await sleep(2000)
         fs.unlinkSync(media)
         reply('Success Set Profile Bot')
@@ -587,86 +586,33 @@ _Wait Mengirim file..._
         conn.sendMessage(from, { text: bot, mentions: mentioned }, { quoted: mens.length > 2 ? msg1 : msg2 })
         break
 
-      case 'linkgrup': case 'linkgc':
-
-        if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
-        var url = await conn.groupInviteCode(from).catch(() => reply(mess.error.api))
-        url = 'https://chat.whatsapp.com/' + url
-        reply(url)
-        break
-      case 'kick':
-        if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
-        var number;
-        if (mentionUser.length !== 0) {
-          number = mentionUser[0]
-          conn.groupParticipantsUpdate(from, [number], "remove")
-        } else if (isQuotedMsg) {
-          number = quotedMsg.sender
-          conn.groupParticipantsUpdate(from, [number], "remove")
-        } else {
-          reply('Tag atau reply orang yg mau dikick\n\n*Contoh:* #kick @tag')
-        }
-        break
-        case 'setppgrup': case 'setppgc':
+      case 'setppgrup': case 'setppgc':
         if (!isGroup) return reply(mess.OnlyGrup)
         if (!isBotGroupAdmins) return reply(mess.BotAdmin)
         if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#bukti* atau reply gambar yang sudah dikirim dengan caption *#bukti*`)
         await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split('@')[0]}.jpg`)
         var media = `./sticker/${sender.split('@')[0]}.jpg`
         var { img } = await conn.generateProfilePicture(media)
-            await conn.query({
-            tag: 'iq',
-            attrs: {
+        await conn.query({
+          tag: 'iq',
+          attrs: {
             to: from,
-            type:'set',
+            type: 'set',
             xmlns: 'w:profile:picture'
-            },
-            content: [
+          },
+          content: [
             {
-            tag: 'picture',
-            attrs: { type: 'image' },
-            content: img
+              tag: 'picture',
+              attrs: { type: 'image' },
+              content: img
             }
-            ]
-            })
+          ]
+        })
         await sleep(2000)
         fs.unlinkSync(media)
         reply('Success Set Profile Group')
         break
-      case 'setnamegrup': case 'setnamegc':
-        if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
-        if (!q) return reply(`Kirim perintah #${command} teks`)
-        await conn.groupUpdateSubject(from, q)
-          .then(res => {
-            reply(`Sukses`)
-          }).catch(() => reply(mess.error.api))
-        break
-      case 'setdesc': case 'setdescription':
-        if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
-        if (!q) return reply(`Kirim perintah ${command} teks`)
-        await conn.groupUpdateDescription(from, q)
-          .then(res => {
-            reply(`Sukses`)
-          }).catch(() => reply(mess.error.api))
-        break
-      case 'group': case 'grup':
-        if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
-        if (!q) return reply(`Kirim perintah #${command} _options_\nOptions : close & open\nContoh : #${command} close`)
-        if (args[0] == "close") {
-          conn.groupSettingUpdate(from, 'announcement')
-          reply(`Sukses mengizinkan hanya admin yang dapat mengirim pesan ke grup ini`)
-        } else if (args[0] == "open") {
-          conn.groupSettingUpdate(from, 'not_announcement')
-          reply(`Sukses mengizinkan semua peserta dapat mengirim pesan ke grup ini`)
-        } else {
-          reply(`Kirim perintah #${command} _options_\nOptions : close & open\nContoh : #${command} close`)
-        }
-        break
+
       case 'tagall':
         if (!q) return reply(`Teks?`)
         let teks_tagall = `══✪〘 *👥 Tag All* 〙✪══\n\n${q ? q : ''}\n\n`
@@ -683,36 +629,6 @@ _Wait Mengirim file..._
         conn.sendMessage(from, { text: q ? q : '', mentions: mem })
         break
 
-      case 'promote':
-        if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
-        if (mentionUser.length !== 0) {
-          conn.groupParticipantsUpdate(from, [mentionUser[0]], "promote")
-            .then(res => { mentions(`Sukses menjadikan @${mentionUser[0].split("@")[0]} sebagai admin`, [mentionUser[0]], true) })
-            .catch(() => reply(mess.error.api))
-        } else if (isQuotedMsg) {
-          conn.groupParticipantsUpdate(from, [quotedMsg.sender], "promote")
-            .then(res => { mentions(`Sukses menjadikan @${quotedMsg.sender.split("@")[0]} sebagai admin`, [quotedMsg.sender], true) })
-            .catch(() => reply(mess.error.api))
-        } else {
-          reply(`Tag atau balas pesan member yang ingin dijadikan admin\n\n*Contoh:*\n${prefix + command} @tag`)
-        }
-        break
-      case 'demote':
-        if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
-        if (mentionUser.length !== 0) {
-          conn.groupParticipantsUpdate(from, [mentionUser[0]], "demote")
-            .then(res => { mentions(`Sukses menjadikan @${mentionUser[0].split("@")[0]} sebagai member biasa`, [mentionUser[0]], true) })
-            .catch(() => reply(mess.error.api))
-        } else if (isQuotedMsg) {
-          conn.groupParticipantsUpdate(from, [quotedMsg.sender], "demote")
-            .then(res => { mentions(`Sukses menjadikan @${quotedMsg.sender.split("@")[0]} sebagai member biasa`, [quotedMsg.sender], true) })
-            .catch(() => reply(mess.error.api))
-        } else {
-          reply(`Tag atau balas pesan admin yang ingin dijadikan member biasa\n\n*Contoh:*\n${prefix + command} @tag`)
-        }
-        break
       case 'infogc':
       case 'infogrup':
       case 'infogroup':
@@ -724,11 +640,6 @@ _Wait Mengirim file..._
 • *Member:* ${groupMembers.length}
 • *Total Admin:* ${groupAdmins.length}`
         reply(cekgcnya)
-        break
-      case 'react': {
-        const reactionMessage = { react: { text: "🗿", key: msg.key } }
-        conn.sendMessage(from, reactionMessage)
-      }
         break
 
       //TOOLS
@@ -761,7 +672,10 @@ _Wait Mengirim file..._
         await conn.sendMessage(from, { text: `${txt1}${readmore}${txt2}` })
         break
 
-
+      case 'ssweb':
+        var data = await getBuffer(`https://api.nataganz.com/api/tools/ssweb?link=${q}&apikey=92a0kk2bc9`)
+        await conn.sendMessage(from, { image: data, caption: q })
+        break
 
       // CONVERT
       case 'toimg': case 'toimage':
@@ -809,6 +723,7 @@ _Wait Mengirim file..._
             conn.sendImageAsSticker(from, data.results[0].url, msg, opt)
           }).catch((e) => reply(mess.error.api))
         break
+
       case 'tomp3': case 'toaudio':
         if (isVideo || isQuotedVideo) {
           await conn.downloadAndSaveMediaMessage(msg, 'video', `./sticker/${sender.split("@")[0]}.mp4`)
@@ -958,267 +873,6 @@ _Wait Mengirim file..._
         }
         break
 
-      case 'joker':
-      case 'digital':
-      case 'nulis':
-      case 'nulis2':
-      case 'quoteser':
-      case 'quobucin': {
-
-        if (!q) return reply(`Contoh:\n${prefix + command} saya bukan wibu`)
-        var buc = `https://saipulanuar.ga/api/textmaker/${command}?text=${q}&apikey=jPHjZpQF`
-        conn.sendMessage(from, { image: { url: buc }, caption: 'Done!' }, { quoted: msg })
-      }
-        break
-      case 'badgirlserti': case 'goodgirlserti': case 'bucinserti': case 'fuckgirlserti': case 'toloserti': {
-        if (!q) return reply(`*Contoh:*\n${prefix + command} text`)
-        var anu = await getBuffer(`https://api.lolhuman.xyz/api/${command}?apikey=${setting.api_lolkey}&name=${q}`)
-        conn.sendMessage(from, { image: anu, caption: `${command}` }, { quoted: msg }).catch((err) => reply('Maaf server LolHuman sedang down'))
-      }
-        break
-
-      // PHOTOOXY
-
-      case "metallic":
-      case "naruto":
-      case "butterfly":
-      case "flaming": {
-
-        if (!q) return reply(`_Contoh_\n${prefix + command} nama`)
-        let photooxy = `https://api.nataganz.com/api/photooxy/${command}?text=${q}&apikey=Pasha`
-        conn.sendMessage(from, { image: { url: photooxy }, caption: `Hasil dari ${command}` }, { quoted: msg })
-      }
-        break
-
-      // AUDIO CHANGER
-      case 'bass': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-af equalizer=f=54:width_type=o:width=2:g=20'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'blown': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-af acrusher=.1:1:64:0:log'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'deep': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-af atempo=4/4,asetrate=44500*2/3'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'earrape': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-af volume=12'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'fast': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-filter:a "atempo=1.63,asetrate=44100"'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'fat': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-filter:a "atempo=1.6,asetrate=22100"'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'nightcore': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-filter_complex "areverse'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'reverse': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-filter_complex "areverse"'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'robot': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-filter_complex "afftfilt=real=\'hypot(re,im)*sin(0)\':imag=\'hypot(re,im)*cos(0)\':win_size=512:overlap=0.75"'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'slow': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-filter:a "atempo=0.7,asetrate=44100"'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'smooth': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-filter:v "minterpolate=\'mi_mode=mci:mc_mode=aobmc:vsbmc=1:fps=120\'"'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
-      case 'tupai': {
-
-        if (isQuotedAudio) {
-          var buffer = await conn.downloadAndSaveMediaMessage(msg, 'audio', `./sticker/${command}.mp3`)
-          let ran = 'sticker/' + getRandom('.mp3')
-          var kode_js = '-filter:a "atempo=0.5,asetrate=65100"'
-          exec(`ffmpeg -i ${buffer} ${kode_js} ${ran}`, (err, stderr, stdout) => {
-            if (err) return reply(err)
-            let buff = fs.readFileSync(ran)
-            conn.sendMessage(from, { audio: buff, mimetype: 'audio/mpeg' }, { quoted: msg })
-            fs.unlinkSync(`./${ran}`)
-            fs.unlinkSync(`./${buffer}`)
-          })
-        } else {
-          reply(`Balas audio yang ingin diubah dengan caption *#${command}*`)
-        }
-      }
-        break
-
       // ANIMANGA
       case 'ppcouple': case 'ppcp': {
         let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
@@ -1304,47 +958,6 @@ _Wait Mengirim file..._
         }
         reply(gempanyy)
         break
-      case 'gempanow': {
-        let gemp = await gempaNow()
-        let texih = 'GEMPA-NOW\n\n'
-        for (let i of gemp) {
-          texih += `Tanggal : ${i.date}
-latitude : ${i.latitude} 
-longitude : ${i.longitude} 
-Magnitude :${i.magnitude}
-Lokasi ${i.location}
-Kedalaman :${i.depth}\n\n`
-        }
-        reply(texih)
-      }
-        break
-      case 'bioskopnow': {
-        let skop = await bioskopNow()
-        let storee = '❉─────────────────────❉\n'
-        for (let i of skop) {
-          storee += `\n*「 *JADWAL BIOSKOP NOW* 」*\n
-- *Judul* : ${i.title}
-- *Link* : ${i.url}\n
-- *Genre* : ${i.genre}
-- *Durasi* : ${i.duration}
-- *Tayang di* : ${i.playingAt}\n❉─────────────────────❉`
-          reply(storee)
-        }
-      }
-        break
-      case 'latintoaksara': {
-        if (!q) return reply(`Contoh : #${command} Makan bang`)
-        let uios = await latinToAksara(q)
-        reply(uios)
-      }
-        break
-      case 'aksaratolatin': {
-        if (!q) return reply(`Contoh : #${command} ꦪꦺꦴꦲꦺꦴ`)
-        let uios = await aksaraToLatin(q)
-        reply(uios)
-      }
-        break
-
 
       default:
 
