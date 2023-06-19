@@ -492,10 +492,9 @@ _Wait Mengirim file..._
         reply('Done')
         break
       case 'setppbot':
-        if (!isOwner && !fromMe) return reply(mess.OnlyOwner)
-        if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#bukti* atau reply gambar yang sudah dikirim dengan caption *#bukti*`)
-        await conn.downloadAndSaveMediaMessage(msg, "image", `./transaksi/${sender.split('@')[0]}.jpg`)
-        var media = `./transaksi/${sender.split('@')[0]}.jpg`
+        if (isImage && isQuotedImage) return
+        await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split('@')[0]}.jpg`)
+        var media = `./sticker/${sender.split('@')[0]}.jpg`
         var { img } = await conn.generateProfilePicture(media)
             await conn.query({
             tag: 'iq',
@@ -612,11 +611,10 @@ _Wait Mengirim file..._
         break
         case 'setppgrup': case 'setppgc':
         if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isGroupAdmins) return reply(mess.GrupAdmin)
         if (!isBotGroupAdmins) return reply(mess.BotAdmin)
         if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#bukti* atau reply gambar yang sudah dikirim dengan caption *#bukti*`)
-        await conn.downloadAndSaveMediaMessage(msg, "image", `./transaksi/${sender.split('@')[0]}.jpg`)
-        var media = `./transaksi/${sender.split('@')[0]}.jpg`
+        await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split('@')[0]}.jpg`)
+        var media = `./sticker/${sender.split('@')[0]}.jpg`
         var { img } = await conn.generateProfilePicture(media)
             await conn.query({
             tag: 'iq',
