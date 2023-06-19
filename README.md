@@ -29,19 +29,20 @@ Then run
 ```
 npm start
 ```
+Then scan the qrcode using your WhatsApp
 
 ## Main Command
 ```
-#menu
-#menu owner
+!menu
+!menu owner
 ```
-the prefix is #,
-you can change the prefix use command in menu owner or change it in file config.json
+the prefix is !,
+you can change the prefix use command in menu owner or change it in file [`config.json`](https://github.com/dragneel1111/Simple-Selfbot/blob/main/config.json)
 
 ## About
 Simple Selfbot with cammon downloader feature, nothing special here.
 Just Install and run without change anything the selfbot can run normally.
-You can add the new command or function in conn.js
+You can add the new command or function in [`conn.js`](https://github.com/dragneel1111/Simple-Selfbot/blob/main/conn.js)
 
 ## Contact Me
 * [`WhatsApp`](https://wa.me/447466989823?text=Hai%20orang%20ganteng:v)
