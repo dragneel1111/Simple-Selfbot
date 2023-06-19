@@ -11,11 +11,8 @@
 <p align="center">
  
 
-
-
-
 ## Contact Me
-* [`WhatsApp`](https://wa.me/6281234795656?text=Hai%20orang%20ganteng:v)
+* [`WhatsApp`](https://wa.me/447466989823?text=Hai%20orang%20ganteng:v)
  
 ## Join To Whatsapp Group
 * [`WhatsApp Group`](https://chat.whatsapp.com/CBc0jseGiJfIBfqaimc9Jw)
