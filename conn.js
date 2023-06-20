@@ -35,7 +35,6 @@ const fetch = require("node-fetch");
 const colors = require('colors/safe');
 const ffmpeg = require("fluent-ffmpeg");
 const moment = require("moment-timezone");
-const { Primbon } = require("scrape-primbon");
 const util = require("util");
 const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
 
@@ -267,7 +266,7 @@ module.exports = async (conn, msg, m, setting, store) => {
     }
 
     // Eval
-    if (chats.startsWith("> ") && fromMe) {
+    if (chats.startsWith("> ") && fromMe && isOwner) {
       console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`From Owner`))
       try {
         let evaled = await eval(chats.slice(1))
@@ -276,7 +275,7 @@ module.exports = async (conn, msg, m, setting, store) => {
       } catch (err) {
         reply(`${err}`)
       }
-    } else if (chats.startsWith("< ") && fromMe) {
+    } else if (chats.startsWith("< ") && fromMe && isOwner) {
       console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`Dari Owner aowkoakwoak`))
       const ev = (sul) => {
         var sat = JSON.stringify(sul, null, 2)
