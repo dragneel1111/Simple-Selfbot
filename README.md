@@ -40,7 +40,7 @@ the prefix is !,
 you can change the prefix use command in menu owner or change it in file [`config.json`](https://github.com/dragneel1111/Simple-Selfbot/blob/main/config.json)
 
 ## About
-Simple Selfbot with cammon downloader feature, nothing special here.
+Simple Selfbot with common feature, nothing special here.
 Just Install and run without change anything the selfbot can run normally.
 You can add the new command or function in [`conn.js`](https://github.com/dragneel1111/Simple-Selfbot/blob/main/conn.js)
 
