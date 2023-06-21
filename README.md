@@ -10,7 +10,7 @@
 </p>
 <p align="center">
 
-## For Windows
+## Installation For Windows
 * Download And Install Git [`Click Here`](https://git-scm.com/downloads)
 * Download And Install NodeJS [`Click Here`](https://nodejs.org/en/download)
 * Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php)
