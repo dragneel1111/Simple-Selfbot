@@ -259,9 +259,9 @@ module.exports = async (conn, msg, m, setting, store) => {
     }
     if (isGroup && !fromMe && chats && !isSticker && !isMedia) {
       if (!chats.slice(100)) {
-        console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(pushname), 'in', color(groupName))
+        console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(sender), 'in', color(groupName))
       } else if (chats.slice(100)) {
-        console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(pushname), 'in', color(groupName))
+        console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(sender), 'in', color(groupName))
       }
     }
 
