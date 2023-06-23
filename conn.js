@@ -302,6 +302,8 @@ module.exports = async (conn, msg, m, setting, store) => {
 • Prefix : ${prefix}
 • Creator : ${setting.ownerName}
 • Runtime : ${runtime(process.uptime())}
+• Source Code :
+https://github.com/dragneel1111/Simple-Selfbot
 `,
         `${tanggal}`, `${jam}`, ftokoo)
       console.log(color(`[ RUNTIME: ${runtime(process.uptime())} ] ${tanggal}`, 'cyan'))
