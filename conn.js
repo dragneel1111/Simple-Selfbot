@@ -23,7 +23,7 @@ const { jadibot, listJadibot } = require('./function/jadibot')
 
 
 //scraper
-const { instagram } = require("@xct007/frieren-scraper")
+const { instagram, youtube } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
 
 const fs = require("fs");
@@ -420,25 +420,28 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'mp3':
         if (!q) return reply(`contoh\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
         data = await fetchJson(`https://mfarels.my.id/api/ytmp3?url=${q}`)
+        if (data.url.includes("undefined")) {
+          adReply(mess.error.api, data.title, 'error')
+        } else {
         var aud = await getBuffer(data.url)
         adReply('_*Downloading...*_', data.title, data.channel)
         conn.sendMessage(from, { document: aud, mimetype: "audio/mp4", fileName: `${data.title}.mp3` }, { quoted: msg })
         conn.sendMessage(from, { audio: aud, mimetype: "audio/mp4", fileName: data.title }, { quoted: msg })
+        }
         break
       case 'ytmp4':
       case 'mp4':
         if (!q) return reply(`contoh\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
         var data = await fetchJson(`https://mfarels.my.id/api/ytmp4?url=${q}`)
+        if (data.url.includes("undefined")) {
+          adReply(mess.error.api, data.title, 'error')
+        } else {
         adReply('_*Downloading...*_', data.title, data.channel)
         var vid = await getBuffer(data.url)
         conn.sendMessage(from, { video: vid, }, { quoted: msg })
+        }
         break
-      case 'tts': {
-        if (!q) return reply(`Contoh:\n${prefix + command} hallo bro`)
-        var tts = `https://saipulanuar.ga/api/text-to-audio/tts?text=${q}&idbahasa=id&apikey=jPHjZpQF`
-        conn.sendMessage(from, { audio: { url: tts }, mimetype: 'audio/mpeg', ptt: true }, { quoted: msg })
-      }
-        break
+      
       case 'tiktok':
         if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
         var data = await fetchJson(`https://mfarels.my.id/api/tiktokv4?url=${q}`)
