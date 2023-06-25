@@ -443,6 +443,20 @@ https://github.com/dragneel1111/Simple-Selfbot
         }
         fs.unlinkSync(`./sticker/${sender}.mp4`)
         break
+      case 'ytsearch':
+      case 'yts':
+        if (!q) return reply(`contoh:\n${prefix + command} Tekotok`)
+        var data = await youtube.search(q)
+        var cptn = `_*Result of ${q}*_\n\n`
+        for (let y of data) {
+        cptn += `•title: ${y.title}\n`
+        cptn += `•duration: ${y.duration}\n`
+        cptn += `•uploaded: ${y.uploaded}\n`
+        cptn += `•views: ${y.views}\n`
+        cptn += `•url: ${y.url}\n\n`
+        }
+        adReply(cptn, 'Youtube Search', q)
+        break
       
       case 'tiktok':
         if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
