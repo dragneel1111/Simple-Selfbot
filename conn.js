@@ -325,6 +325,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}stickermeme\n\n`
           cptn += `_Downloader_\n`
           cptn += `• ${prefix}play\n`
+          cptn += `• ${prefix}ytsearch\n`
           cptn += `• ${prefix}ytmp3\n`
           cptn += `• ${prefix}ytmp4\n`
           cptn += `• ${prefix}igdl\n`
