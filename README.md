@@ -36,7 +36,7 @@ Then scan the qrcode using your WhatsApp
 !menu
 !menu owner
 ```
-the prefix is !,
+the prefix is "!" ,
 you can change the prefix use command in menu owner or change it in file [`config.json`](https://github.com/dragneel1111/Simple-Selfbot/blob/main/config.json)
 
 ## About
