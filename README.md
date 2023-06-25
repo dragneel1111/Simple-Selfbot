@@ -39,6 +39,33 @@ Then scan the qrcode using your WhatsApp
 the prefix is "!" ,
 you can change the prefix use command in menu owner or change it in file [`config.json`](https://github.com/dragneel1111/Simple-Selfbot/blob/main/config.json)
 
+## Simple Features
+
+| Downloader |                     Feature                |
+| :------------: | :---------------------------------------------: |
+|       ✅        |   YouTube mp3/mp4 Downloader  |
+|       ✅        |   Instagram Video/Image Downloader  |
+|       ✅        |   Tiktok Video Downloader  |
+|       ✅        |   Mega Downloader |
+|       ✅        |   Mediafire Downloader |
+
+| Converter |                Feature           |
+| :-----------: | :--------------------------------: |
+|       ✅       | Image/Video to Sticker |
+|       ✅       | Sticker to Image/Gif |
+|       ✅       | Image/Video to Url |
+|       ✅       | Video to Audio |
+
+| Tools |                     Feature                |
+| :------------: | :---------------------------------------------: |
+|       ✅        |  Set Profile/Group Picture full  |
+|       ✅        |  Fake Reply |
+|       ✅        |  Hidetag  |
+|       ✅        |  Eval Code  |
+
+| And |  Others...  |
+| :------------: | :---------------------------------------------: |
+
 ## About
 Simple Selfbot with common feature, nothing special here.
 Just Install and run without change anything the selfbot can run normally.
