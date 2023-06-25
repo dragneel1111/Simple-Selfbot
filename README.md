@@ -58,7 +58,7 @@ you can change the prefix use command in menu owner or change it in file [`confi
 
 | Tools |                     Feature                |
 | :------------: | :---------------------------------------------: |
-|       ✅        |  Set Profile/Group Picture full  |
+|       ✅        |  Set Full Profile/Group Pict  |
 |       ✅        |  Fake Reply |
 |       ✅        |  Hidetag  |
 |       ✅        |  Eval Code  |
