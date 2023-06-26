@@ -425,10 +425,10 @@ https://github.com/dragneel1111/Simple-Selfbot
         if (data.url.includes("undefined")) {
           adReply(mess.error.api, data.title, 'error')
         } else {
-        var aud = await getBuffer(data.url)
-        adReply('_*Downloading...*_', data.title, data.channel)
-        conn.sendMessage(from, { document: aud, mimetype: "audio/mp4", fileName: `${data.title}.mp3` }, { quoted: msg })
-        conn.sendMessage(from, { audio: aud, mimetype: "audio/mp4", fileName: data.title }, { quoted: msg })
+          var aud = await getBuffer(data.url)
+          adReply('_*Downloading...*_', data.title, data.channel)
+          conn.sendMessage(from, { document: aud, mimetype: "audio/mp4", fileName: `${data.title}.mp3` }, { quoted: msg })
+          conn.sendMessage(from, { audio: aud, mimetype: "audio/mp4", fileName: data.title }, { quoted: msg })
         }
         break
       case 'ytmp4':
@@ -436,10 +436,10 @@ https://github.com/dragneel1111/Simple-Selfbot
         if (!q) return reply(`contoh\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
         adReply('_*Downloading*_', 'Youtube video downloader', q)
         try {
-        var data = await yt(q, sender)
-        var hasil = fs.readFileSync(`./sticker/${sender}.mp4`)
-        await conn.sendMessage(from, { video: hasil}, {quoted: msg})
-        } catch(err) {
+          var data = await yt(q, sender)
+          var hasil = fs.readFileSync(`./sticker/${sender}.mp4`)
+          await conn.sendMessage(from, { video: hasil }, { quoted: msg })
+        } catch (err) {
           adReply(mess.error.api, 'FAILED TO UPLOAD FILE')
         }
         fs.unlinkSync(`./sticker/${sender}.mp4`)
@@ -450,20 +450,20 @@ https://github.com/dragneel1111/Simple-Selfbot
         var data = await youtube.search(q)
         var cptn = `_*Result of ${q}*_\n\n`
         for (let y of data) {
-        cptn += `•title: ${y.title}\n`
-        cptn += `•duration: ${y.duration}\n`
-        cptn += `•uploaded: ${y.uploaded}\n`
-        cptn += `•views: ${y.views}\n`
-        cptn += `•url: ${y.url}\n\n`
+          cptn += `•title: ${y.title}\n`
+          cptn += `•duration: ${y.duration}\n`
+          cptn += `•uploaded: ${y.uploaded}\n`
+          cptn += `•views: ${y.views}\n`
+          cptn += `•url: ${y.url}\n\n`
         }
         adReply(cptn, 'Youtube Search', q)
         break
-      
+
       case 'tiktok':
         if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
         var data = await fetchJson(`https://mfarels.my.id/api/tiktokv4?url=${q}`)
-        adReply('_*Downloading...*_', 'Tiktok Donwload', 'please wait...')
         var hasil = await getBuffer(data.result.video)
+        adReply('_*Downloading...*_', 'Tiktok Donwload', 'please wait...')
         await conn.sendMessage(from, { video: hasil })
         break
       case 'mediafire':
