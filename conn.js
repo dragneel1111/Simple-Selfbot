@@ -20,11 +20,11 @@ const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { bioskop, bioskopNow, latinToAksara, aksaraToLatin, gempa, gempaNow, jadwalTV, listJadwalTV, jadwalsholat } = require('@bochilteam/scraper')
 const { jadibot, listJadibot } = require('./function/jadibot')
-const { yt } = require('./function/downloader')
 
-//scraper
+//module
 const { instagram, youtube } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
+const { yta, ytv } = require("y2matejs")
 
 
 const fs = require("fs");
@@ -421,28 +421,55 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'ytmp3':
       case 'mp3':
         if (!q) return reply(`contoh\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
-        data = await fetchJson(`https://mfarels.my.id/api/ytmp3?url=${q}`)
-        if (data.url.includes("undefined")) {
-          adReply(mess.error.api, data.title, 'error')
-        } else {
-          var aud = await getBuffer(data.url)
-          adReply('_*Downloading...*_', data.title, data.channel)
-          conn.sendMessage(from, { document: aud, mimetype: "audio/mp4", fileName: `${data.title}.mp3` }, { quoted: msg })
-          conn.sendMessage(from, { audio: aud, mimetype: "audio/mp4", fileName: data.title }, { quoted: msg })
-        }
+        var data = await yta(q)
+        var cptn = `*Title:* ${data.title}\n`
+        cptn += `*Duration:* ${data.duration}\n`
+        cptn += `*Channel:* ${data.channel}\n`
+        cptn += `*Publish:* ${data.publish}\n`
+        await conn.sendMessage(from, {
+          document: {url: data.data.url},
+          caption: cptn,
+          mimetype: "audio/mp4",
+          fileName: data.data.filename,
+          contextInfo: {
+            "externalAdReply":
+            {
+              showAdAttribution: true,
+              title: "YouTube Audio Downloader",
+              body: "",
+              mediaType: 3, "thumbnail":
+                fs.readFileSync('./sticker/adreply.jpg'),
+              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+            }
+          }
+        })
+        await sleep(500)
+        await conn.sendMessage(from, { audio: {url: data.data.url}, mimetype: "audio/mp4"})
         break
       case 'ytmp4':
       case 'mp4':
         if (!q) return reply(`contoh\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
-        adReply('_*Downloading*_', 'Youtube video downloader', q)
-        try {
-          var data = await yt(q, sender)
-          var hasil = fs.readFileSync(`./sticker/${sender}.mp4`)
-          await conn.sendMessage(from, { video: hasil }, { quoted: msg })
-        } catch (err) {
-          adReply(mess.error.api, 'FAILED TO UPLOAD FILE')
-        }
-        fs.unlinkSync(`./sticker/${sender}.mp4`)
+        var data = await ytv(q, '480')
+        var cptn = `*Title:* ${data.title}\n`
+        cptn += `*Views:* ${data.views}\n`
+        cptn += `*Duration:* ${data.duration}\n`
+        cptn += `*Channel:* ${data.channel}\n`
+        cptn += `*Publish:* ${data.publish}\n`
+        await conn.sendMessage(from, {
+          video: {url: data.data.url},
+          caption: cptn,
+          contextInfo: {
+            "externalAdReply":
+            {
+              showAdAttribution: true,
+              title: "YouTube Video Downloader",
+              body: "",
+              mediaType: 3, "thumbnail":
+                fs.readFileSync('./sticker/adreply.jpg'),
+              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+            }
+          }
+        })
         break
       case 'ytsearch':
       case 'yts':
@@ -752,7 +779,6 @@ _Wait Mengirim file..._
             conn.sendMessage(from, {
               audio: buffer453,
               mimetype: "audio/mp4",
-              ptt: true,
               quoted: msg,
             });
             fs.unlinkSync(rand2);

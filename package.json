@@ -34,6 +34,6 @@
     "qrcode": "^1.5.0",
     "qrcode-terminal": "^0.12.0",
     "wa-sticker-formatter": "^4.3.2",
-    "ytdl-core": "4.11.4"
+    "y2matejs":"1.0.0"
   }
 }
