@@ -407,15 +407,31 @@ https://github.com/dragneel1111/Simple-Selfbot
 
       case 'play':
         if (!q) return reply(`Contoh:\n${prefix + command} kokoronashi`)
-        var data = await fetchJson(`https://mfarels.my.id/api/play?q=${q}`)
-        var cptn = `_*Downloading...*_\n\n`
-        cptn += `*Judul:* ${data.judul}\n`
+        var ytplay = await youtube.search(q)
+        var data = await yta(ytplay[5].url)
+        var cptn = `*Title:* ${data.title}\n`
+        cptn += `*Duration:* ${data.duration}\n`
         cptn += `*Channel:* ${data.channel}\n`
-        cptn += `*Link:* ${data.videoUrl}\n`
-        adReply(cptn, data.judul, `Durasi: ${data.durasi}`, ftokoo)
-        var hasil = await getBuffer(data.download)
-        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4", fileName: data.judul })
-        await conn.sendMessage(from, { document: hasil, mimetype: "audio/mp4", fileName: `${data.judul}.mp3` })
+        cptn += `*Publish:* ${data.publish}\n`
+        await conn.sendMessage(from, {
+          document: {url: data.data.url},
+          caption: cptn,
+          mimetype: "audio/mp4",
+          fileName: data.data.filename,
+          contextInfo: {
+            "externalAdReply":
+            {
+              showAdAttribution: true,
+              title: "YouTube Audio Downloader",
+              body: "",
+              mediaType: 3, "thumbnail":
+                fs.readFileSync('./sticker/adreply.jpg'),
+              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+            }
+          }
+        })
+        await sleep(500)
+        await conn.sendMessage(from, { audio: {url: data.data.url}, mimetype: "audio/mp4"})
         break
 
       case 'ytmp3':
