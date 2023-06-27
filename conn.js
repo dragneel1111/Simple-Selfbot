@@ -422,7 +422,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             "externalAdReply":
             {
               showAdAttribution: true,
-              title: "YouTube Audio Downloader",
+              title: "YouTube Play",
               body: "",
               mediaType: 3, "thumbnail":
                 fs.readFileSync('./sticker/adreply.jpg'),
