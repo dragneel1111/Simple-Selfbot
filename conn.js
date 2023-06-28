@@ -325,7 +325,6 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}stickermeme\n\n`
           cptn += `_Downloader_\n`
           cptn += `• ${prefix}play\n`
-          cptn += `• ${prefix}videoplay\n`
           cptn += `• ${prefix}ytsearch\n`
           cptn += `• ${prefix}ytmp3\n`
           cptn += `• ${prefix}ytmp4\n`
@@ -407,19 +406,17 @@ https://github.com/dragneel1111/Simple-Selfbot
         }
         break
 
-      case 'audio':
-      case 'audioplay':
-      case 'audplay':
       case 'play':
         if (!q) return reply(`Contoh:\n${prefix + command} kokoronashi`)
         var ytplay = await youtube.search(q)
         var data = await yta(ytplay[5].url)
+        var data2 = await ytv(ytplay[5].url, '480')
         var cptn = `*Title:* ${data.title}\n`
         cptn += `*Duration:* ${data.duration}\n`
         cptn += `*Channel:* ${data.channel}\n`
         cptn += `*Publish:* ${data.publish}\n`
         await conn.sendMessage(from, {
-          document: {url: data.data.url},
+          document: { url: data.data.url },
           caption: cptn,
           mimetype: "audio/mp4",
           fileName: data.data.filename,
@@ -427,7 +424,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             "externalAdReply":
             {
               showAdAttribution: true,
-              title: "YouTube Play",
+              title: "YouTube Downloader",
               body: "",
               mediaType: 3, "thumbnail":
                 fs.readFileSync('./sticker/adreply.jpg'),
@@ -435,29 +432,15 @@ https://github.com/dragneel1111/Simple-Selfbot
             }
           }
         })
-        await sleep(500)
-        await conn.sendMessage(from, { audio: {url: data.data.url}, mimetype: "audio/mp4"})
-        break
-
-      case 'video':
-      case 'videoplay':
-      case 'vidplay':
-        if (!q) return reply(`contoh\n${prefix + command} kokoronashi`)
-        var vidplay = await youtube.search(q)
-        var data = await ytv(vidplay[5].url, '480')
-        var cptn = `*Title:* ${data.title}\n`
-        cptn += `*Views:* ${data.views}\n`
-        cptn += `*Duration:* ${data.duration}\n`
-        cptn += `*Channel:* ${data.channel}\n`
-        cptn += `*Publish:* ${data.publish}\n`
+        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" })
         await conn.sendMessage(from, {
-          video: {url: data.data.url},
+          video: { url: data2.data.url },
           caption: cptn,
           contextInfo: {
             "externalAdReply":
             {
               showAdAttribution: true,
-              title: "YouTube Video Downloader",
+              title: "YouTube Downloader",
               body: "",
               mediaType: 3, "thumbnail":
                 fs.readFileSync('./sticker/adreply.jpg'),
@@ -476,7 +459,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         cptn += `*Channel:* ${data.channel}\n`
         cptn += `*Publish:* ${data.publish}\n`
         await conn.sendMessage(from, {
-          document: {url: data.data.url},
+          document: { url: data.data.url },
           caption: cptn,
           mimetype: "audio/mp4",
           fileName: data.data.filename,
@@ -493,7 +476,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           }
         })
         await sleep(500)
-        await conn.sendMessage(from, { audio: {url: data.data.url}, mimetype: "audio/mp4"})
+        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" })
         break
       case 'ytmp4':
       case 'mp4':
@@ -505,7 +488,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         cptn += `*Channel:* ${data.channel}\n`
         cptn += `*Publish:* ${data.publish}\n`
         await conn.sendMessage(from, {
-          video: {url: data.data.url},
+          video: { url: data.data.url },
           caption: cptn,
           contextInfo: {
             "externalAdReply":
