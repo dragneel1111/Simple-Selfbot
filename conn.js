@@ -573,6 +573,7 @@ _Wait Mengirim file..._
         reply('Done')
         break
       case 'setppbot':
+      case 'spb':
         if (isImage && isQuotedImage) return
         await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split('@')[0]}.jpg`)
         var media = `./sticker/${sender.split('@')[0]}.jpg`
@@ -594,7 +595,6 @@ _Wait Mengirim file..._
         })
         await sleep(2000)
         fs.unlinkSync(media)
-        reply('Success Set Profile Bot')
         break
       case 'setprefix':
         setting.prefix = args[0]
@@ -662,7 +662,9 @@ _Wait Mengirim file..._
         conn.sendMessage(from, { text: bot, mentions: mentioned }, { quoted: mens.length > 2 ? msg1 : msg2 })
         break
 
-      case 'setppgrup': case 'setppgc':
+      case 'setppgrup': 
+      case 'setppgc':
+      case 'spgc':
         if (!isGroup) return reply(mess.OnlyGrup)
         if (!isBotGroupAdmins) return reply(mess.BotAdmin)
         if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#bukti* atau reply gambar yang sudah dikirim dengan caption *#bukti*`)
@@ -686,7 +688,6 @@ _Wait Mengirim file..._
         })
         await sleep(2000)
         fs.unlinkSync(media)
-        reply('Success Set Profile Group')
         break
 
       case 'tagall':
