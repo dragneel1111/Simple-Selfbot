@@ -18,11 +18,11 @@ const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGr
 const { mess_JSON, setting_JSON, server_eror_JSON, db_respon_list_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
-const { bioskop, bioskopNow, latinToAksara, aksaraToLatin, gempa, gempaNow, jadwalTV, listJadwalTV, jadwalsholat } = require('@bochilteam/scraper')
+const { gempa } = require('@bochilteam/scraper')
 const { jadibot, listJadibot } = require('./function/jadibot')
 
 //module
-const { instagram, youtube } = require("@xct007/frieren-scraper")
+const { instagram, youtube, tiktok } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
 const { yta, ytv } = require("y2matejs")
 
@@ -220,6 +220,24 @@ module.exports = async (conn, msg, m, setting, store) => {
         })
     }
 
+    /*const ttdl = async (ling) => {
+      let urltt = ling
+      function getVideoInfo(urltt) {
+        return new Promise(async (resolve, reject) => {
+          try {
+            await axios
+              .get(`https://www.tikwm.com/api/?url=${urltt}?hd=1`)
+              .then((response) => {
+                resolve(response.data.data)
+              });
+          } catch (error) {
+            resolve(error);
+          }
+        })
+      };
+      getVideoInfo(urltt)
+    }*/
+
     if (!isCmd && isGroup && isAlreadyResponList(from, chats, db_respon_list)) {
       var get_data_respon = getDataResponList(from, chats, db_respon_list)
       if (get_data_respon.isImage === false) {
@@ -276,7 +294,7 @@ module.exports = async (conn, msg, m, setting, store) => {
       } catch (err) {
         reply(`${err}`)
       }
-    } else if (chats.startsWith("< ") && fromMe && isOwner) {
+    } else if (chats.startsWith("=> ") && fromMe && isOwner) {
       console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`Dari Owner aowkoakwoak`))
       const ev = (sul) => {
         var sat = JSON.stringify(sul, null, 2)
@@ -407,6 +425,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         break
 
       case 'play':
+      case 'ytplay':
         if (!q) return reply(`Contoh:\n${prefix + command} kokoronashi`)
         var ytplay = await youtube.search(q)
         var data = await yta(ytplay[5].url)
@@ -420,6 +439,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           caption: cptn,
           mimetype: "audio/mp4",
           fileName: data.data.filename,
+          jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
           contextInfo: {
             "externalAdReply":
             {
@@ -463,6 +483,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           caption: cptn,
           mimetype: "audio/mp4",
           fileName: data.data.filename,
+          jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
           contextInfo: {
             "externalAdReply":
             {
@@ -520,11 +541,29 @@ https://github.com/dragneel1111/Simple-Selfbot
 
       case 'tiktok':
         if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
-        var data = await fetchJson(`https://mfarels.my.id/api/tiktokv4?url=${q}`)
-        var hasil = await getBuffer(data.result.video)
-        adReply('_*Downloading...*_', 'Tiktok Donwload', 'please wait...')
-        await conn.sendMessage(from, { video: hasil })
+        var data = await tiktok.v1(q)
+             var hasil = await getBuffer(data.hdplay)
+             var cptn = `*Tiktok Downloader*\n\n`
+             cptn += `*Nickname:* ${data.nickname}\n`
+             cptn += `*Duration:* ${data.duration}\n`
+             cptn += `*Description:* ${data.description}\n`
+             await conn.sendMessage(from, { 
+              video: hasil, 
+              caption: cptn ,
+              contextInfo: {
+                "externalAdReply":
+                {
+                  showAdAttribution: true,
+                  title: "Tiktok Video Downloader",
+                  body: "",
+                  mediaType: 3, "thumbnail":
+                    fs.readFileSync('./sticker/adreply.jpg'),
+                  sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+                }
+              }
+            })
         break
+
       case 'mediafire':
         if (!q) return reply('*Contoh:*\n#mediafire https://www.mediafire.com/file/451l493otr6zca4/V4.zip/file')
         let isLinks = q.match(/(?:https?:\/{2})?(?:w{3}\.)?mediafire(?:com)?\.(?:com|be)(?:\/www\?v=|\/)([^\s&]+)/)
