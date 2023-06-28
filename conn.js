@@ -155,7 +155,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         })
     }
 
-    const adReply2 = async (teks, pid, judul, isi, quo) => {
+    const menugif = async (teks, pid, judul, isi, quo) => {
       await conn.sendMessage(from, {
         video: pid,
         gifPlayback: true,
@@ -348,7 +348,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}gempa\n\n`
           cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
           var vid = fs.readFileSync('./sticker/menu.mp4')
-          adReply2(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
+          menugif(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
         } else if (q.includes('owner')) {
           var cptn = `_Owner Tools_\n`
           cptn += `• ${prefix}setprefix\n`
@@ -662,7 +662,7 @@ _Wait Mengirim file..._
         conn.sendMessage(from, { text: bot, mentions: mentioned }, { quoted: mens.length > 2 ? msg1 : msg2 })
         break
 
-      case 'setppgrup': 
+      case 'setppgrup':
       case 'setppgc':
       case 'spgc':
         if (!isGroup) return reply(mess.OnlyGrup)
