@@ -325,6 +325,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}stickermeme\n\n`
           cptn += `_Downloader_\n`
           cptn += `• ${prefix}play\n`
+          cptn += `• ${prefix}videoplay\n`
           cptn += `• ${prefix}ytsearch\n`
           cptn += `• ${prefix}ytmp3\n`
           cptn += `• ${prefix}ytmp4\n`
@@ -338,7 +339,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}otakudesu latest\n`
           cptn += `• ${prefix}otakudesu detail\n\n`
           cptn += `_Tools_\n`
-          cptn += `• ${prefix}owner\n`
+          cptn += `• ${prefix}creator\n`
           cptn += `• ${prefix}tourl\n`
           cptn += `• ${prefix}infogroup\n`
           cptn += `• ${prefix}fitnah\n`
@@ -372,6 +373,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         reply(`*Runtime :* ${runtime(process.uptime())}`)
         break
       case 'owner':
+      case 'creator':
         var owner_Nya = setting.ChatOwner
         sendContact(from, owner_Nya, setting.ownerName, msg)
         adOwner(ftokoo)
@@ -405,6 +407,9 @@ https://github.com/dragneel1111/Simple-Selfbot
         }
         break
 
+      case 'audio':
+      case 'audioplay':
+      case 'audplay':
       case 'play':
         if (!q) return reply(`Contoh:\n${prefix + command} kokoronashi`)
         var ytplay = await youtube.search(q)
@@ -432,6 +437,34 @@ https://github.com/dragneel1111/Simple-Selfbot
         })
         await sleep(500)
         await conn.sendMessage(from, { audio: {url: data.data.url}, mimetype: "audio/mp4"})
+        break
+
+      case 'video':
+      case 'videoplay':
+      case 'vidplay':
+        if (!q) return reply(`contoh\n${prefix + command} kokoronashi`)
+        var vidplay = await youtube.search(q)
+        var data = await ytv(vidplay[5].url, '480')
+        var cptn = `*Title:* ${data.title}\n`
+        cptn += `*Views:* ${data.views}\n`
+        cptn += `*Duration:* ${data.duration}\n`
+        cptn += `*Channel:* ${data.channel}\n`
+        cptn += `*Publish:* ${data.publish}\n`
+        await conn.sendMessage(from, {
+          video: {url: data.data.url},
+          caption: cptn,
+          contextInfo: {
+            "externalAdReply":
+            {
+              showAdAttribution: true,
+              title: "YouTube Video Downloader",
+              body: "",
+              mediaType: 3, "thumbnail":
+                fs.readFileSync('./sticker/adreply.jpg'),
+              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+            }
+          }
+        })
         break
 
       case 'ytmp3':
