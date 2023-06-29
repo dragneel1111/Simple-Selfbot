@@ -4,7 +4,7 @@
 const { modul } = require('./module');
 const { baileys, boom, chalk, fs, path, process } = modul;
 const { Boom } = boom
-const { default: makeWaSocket, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, jidDecode, proto } = baileys
+const { default: makeWaSocket, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, generateWAMessage, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = baileys
 const { color, bgcolor } = require('./console')
 const logg = (pino = require("pino"));
 const qrcode = require('qrcode');
