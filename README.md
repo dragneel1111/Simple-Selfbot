@@ -10,8 +10,17 @@
 </p>
 <p align="center">
 
-## Run on Replit
-[![Run on Repl.it](https://repl.it/badge/github/dragneel1111/Simple-Selfbot)](https://repl.it/github/dragneel1111/Simple-Selfbot)
+## Run on Termux
+```
+$ apt update && apt upgrade
+$ pkg i nodejs
+$ pkg i git
+$ pkg i ffmpeg
+$ git clone https://github.com/dragneel1111/Simple-Selfbot
+$ cd Simple-Selfbot
+$ npm i
+$ npm start
+```
 
 ## Installation For Windows
 * Download And Install [`Git`](https://git-scm.com/downloads)
