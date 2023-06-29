@@ -11,7 +11,7 @@
 <p align="center">
 
 ## Run on Replit
-[![Run on Repl.it](https://repl.it/badge/github/dragneel1111/sedative-md)](https://repl.it/github/dragneel1111/Simple-Selfbot)
+[![Run on Repl.it](https://repl.it/badge/github/dragneel1111/Simple-Selfbot)](https://repl.it/github/dragneel1111/Simple-Selfbot)
 
 ## Installation For Windows
 * Download And Install Git [`Click Here`](https://git-scm.com/downloads)
