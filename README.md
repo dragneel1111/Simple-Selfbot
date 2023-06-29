@@ -10,18 +10,6 @@
 </p>
 <p align="center">
 
-## Run on Termux
-```
-$ apt update && apt upgrade
-$ pkg i nodejs
-$ pkg i git
-$ pkg i ffmpeg
-$ git clone https://github.com/dragneel1111/Simple-Selfbot
-$ cd Simple-Selfbot
-$ npm i
-$ npm start
-```
-
 ## Installation For Windows
 * Download And Install [`Git`](https://git-scm.com/downloads)
 * Download And Install [`NodeJs`](https://nodejs.org/en/download)
