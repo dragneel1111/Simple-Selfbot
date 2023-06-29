@@ -452,7 +452,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             }
           }
         })
-        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" })
+        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" }, {quoted: ftokoo})
         await conn.sendMessage(from, {
           video: { url: data2.data.url },
           caption: cptn,
@@ -497,7 +497,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           }
         })
         await sleep(500)
-        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" })
+        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" }, {quoted: ftokoo})
         break
       case 'ytmp4':
       case 'mp4':
