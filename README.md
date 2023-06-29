@@ -14,9 +14,9 @@
 [![Run on Repl.it](https://repl.it/badge/github/dragneel1111/Simple-Selfbot)](https://repl.it/github/dragneel1111/Simple-Selfbot)
 
 ## Installation For Windows
-* Download And Install Git [`Click Here`](https://git-scm.com/downloads)
-* Download And Install NodeJS [`Click Here`](https://nodejs.org/en/download)
-* Download and Path FFMPEG [`Click Here`](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip)
+* Download And Install [`Git`](https://git-scm.com/downloads)
+* Download And Install [`NodeJs`](https://nodejs.org/en/download)
+* Download and Path [`FFMPEG`](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip)
 
 Clone the project
 ```
