@@ -542,26 +542,26 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'tiktok':
         if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
         var data = await tiktok.v1(q)
-             var hasil = await getBuffer(data.hdplay)
-             var cptn = `*Tiktok Downloader*\n\n`
-             cptn += `*Nickname:* ${data.nickname}\n`
-             cptn += `*Duration:* ${data.duration}\n`
-             cptn += `*Description:* ${data.description}\n`
-             await conn.sendMessage(from, { 
-              video: hasil, 
-              caption: cptn ,
-              contextInfo: {
-                "externalAdReply":
-                {
-                  showAdAttribution: true,
-                  title: "Tiktok Video Downloader",
-                  body: "",
-                  mediaType: 3, "thumbnail":
-                    fs.readFileSync('./sticker/adreply.jpg'),
-                  sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-                }
-              }
-            })
+        var hasil = await getBuffer(data.hdplay)
+        var cptn = `*Tiktok Downloader*\n\n`
+        cptn += `*Nickname:* ${data.nickname}\n`
+        cptn += `*Duration:* ${data.duration}\n`
+        cptn += `*Description:* ${data.description}\n`
+        await conn.sendMessage(from, {
+          video: hasil,
+          caption: cptn,
+          contextInfo: {
+            "externalAdReply":
+            {
+              showAdAttribution: true,
+              title: "Tiktok Video Downloader",
+              body: "",
+              mediaType: 3, "thumbnail":
+                fs.readFileSync('./sticker/adreply.jpg'),
+              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+            }
+          }
+        })
         break
 
       case 'mediafire':
@@ -790,7 +790,12 @@ _Wait Mengirim file..._
 
       case 'ssweb':
         var data = await getBuffer(`https://api.nataganz.com/api/tools/ssweb?link=${q}&apikey=92a0kk2bc9`)
-        await conn.sendMessage(from, { image: data, caption: q })
+        await conn.sendMessage(from, {
+          image: data,
+          caption: q,
+        },
+          { quoted: ftokoo }
+        )
         break
 
       // CONVERT
