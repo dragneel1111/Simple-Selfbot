@@ -292,22 +292,20 @@ module.exports = async (conn, msg, m, setting, store) => {
         if (typeof evaled !== 'string') evaled = require("util").inspect(evaled)
         reply(`${evaled}`)
       } catch (err) {
-        reply(`${err}`)
-      }
-    } else if (chats.startsWith("=> ") && fromMe && isOwner) {
-      console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`Dari Owner aowkoakwoak`))
-      const ev = (sul) => {
-        var sat = JSON.stringify(sul, null, 2)
-        var bang = util.format(sat)
-        if (sat == undefined) {
-          bang = util.format(sul)
+        console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`Dari Owner aowkoakwoak`))
+        const ev = (sul) => {
+          var sat = JSON.stringify(sul, null, 2)
+          var bang = util.format(sat)
+          if (sat == undefined) {
+            bang = util.format(sul)
+          }
+          return reply(bang)
         }
-        return reply(bang)
-      }
-      try {
-        reply(util.format(eval(`;(async () => { ${chats.slice(1)} })()`)))
-      } catch (e) {
-        reply(util.format(e))
+        try {
+          reply(util.format(eval(`;(async () => { ${chats.slice(1)} })()`)))
+        } catch (e) {
+          reply(util.format(e))
+        }
       }
     }
 
@@ -381,6 +379,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}delrespon\n`
           cptn += `• ${prefix}setppbot\n`
           cptn += `• ${prefix}setppgc\n`
+          cptn += `• ${prefix}jadibot\n`
           adReply(cptn, tanggal, jam)
         }
         break
@@ -416,11 +415,35 @@ https://github.com/dragneel1111/Simple-Selfbot
         if (!q) return reply(`Contoh:\n${prefix + command} https://www.instagram.com/reel/Cs3wXG-goqR/?igshid=MzRlODBiNWFlZA==`)
         var data = await instagram.v1(`${q}`)
         var hasil = await getBuffer(data[0].url)
-        adReply('*Please wait...*', 'Instagram Downloader')
         if (/mp4/.test(hasil)) {
-          await conn.sendMessage(from, { video: hasil })
+          await conn.sendMessage(from, {
+            video: hasil, contextInfo: {
+              "externalAdReply":
+              {
+                showAdAttribution: true,
+                title: "Instagram Downloader",
+                body: "",
+                mediaType: 3, "thumbnail":
+                  fs.readFileSync('./sticker/adreply.jpg'),
+                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+              }
+            }
+          })
         } else {
-          await conn.sendMessage(from, { image: hasil })
+          await conn.sendMessage(from, {
+            image: hasil,
+            contextInfo: {
+              "externalAdReply":
+              {
+                showAdAttribution: true,
+                title: "Instagram Downloader",
+                body: "",
+                mediaType: 3, "thumbnail":
+                  fs.readFileSync('./sticker/adreply.jpg'),
+                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+              }
+            }
+          })
         }
         break
 
@@ -452,7 +475,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             }
           }
         })
-        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" }, {quoted: ftokoo})
+        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" }, { quoted: ftokoo })
         await conn.sendMessage(from, {
           video: { url: data2.data.url },
           caption: cptn,
@@ -497,7 +520,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           }
         })
         await sleep(500)
-        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" }, {quoted: ftokoo})
+        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" }, { quoted: ftokoo })
         break
       case 'ytmp4':
       case 'mp4':
@@ -1052,7 +1075,6 @@ _Wait Mengirim file..._
 
 
       case 'jadibot': {
-        if (isGroup) return reply('Gunakan bot di privat chat')
         jadibot(conn, msg, from)
       }
         break
