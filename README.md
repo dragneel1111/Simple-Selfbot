@@ -10,6 +10,9 @@
 </p>
 <p align="center">
 
+## Run in Replit
+[![Run on Repl.it](https://repl.it/badge/github/dragneel1111/sedative-md)](https://repl.it/github/dragneel1111/Simple-Selfbot)
+
 ## Installation For Windows
 * Download And Install Git [`Click Here`](https://git-scm.com/downloads)
 * Download And Install NodeJS [`Click Here`](https://nodejs.org/en/download)
