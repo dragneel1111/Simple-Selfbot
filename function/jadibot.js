@@ -49,7 +49,7 @@ if (connection == "connecting") return
 if (connection){
 if (connection != "connecting") console.log("Connecting...")
 }
-if (up.qr) await sendImage(from, await qrcode.toDataURL(up.qr,{scale : 8}), 'Scan the Qrcode to become a temporary bot\n\n1. Open the linked devices in ur WhatsApp\n2. Then scan the qrcode\n3. The Qrcode will expired in 30s', msg)
+if (up.qr) await sendImage(from, await qrcode.toDataURL(up.qr,{scale : 8}), 'Scan the qrcode to become a temporary bot\n\n1. Open the linked devices in ur WhatsApp\n2. Then scan the qrcode\n3. The qrcode will expired in 30s', msg)
 console.log(connection)
 if (connection == "open") {
 conn.id = conn.decodeJid(conn.user.id)
