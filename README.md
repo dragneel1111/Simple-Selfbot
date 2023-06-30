@@ -55,7 +55,7 @@ you can change the prefix use command in menu owner or change it in file [`confi
 |       ✅       | Image/Video to Url |
 |       ✅       | Video to Audio |
 
-| status |                     Tools                |
+| Status |                     Tools                |
 | :------------: | :---------------------------------------------: |
 |       ✅        |  Set Full Profile/Group Pict  |
 |       ✅        |  Fake Reply |
