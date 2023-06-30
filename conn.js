@@ -18,7 +18,6 @@ const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGr
 const { mess_JSON, setting_JSON, server_eror_JSON, db_respon_list_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
-const { gempa } = require('@bochilteam/scraper')
 const { jadibot, listJadibot } = require('./function/jadibot')
 
 //module
@@ -360,7 +359,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}fitnah\n`
           cptn += `• ${prefix}readmore\n`
           cptn += `• ${prefix}hidetag\n`
-          cptn += `• ${prefix}ssweb\n`
+          cptn += `• ${prefix}ssweb\n\n`
           cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
           var vid = fs.readFileSync('./sticker/menu.mp4')
           menugif(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
