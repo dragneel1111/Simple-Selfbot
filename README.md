@@ -40,7 +40,7 @@ you can change the prefix use command in menu owner or change it in file [`confi
 
 ## Simple Features
 
-| Downloader |                     Feature                |
+| Status |                     Downloader                |
 | :------------: | :---------------------------------------------: |
 |       ✅        |   YouTube mp3/mp4 Downloader  |
 |       ✅        |   Instagram Video/Image Downloader  |
@@ -48,14 +48,14 @@ you can change the prefix use command in menu owner or change it in file [`confi
 |       ✅        |   Mega Downloader |
 |       ✅        |   Mediafire Downloader |
 
-| Converter |                Feature           |
+| Status |                Converter           |
 | :-----------: | :--------------------------------: |
 |       ✅       | Image/Video to Sticker |
 |       ✅       | Sticker to Image/Gif |
 |       ✅       | Image/Video to Url |
 |       ✅       | Video to Audio |
 
-| Tools |                     Feature                |
+| status |                     Tools                |
 | :------------: | :---------------------------------------------: |
 |       ✅        |  Set Full Profile/Group Pict  |
 |       ✅        |  Fake Reply |
