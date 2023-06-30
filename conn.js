@@ -379,7 +379,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}delrespon\n`
           cptn += `• ${prefix}setppbot\n`
           cptn += `• ${prefix}setppgc\n`
-          cptn += `• ${prefix}jadibot\n`
+          cptn += `• ${prefix}addsession\n`
           adReply(cptn, tanggal, jam)
         }
         break
@@ -397,7 +397,7 @@ https://github.com/dragneel1111/Simple-Selfbot
 
       // DOWNLOADER
       case 'mega':
-        if (!q) return reply(`contoh:\n${prefix + command} https://mega.nz/file/0FUA2bzb#vSu3Ud9Ft_HDz6zPvfIg_y62vE1qF8EmoYT3kY16zxo`)
+        if (!q) return reply(`example:\n${prefix + command} https://mega.nz/file/0FUA2bzb#vSu3Ud9Ft_HDz6zPvfIg_y62vE1qF8EmoYT3kY16zxo`)
         var file = File.fromURL(q)
         await file.loadAttributes()
         adReply(`*_Please wait a few minutes..._*`, file.name, 'downloading...')
@@ -412,7 +412,7 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'instagram':
       case 'igdl':
       case 'ig':
-        if (!q) return reply(`Contoh:\n${prefix + command} https://www.instagram.com/reel/Cs3wXG-goqR/?igshid=MzRlODBiNWFlZA==`)
+        if (!q) return reply(`example:\n${prefix + command} https://www.instagram.com/reel/Cs3wXG-goqR/?igshid=MzRlODBiNWFlZA==`)
         var data = await instagram.v1(`${q}`)
         var hasil = await getBuffer(data[0].url)
         if (/mp4/.test(hasil)) {
@@ -449,7 +449,7 @@ https://github.com/dragneel1111/Simple-Selfbot
 
       case 'play':
       case 'ytplay':
-        if (!q) return reply(`Contoh:\n${prefix + command} kokoronashi`)
+        if (!q) return reply(`example:\n${prefix + command} kokoronashi`)
         var ytplay = await youtube.search(q)
         var data = await yta(ytplay[5].url)
         var data2 = await ytv(ytplay[5].url, '480')
@@ -495,7 +495,7 @@ https://github.com/dragneel1111/Simple-Selfbot
 
       case 'ytmp3':
       case 'mp3':
-        if (!q) return reply(`contoh\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
+        if (!q) return reply(`example\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
         var data = await yta(q)
         var cptn = `*Title:* ${data.title}\n`
         cptn += `*Duration:* ${data.duration}\n`
@@ -524,7 +524,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         break
       case 'ytmp4':
       case 'mp4':
-        if (!q) return reply(`contoh\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
+        if (!q) return reply(`example\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
         var data = await ytv(q, '480')
         var cptn = `*Title:* ${data.title}\n`
         cptn += `*Views:* ${data.views}\n`
@@ -549,21 +549,21 @@ https://github.com/dragneel1111/Simple-Selfbot
         break
       case 'ytsearch':
       case 'yts':
-        if (!q) return reply(`contoh:\n${prefix + command} Tekotok`)
+        if (!q) return reply(`example:\n${prefix + command} Tekotok`)
         var data = await youtube.search(q)
         var cptn = `_*Result of ${q}*_\n\n`
         for (let y of data) {
-          cptn += `•title: ${y.title}\n`
-          cptn += `•duration: ${y.duration}\n`
-          cptn += `•uploaded: ${y.uploaded}\n`
-          cptn += `•views: ${y.views}\n`
-          cptn += `•url: ${y.url}\n\n`
+          cptn += `• title: ${y.title}\n`
+          cptn += `• duration: ${y.duration}\n`
+          cptn += `• uploaded: ${y.uploaded}\n`
+          cptn += `• views: ${y.views}\n`
+          cptn += `• url: ${y.url}\n\n`
         }
         adReply(cptn, 'Youtube Search', q)
         break
 
       case 'tiktok':
-        if (!q) return reply('contoh :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
+        if (!q) return reply('example :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
         var data = await tiktok.v1(q)
         var hasil = await getBuffer(data.hdplay)
         var cptn = `*Tiktok Downloader*\n\n`
@@ -588,12 +588,12 @@ https://github.com/dragneel1111/Simple-Selfbot
         break
 
       case 'mediafire':
-        if (!q) return reply('*Contoh:*\n#mediafire https://www.mediafire.com/file/451l493otr6zca4/V4.zip/file')
+        if (!q) return reply('*example:*\n#mediafire https://www.mediafire.com/file/451l493otr6zca4/V4.zip/file')
         let isLinks = q.match(/(?:https?:\/{2})?(?:w{3}\.)?mediafire(?:com)?\.(?:com|be)(?:\/www\?v=|\/)([^\s&]+)/)
-        if (!isLinks) return reply('Link yang kamu berikan tidak valid')
-        reply('*Mengunduh Media...*')
+        if (!isLinks) return reply('Invalid Link')
+        reply('*Uploading Media...*')
         let baby1 = await mediafireDl(`${isLinks}`)
-        if (baby1[0].size.split('MB')[0] >= 1000) return reply('File Melebihi Batas ' + util.format(baby1))
+        //if (baby1[0].size.split('MB')[0] >= 1000) return reply('File Melebihi Batas ' + util.format(baby1))
         let result4 = `[ *MEDIAFIRE DOWNLOADER* ]
 
 *Name* : ${baby1[0].nama}
@@ -685,7 +685,7 @@ _Wait Mengirim file..._
       }
         break
       case 'error': {
-        var teks = `*ERROR SERVER*\n_Total Tercatatat_ : ${server_eror.length}\n\n`
+        var teks = `*ERROR SERVER*\n_Error total_ : ${server_eror.length}\n\n`
         var NO = 1
         for (let i of server_eror) {
           teks += `=> *ERROR (${NO++})*\n${i.error}\n\n`
@@ -696,28 +696,28 @@ _Wait Mengirim file..._
       case 'addrespon':
         var args1 = q.split("|")[0]
         var args2 = q.split("|")[1]
-        if (!q.includes("|")) return reply(`Gunakan dengan cara ${command} *key|response*\n\n_Contoh_\n\n#${command} tes|apa`)
-        if (isAlreadyResponList(from, args1, db_respon_list)) return reply(`List respon dengan key : *${args1}* sudah ada di group ini.`)
+        if (!q.includes("|")) return reply(`use ${prefix + command} *key|response*\n\n_example_\n\n#${command} tes|apa`)
+        if (isAlreadyResponList(from, args1, db_respon_list)) return reply(`Response key : *${args1}* already added in this group`)
         addResponList(from, args1, args2, false, '-', db_respon_list)
-        reply(`Berhasil menambah List menu : *${args1}*`)
+        reply(`Success add key: *${args1}*`)
         break
       case 'delrespon':
-        if (db_respon_list.length === 0) return reply(`Belum ada list message di database`)
-        if (!q) return reply(`Gunakan dengan cara ${command} *key*\n\n_Contoh_\n\n${command} hello`)
-        if (!isAlreadyResponList(from, q, db_respon_list)) return reply(`List respon dengan key *${q}* tidak ada di database!`)
+        if (db_respon_list.length === 0) return reply(`not found`)
+        if (!q) return reply(`use: ${prefix + command} *key*\n\n_example_\n\n${command} hello`)
+        if (!isAlreadyResponList(from, q, db_respon_list)) return reply(`List response key: *${q}* not found in database!`)
         delResponList(from, q, db_respon_list)
-        reply(`Sukses delete list message dengan key *${q}*`)
+        reply(`Success delete key: *${q}*`)
         break
 
       case 'fitnah':
         if (!isGroup) return reply(mess.OnlyGrup)
-        if (!q) return reply(`Kirim perintah #*${command}* @tag|pesantarget|pesanbot`)
+        if (!q) return reply(`example *${prefix + command}* @tag|targetmessage|botmessage`)
         var org = q.split("|")[0]
         var target = q.split("|")[1]
         var bot = q.split("|")[2]
-        if (!org.startsWith('@')) return reply('Tag orangnya')
-        if (!target) return reply(`Masukkan pesan target!`)
-        if (!bot) return reply(`Masukkan pesan bot!`)
+        if (!org.startsWith('@')) return reply('Tag someone')
+        if (!target) return reply(`add target message`)
+        if (!bot) return reply(`add bot message`)
         var mens = parseMention(target)
         var msg1 = { key: { fromMe: false, participant: `${parseMention(org)}`, remoteJid: from ? from : '' }, message: { extemdedTextMessage: { text: `${target}`, contextInfo: { mentionedJid: mens } } } }
         var msg2 = { key: { fromMe: false, participant: `${parseMention(org)}`, remoteJid: from ? from : '' }, message: { conversation: `${target}` } }
@@ -856,8 +856,8 @@ _Wait Mengirim file..._
       case 'emojimix': case 'mixemoji':
       case 'emojmix': case 'emojinua':
 
-        if (!q) return reply(`Kirim perintah ${command} emoji1+emoji2\ncontoh : !${command} 😜+😅`)
-        if (!q.includes('+')) return reply(`Format salah, contoh pemakaian !${command} 😅+😭`)
+        if (!q) return reply(`Kirim perintah ${command} emoji1+emoji2\nexampl : !${command} 😜+😅`)
+        if (!q.includes('+')) return reply(`Format salah, exampl pemakaian !${command} 😅+😭`)
         var emo1 = q.split("+")[0]
         var emo2 = q.split("+")[1]
         if (!isEmoji(emo1) || !isEmoji(emo2)) return reply(`Itu bukan emoji!`)
@@ -1060,7 +1060,7 @@ _Wait Mengirim file..._
             reply(teks)
           })
         } else if (args[0].includes("detail")) {
-          if (!args[1]) return reply(`Contoh penggunaan:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
+          if (!args[1]) return reply(`exampl:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
           await fetchJson(`https://weebs-nime.kimiakomtol.repl.co/otakudesu/detail?url=${args[1]}`).then(async (res) => {
             var teks = `${res.anime_detail.title}\n\n`
             for (let g of res.episode_list) {
@@ -1074,11 +1074,11 @@ _Wait Mengirim file..._
         break
 
 
-      case 'jadibot': {
+      case 'jadibot': case 'newsession': case 'addsession': {
         jadibot(conn, msg, from)
       }
         break
-      case 'listjadibot':
+      case 'listjadibot': case 'listsession':
         try {
           let user = [... new Set([...global.conns.filter(conn => conn.user).map(conn => conn.user)])]
           te = "*List Jadibot*\n\n"
@@ -1091,14 +1091,6 @@ _Wait Mengirim file..._
         } catch (err) {
           reply(`Belum Ada User Yang Jadibot`)
         }
-        break
-      case 'gempa':
-        let gempaaa = await gempa()
-        let gempanyy = '*INFO GEMPA*\n'
-        for (let i of gempaaa) {
-          gempanyy += `Tanggal : ${i.date}\nKordinat : ${i.locate}\nMagnitude :${i.magnitude}\nLokasi ${i.location}\nDaerah bahaya :${i.warning}\n\n`
-        }
-        reply(gempanyy)
         break
 
       default:
