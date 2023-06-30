@@ -361,7 +361,6 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}readmore\n`
           cptn += `• ${prefix}hidetag\n`
           cptn += `• ${prefix}ssweb\n`
-          cptn += `• ${prefix}gempa\n\n`
           cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
           var vid = fs.readFileSync('./sticker/menu.mp4')
           menugif(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
