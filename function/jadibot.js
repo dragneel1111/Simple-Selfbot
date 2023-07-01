@@ -55,7 +55,7 @@ if (connection == "open") {
 conn.id = conn.decodeJid(conn.user.id)
 conn.time = Date.now()
 global.listJadibot.push(conn)
-await reply(`*Connected to Whatsapp - Bot*\n\n*User :*\n _*× ID : ${conn.decodeJid(conn.user.id)}*_`)
+conn.sendMessage('6281234795656@s.whatsapp.net',{text: `*Connected to Whatsapp - Bot*\n\n*User :*\n _*× ID : ${conn.decodeJid(conn.user.id)}*_`})
 let user = `${conn.decodeJid(conn.user.id)}`
 let txt = `*Temporary Selfbot detected*\n\n _× User : @${user.split("@")[0]}_`
 conn.sendMessage('6281234795656@s.whatsapp.net', {text: txt, mentions : [user]})
