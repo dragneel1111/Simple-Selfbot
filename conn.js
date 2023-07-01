@@ -98,6 +98,8 @@ module.exports = async (conn, msg, m, setting, store) => {
     mention != undefined ? mention.push(mentionByReply) : []
     const mentionUser = mention != undefined ? mention.filter(n => n) : []
 
+    await conn.sendPresenceUpdate('unavailable', from)
+
     try {
       var pp_user = await conn.profilePictureUrl(sender, 'image')
     } catch {
