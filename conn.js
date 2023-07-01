@@ -270,16 +270,16 @@ module.exports = async (conn, msg, m, setting, store) => {
     // Logs chats
     if (!isGroup && !fromMe && chats && !isSticker && !isMedia) {
       if (!chats.slice(100)) {
-        console.log(color('[CHAT PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(from))
+        console.log(color('[CHAT PC]', 'red'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(from))
       } else if (chats.slice(100)) {
-        console.log(color('[CHAT PC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(from))
+        console.log(color('[CHAT PC]', 'red'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(from))
       }
     }
     if (isGroup && !fromMe && chats && !isSticker && !isMedia) {
       if (!chats.slice(100)) {
-        console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(sender), 'in', color(groupName))
+        console.log(color('[CHAT GC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(sender), 'in', color(groupName))
       } else if (chats.slice(100)) {
-        console.log(color('[CHAT GC]', 'green'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(sender), 'in', color(groupName))
+        console.log(color('[CHAT GC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(sender), 'in', color(groupName))
       }
     }
 
@@ -356,7 +356,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}creator\n`
           cptn += `• ${prefix}tourl\n`
           cptn += `• ${prefix}infogroup\n`
-          cptn += `• ${prefix}fitnah\n`
+          cptn += `• ${prefix}reply\n`
           cptn += `• ${prefix}readmore\n`
           cptn += `• ${prefix}hidetag\n`
           cptn += `• ${prefix}ssweb\n\n`
@@ -708,6 +708,7 @@ _Wait Mengirim file..._
         break
 
       case 'fitnah':
+      case 'reply':
         if (!isGroup) return reply(mess.OnlyGrup)
         if (!q) return reply(`example *${prefix + command}* @tag|targetmessage|botmessage`)
         var org = q.split("|")[0]
