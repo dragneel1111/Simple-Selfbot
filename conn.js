@@ -98,8 +98,6 @@ module.exports = async (conn, msg, m, setting, store) => {
     mention != undefined ? mention.push(mentionByReply) : []
     const mentionUser = mention != undefined ? mention.filter(n => n) : []
 
-    await conn.sendPresenceUpdate('unavailable', from)
-
     try {
       var pp_user = await conn.profilePictureUrl(sender, 'image')
     } catch {
@@ -848,7 +846,7 @@ _Wait Mengirim file..._
           await conn.downloadAndSaveMediaMessage(msg, "sticker", `./sticker/${sender.split("@")[0]}.webp`)
           let buffer = `./sticker/${sender.split("@")[0]}.webp`
           let webpToMp4 = await webp2mp4File(buffer)
-          conn.sendMessage(from, { video: { url: webpToMp4.result }, caption: 'Convert Webp To Video' }, { quoted: msg })
+          conn.sendMessage(from, { video: { url: webpToMp4.result }, caption: 'Convert Webp To Video', jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') }, { quoted: msg })
           fs.unlinkSync(buffer)
         } else {
           reply('*Reply sticker gif dengan pesan #tovideo*')
