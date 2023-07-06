@@ -186,7 +186,7 @@ module.exports = async (conn, msg, m, setting, store) => {
           product: {
             productImage: {
               mimetype: "image/jpeg",
-              jpegThumbnail: fs.readFileSync('./sticker/thumb2.jpg'),
+              jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
             },
             title: setting.group.judul,
             description: `a`,
@@ -371,7 +371,6 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}setmenu\n`
           cptn += `• ${prefix}setadreply\n`
           cptn += `• ${prefix}setthumb\n`
-          cptn += `• ${prefix}setthumb2\n`
           cptn += `• ${prefix}error\n`
           cptn += `• ${prefix}clear\n`
           cptn += `• ${prefix}sendsesi\n`
@@ -619,12 +618,6 @@ _Wait Mengirim file..._
       case 'setthumb':
         if (isImage || isQuotedImage) {
           await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/thumb.jpg`)
-        }
-        reply('Done')
-        break
-      case 'setthumb2':
-        if (isImage || isQuotedImage) {
-          await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/thumb2.jpg`)
         }
         reply('Done')
         break
