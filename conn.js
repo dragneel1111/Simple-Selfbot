@@ -503,7 +503,7 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'mp4':
         if (!q) return reply(`example\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
         var data = await youtubedl(q)
-        var url = await data.video['480p'].download()
+        var url = await data.video['360p'].download()
         var hasil = await getBuffer(url)
         await conn.sendMessage(from, {
           video: hasil,
@@ -511,7 +511,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             "externalAdReply":
             {
               showAdAttribution: true,
-              title: "YouTube Video Downloader",
+              title: data.title,
               body: "",
               mediaType: 3, "thumbnail":
                 fs.readFileSync('./sticker/adreply.jpg'),
