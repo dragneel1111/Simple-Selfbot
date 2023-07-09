@@ -23,7 +23,7 @@ const { jadibot, listJadibot } = require('./function/jadibot')
 //module
 const { instagram, youtube, tiktok } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
-const { yta, ytv } = require("y2matejs")
+const { youtubedl } = require("@bochilteam/scraper-sosmed")
 
 
 const fs = require("fs");
@@ -450,34 +450,15 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'ytplay':
         if (!q) return reply(`example:\n${prefix + command} kokoronashi`)
         var ytplay = await youtube.search(q)
-        var data = await yta(ytplay[5].url)
-        var data2 = await ytv(ytplay[5].url, '480')
-        var cptn = `*Title:* ${data.title}\n`
-        cptn += `*Duration:* ${data.duration}\n`
-        cptn += `*Channel:* ${data.channel}\n`
-        cptn += `*Publish:* ${data.publish}\n`
+        var data = await youtubedl(ytplay[5].url)
+        var url = await data.audio['128kbps'].download()
+        var hasil = await getBuffer(url)
+        await conn.sendMessage(from, {audio: hasil, mimetype: "audio/mp4"}, {quoted: ftokoo})
         await conn.sendMessage(from, {
-          document: { url: data.data.url },
-          caption: cptn,
+          document: hasil,
           mimetype: "audio/mp4",
-          fileName: data.data.filename,
+          fileName: `${data.title}.mp3`,
           jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
-          contextInfo: {
-            "externalAdReply":
-            {
-              showAdAttribution: true,
-              title: "YouTube Downloader",
-              body: "",
-              mediaType: 3, "thumbnail":
-                fs.readFileSync('./sticker/adreply.jpg'),
-              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-            }
-          }
-        })
-        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" }, { quoted: ftokoo })
-        await conn.sendMessage(from, {
-          video: { url: data2.data.url },
-          caption: cptn,
           contextInfo: {
             "externalAdReply":
             {
@@ -495,16 +476,13 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'ytmp3':
       case 'mp3':
         if (!q) return reply(`example\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
-        var data = await yta(q)
-        var cptn = `*Title:* ${data.title}\n`
-        cptn += `*Duration:* ${data.duration}\n`
-        cptn += `*Channel:* ${data.channel}\n`
-        cptn += `*Publish:* ${data.publish}\n`
+        var data = await youtubedl(q)
+        var url = await data.audio['128kbps'].download()
+        var hasil = await getBuffer(url)
         await conn.sendMessage(from, {
-          document: { url: data.data.url },
-          caption: cptn,
+          document: hasil,
           mimetype: "audio/mp4",
-          fileName: data.data.filename,
+          fileName: `${data.title}.mp3`,
           jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
           contextInfo: {
             "externalAdReply":
@@ -519,20 +497,16 @@ https://github.com/dragneel1111/Simple-Selfbot
           }
         })
         await sleep(500)
-        await conn.sendMessage(from, { audio: { url: data.data.url }, mimetype: "audio/mp4" }, { quoted: ftokoo })
+        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: ftokoo })
         break
       case 'ytmp4':
       case 'mp4':
         if (!q) return reply(`example\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
-        var data = await ytv(q, '480')
-        var cptn = `*Title:* ${data.title}\n`
-        cptn += `*Views:* ${data.views}\n`
-        cptn += `*Duration:* ${data.duration}\n`
-        cptn += `*Channel:* ${data.channel}\n`
-        cptn += `*Publish:* ${data.publish}\n`
+        var data = await youtubedl(q)
+        var url = await data.video['480p'].download()
+        var hasil = await getBuffer(url)
         await conn.sendMessage(from, {
-          video: { url: data.data.url },
-          caption: cptn,
+          video: hasil,
           contextInfo: {
             "externalAdReply":
             {
