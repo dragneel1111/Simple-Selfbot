@@ -453,7 +453,6 @@ https://github.com/dragneel1111/Simple-Selfbot
         var data = await youtubedl(ytplay[5].url)
         var url = await data.audio['128kbps'].download()
         var hasil = await getBuffer(url)
-        await conn.sendMessage(from, {audio: hasil, mimetype: "audio/mp4"}, {quoted: ftokoo})
         await conn.sendMessage(from, {
           document: hasil,
           mimetype: "audio/mp4",
@@ -463,14 +462,15 @@ https://github.com/dragneel1111/Simple-Selfbot
             "externalAdReply":
             {
               showAdAttribution: true,
-              title: "YouTube Downloader",
-              body: "",
+              title: data.title,
+              body: "Youtube Downloader",
               mediaType: 3, "thumbnail":
                 fs.readFileSync('./sticker/adreply.jpg'),
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
         })
+        await conn.sendMessage(from, {audio: hasil, mimetype: "audio/mp4"}, {quoted: ftokoo})
         break
 
       case 'ytmp3':
@@ -488,8 +488,8 @@ https://github.com/dragneel1111/Simple-Selfbot
             "externalAdReply":
             {
               showAdAttribution: true,
-              title: "YouTube Audio Downloader",
-              body: "",
+              title: data.title,
+              body: "Youtube Downloader",
               mediaType: 3, "thumbnail":
                 fs.readFileSync('./sticker/adreply.jpg'),
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
@@ -512,7 +512,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             {
               showAdAttribution: true,
               title: data.title,
-              body: "",
+              body: "Youtube Downloader",
               mediaType: 3, "thumbnail":
                 fs.readFileSync('./sticker/adreply.jpg'),
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
