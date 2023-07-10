@@ -5,11 +5,11 @@ const { BufferJSON,
   proto,
   prepareWAMessageMedia,
   areJidsSameUser,
-  getContentType } = require('@adiwajshing/baileys')
-const { downloadContentFromMessage,
+  getContentType, 
+  downloadContentFromMessage,
   generateWAMessage,
   generateWAMessageFromContent,
-  MessageType } = require("@adiwajshing/baileys")
+  MessageType } = require('@adiwajshing/baileys') 
 const { exec, spawn } = require("child_process");
 const { color, bgcolor, pickRandom, randomNomor } = require('./function/Data_Server_Bot/Console_Data')
 const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl } = require("./function/func_Server");
