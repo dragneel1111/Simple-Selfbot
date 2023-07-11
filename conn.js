@@ -5,11 +5,11 @@ const { BufferJSON,
   proto,
   prepareWAMessageMedia,
   areJidsSameUser,
-  getContentType, 
-  downloadContentFromMessage,
+  getContentType } = require('@adiwajshing/baileys')
+const { downloadContentFromMessage,
   generateWAMessage,
   generateWAMessageFromContent,
-  MessageType } = require('@adiwajshing/baileys') 
+  MessageType } = require("@adiwajshing/baileys")
 const { exec, spawn } = require("child_process");
 const { color, bgcolor, pickRandom, randomNomor } = require('./function/Data_Server_Bot/Console_Data')
 const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl } = require("./function/func_Server");
@@ -21,7 +21,7 @@ const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { jadibot, listJadibot } = require('./function/jadibot')
 
 //module
-const { instagram, youtube, tiktok } = require("@xct007/frieren-scraper")
+const { instagram, youtube, tiktok, facebook } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
 const { youtubedl } = require("@bochilteam/scraper-sosmed")
 
@@ -37,6 +37,7 @@ const ffmpeg = require("fluent-ffmpeg");
 const moment = require("moment-timezone");
 const util = require("util");
 const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
+
 
 // DB
 const mess = mess_JSON
@@ -408,6 +409,28 @@ https://github.com/dragneel1111/Simple-Selfbot
         }
         break
 
+      case 'facebook':
+      case 'fbdl':
+      case 'fb':
+        if (!q) return reply(`contoh:\n${prefix + command} https://www.facebook.com/groups/1821107578248933/permalink/1951979891828367/`)
+        var data = await facebook.v1(q)
+        var hasil = await getBuffer(data.urls[0].hd)
+        await conn.sendMessage(from, {
+          video: hasil,
+          contextInfo: {
+            "externalAdReply":
+            {
+              showAdAttribution: true,
+              title: data.title,
+              body: "Facebook Downloader",
+              mediaType: 3, "thumbnail":
+                fs.readFileSync('./sticker/adreply.jpg'),
+              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+            }
+          }
+        })
+        break
+
       case 'instagram':
       case 'igdl':
       case 'ig':
@@ -470,7 +493,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             }
           }
         })
-        await conn.sendMessage(from, {audio: hasil, mimetype: "audio/mp4"}, {quoted: ftokoo})
+        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: ftokoo })
         break
 
       case 'ytmp3':
@@ -696,7 +719,6 @@ _Wait Mengirim file..._
       case 'setppgc':
       case 'spgc':
         if (!isGroup) return reply(mess.OnlyGrup)
-        if (!isBotGroupAdmins) return reply(mess.BotAdmin)
         if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#bukti* atau reply gambar yang sudah dikirim dengan caption *#bukti*`)
         await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split('@')[0]}.jpg`)
         var media = `./sticker/${sender.split('@')[0]}.jpg`
