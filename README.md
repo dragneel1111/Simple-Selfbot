@@ -43,6 +43,7 @@ you can change the prefix use command in menu owner or change it in file [`confi
 | Status |                     Downloader                |
 | :------------: | :---------------------------------------------: |
 |       ✅        |   YouTube mp3/mp4 Downloader  |
+|       ✅        |   Facebook Downloader  |
 |       ✅        |   Instagram Video/Image Downloader  |
 |       ✅        |   Tiktok Video Downloader  |
 |       ✅        |   Mega Downloader |
