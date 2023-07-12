@@ -1,4 +1,4 @@
-
+﻿
 "use strict";
 const { BufferJSON,
   WA_DEFAULT_EPHEMERAL,
@@ -473,7 +473,7 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'ytplay':
         if (!q) return reply(`example:\n${prefix + command} kokoronashi`)
         var ytplay = await youtube.search(q)
-        var data = await youtubedl(ytplay[5].url)
+        var data = await youtubedl(ytplay[6].url)
         var url = await data.audio['128kbps'].download()
         var hasil = await getBuffer(url)
         await conn.sendMessage(from, {
