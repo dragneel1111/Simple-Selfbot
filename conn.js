@@ -21,7 +21,7 @@ const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { jadibot, listJadibot } = require('./function/jadibot')
 
 //module
-const { instagram, youtube, tiktok, facebook } = require("@xct007/frieren-scraper")
+const { instagram, youtube, tiktok, facebook, otakudesu } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
 const { youtubedl } = require("@bochilteam/scraper-sosmed")
 
@@ -339,6 +339,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}toimg\n`
           cptn += `• ${prefix}tovideo\n`
           cptn += `• ${prefix}toaudio\n`
+          cptn += `• ${prefix}tourl\n`
           cptn += `• ${prefix}take\n`
           cptn += `• ${prefix}stickermeme\n\n`
           cptn += `_Downloader_\n`
@@ -346,18 +347,20 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}ytsearch\n`
           cptn += `• ${prefix}ytmp3\n`
           cptn += `• ${prefix}ytmp4\n`
-          cptn += `• ${prefix}igdl\n`
+          cptn += `• ${prefix}facebook\n`
+          cptn += `• ${prefix}instagram\n`
           cptn += `• ${prefix}tiktok\n`
           cptn += `• ${prefix}mediafire\n`
           cptn += `• ${prefix}mega\n\n`
           cptn += `_Weaboo_\n`
           cptn += `• ${prefix}genshin\n`
           cptn += `• ${prefix}ppcp\n`
-          cptn += `• ${prefix}otakudesu latest\n`
+          cptn += `• ${prefix}otakudesu ongoing\n`
+          cptn += `• ${prefix}otakudesu search\n`
           cptn += `• ${prefix}otakudesu detail\n\n`
           cptn += `_Tools_\n`
           cptn += `• ${prefix}creator\n`
-          cptn += `• ${prefix}tourl\n`
+          cptn += `• ${prefix}setpp\n`
           cptn += `• ${prefix}infogroup\n`
           cptn += `• ${prefix}reply\n`
           cptn += `• ${prefix}readmore\n`
@@ -625,6 +628,7 @@ _Wait Mengirim file..._
         reply('Done')
         break
       case 'setppbot':
+      case 'setpp':
       case 'spb':
         if (isImage && isQuotedImage) return
         await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split('@')[0]}.jpg`)
@@ -1039,26 +1043,54 @@ _Wait Mengirim file..._
         break
 
       case 'otakudesu':
-        if (args[0].includes("latest") || args[0].includes("Latest")) {
-          await fetchJson("https://weebs-nime.kimiakomtol.repl.co/otakudesu/ongoing/page/1").then(async (res) => {
-            var teks = `Otakudesu Ongoing\n\n`
-            for (let g of res.ongoing) {
-              teks += `• *Title* : ${g.title}\n`
-              teks += `• *Total Episode* : ${g.total_episode}\n`
-              teks += `• *Link* : ${g.url}\n\n────────────────────────\n\n`
-            }
-            reply(teks)
-          })
+        if (args[0].includes("ongoing") || args[0].includes("Latest")) {
+          var data = await otakudesu.latest()
+          var teks = `Otakudesu Ongoing\n\n`
+          for (let g of data) {
+            teks += `• *Title* : ${g.title}\n`
+            teks += `• *Upload* : ${g.day} ${g.date}\n`
+            teks += `• *Link* : ${g.url}\n\n────────────────────────\n\n`
+          }
+          adReply(teks, 'Otakudesu Ongoing')
+        } else if (args[0].includes("search")) {
+          if (!args[1]) return reply(`example:\n${prefix + command} mushoku tensei`)
+          var data = await otakudesu.search(args[1])
+          var teks = `*${q}*\n\n`
+          for (let g of data) {
+            teks += `*Title:* ${g.title}\n`
+            teks += `*Rating:* ${g.rating}\n`
+            teks += `*Status:* ${g.status}\n`
+            teks += `*Genres:* ${g.genres}\n`
+            teks += `*Link:* ${g.url}\n\n────────────────────────\n\n`
+          }
+          adReply(teks, 'Otakudesu Search')
         } else if (args[0].includes("detail")) {
-          if (!args[1]) return reply(`exampl:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
-          await fetchJson(`https://weebs-nime.kimiakomtol.repl.co/otakudesu/detail?url=${args[1]}`).then(async (res) => {
-            var teks = `${res.anime_detail.title}\n\n`
-            for (let g of res.episode_list) {
-              teks += `• *Title:* ${g.episode_title}\n`
-              teks += `• *Date:* ${g.episode_date}\n`
-              teks += `• *Link:* ${g.episode_url}\n────────────────────────\n\n`
+          if (!args[1]) return reply(`example:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
+          var data = await otakudesu.detail(args[1])
+          var teks = `*Title:* ${data.judul}\n`
+          teks += `*Score:* ${data.skor}\n`
+          teks += `*Uploaded:* ${data.tanggal_rilis}\n`
+          teks += `*Studio:* ${data.studio}\n`
+          teks += `*Genre:* ${data.genre}\n\n`
+          for (let h of data.url.episodes) {
+            teks += `• *Episode:* ${h.title}\n`
+            teks += `• *Link:* ${h.url}\n────────────────────────\n\n`
+          }
+          var buff = await getBuffer(data.thumbnail)
+          await conn.sendMessage(from, {
+            image: buff,
+            caption: teks,
+            contextInfo: {
+              "externalAdReply":
+              {
+                showAdAttribution: true,
+                title: "Otakudesu Detail",
+                body: args[1],
+                mediaType: 3, "thumbnail":
+                  fs.readFileSync('./sticker/adreply.jpg'),
+                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+              }
             }
-            reply(teks)
           })
         }
         break
