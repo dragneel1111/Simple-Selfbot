@@ -1053,6 +1053,7 @@ _Wait Mengirim file..._
           }
           adReply(teks, 'Otakudesu Ongoing')
         } else if (args[0].includes("search")) {
+          try {
           if (!args[1]) return reply(`example:\n${prefix + command} mushoku tensei`)
           var data = await otakudesu.search(args[1])
           var teks = `*${q}*\n\n`
@@ -1064,6 +1065,9 @@ _Wait Mengirim file..._
             teks += `*Link:* ${g.url}\n\n────────────────────────\n\n`
           }
           adReply(teks, 'Otakudesu Search')
+        } catch(err) {
+          adReply('*Not Found*', '404')
+        }
         } else if (args[0].includes("detail")) {
           if (!args[1]) return reply(`example:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
           var data = await otakudesu.detail(args[1])
@@ -1078,16 +1082,15 @@ _Wait Mengirim file..._
           }
           var buff = await getBuffer(data.thumbnail)
           await conn.sendMessage(from, {
-            image: buff,
-            caption: teks,
+            text: teks,
             contextInfo: {
               "externalAdReply":
               {
                 showAdAttribution: true,
-                title: "Otakudesu Detail",
+                title: data.japanese,
                 body: args[1],
                 mediaType: 3, "thumbnail":
-                  fs.readFileSync('./sticker/adreply.jpg'),
+                  buff,
                 sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
               }
             }
