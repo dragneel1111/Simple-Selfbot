@@ -413,7 +413,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        })
+        }, {quoted: msg})
         break
 
       case 'instagram':
@@ -435,7 +435,7 @@ https://github.com/dragneel1111/Simple-Selfbot
                 sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
               }
             }
-          })
+          }, {quotes: msg})
         } else {
           await conn.sendMessage(from, {
             image: hasil,
@@ -450,7 +450,7 @@ https://github.com/dragneel1111/Simple-Selfbot
                 sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
               }
             }
-          })
+          }, {quoted: msg})
         }
         break
 
@@ -477,7 +477,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        })
+        }, {quoted: msg})
         await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: ftokoo })
         break
 
@@ -503,7 +503,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        })
+        }, {quoted: msg})
         await sleep(500)
         await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: ftokoo })
         break
@@ -526,7 +526,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        })
+        }, {quoted: msg})
         break
       case 'ytsearch':
       case 'yts':
@@ -540,7 +540,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• views: ${y.views}\n`
           cptn += `• url: ${y.url}\n\n`
         }
-        adReply(cptn, 'Youtube Search', q)
+        adReply(cptn, 'Youtube Search', q, msg)
         break
 
       case 'tiktok':
@@ -554,7 +554,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         cptn += `*Comment Count:* ${hasil.comment_count}\n`
         cptn += `*Download Count:* ${hasil.download_count}\n`
         cptn += `\n${hasil.title}`
-        await adReply(cptn, "Uploading Media...", "Tiktok Downloader")
+        await adReply(cptn, "Uploading Media...", "Tiktok Downloader", msg)
         await sleep(500)
         try {
           var url = data.data.images
