@@ -435,7 +435,7 @@ https://github.com/dragneel1111/Simple-Selfbot
                 sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
               }
             }
-          }, {quotes: msg})
+          }, {quoted: msg})
         } else {
           await conn.sendMessage(from, {
             image: hasil,
