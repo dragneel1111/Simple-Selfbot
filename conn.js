@@ -576,7 +576,18 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `\n${hasil.title}`
           await conn.sendMessage(from, {
             video: { url: url },
-            caption: cptn
+            caption: cptn,
+            contextInfo: {
+              "externalAdReply":
+              {
+                showAdAttribution: true,
+                title: "Tiktok Downloader",
+                body: q,
+                mediaType: 3, "thumbnail":
+                  fs.readFileSync('./sticker/adreply.jpg'),
+                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+              }
+            }
           },
             { quoted: msg })
         }
