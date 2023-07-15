@@ -553,7 +553,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         cptn += `*Play Count:* ${hasil.play_count}\n`
         cptn += `*Comment Count:* ${hasil.comment_count}\n`
         cptn += `*Download Count:* ${hasil.download_count}\n`
-        cptn += `*Desc:*\n${hasil.title}`
+        cptn += `\n${hasil.title}`
         await adReply(cptn, "Uploading Media...", "Tiktok Downloader")
         await sleep(500)
         try {
