@@ -413,7 +413,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        }, {quoted: msg})
+        }, { quoted: msg })
         break
 
       case 'instagram':
@@ -435,7 +435,7 @@ https://github.com/dragneel1111/Simple-Selfbot
                 sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
               }
             }
-          }, {quoted: msg})
+          }, { quoted: msg })
         } else {
           await conn.sendMessage(from, {
             image: hasil,
@@ -450,7 +450,7 @@ https://github.com/dragneel1111/Simple-Selfbot
                 sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
               }
             }
-          }, {quoted: msg})
+          }, { quoted: msg })
         }
         break
 
@@ -477,7 +477,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        }, {quoted: msg})
+        }, { quoted: msg })
         await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: ftokoo })
         break
 
@@ -503,7 +503,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        }, {quoted: msg})
+        }, { quoted: msg })
         await sleep(500)
         await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: ftokoo })
         break
@@ -526,7 +526,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        }, {quoted: msg})
+        }, { quoted: msg })
         break
       case 'ytsearch':
       case 'yts':
@@ -545,19 +545,20 @@ https://github.com/dragneel1111/Simple-Selfbot
 
       case 'tiktok':
       case 'tt':
-        if (!q) return reply('example :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
+        if (!q) return reply(`example :\n${prefix + command} https://vt.tiktok.com/ZSLFmra4y/`)
         var data = await fetchJson(`https://www.tikwm.com/api/?url=${q}?hd=1`)
         hasil = data.data
-        var cptn = `*Id:* ${hasil.author.unique_id}\n`
-        cptn += `*Nickname:* ${hasil.author.nickname}\n`
-        cptn += `*Play Count:* ${hasil.play_count}\n`
-        cptn += `*Comment Count:* ${hasil.comment_count}\n`
-        cptn += `*Download Count:* ${hasil.download_count}\n`
-        cptn += `\n${hasil.title}`
-        await adReply(cptn, "Uploading Media...", "Tiktok Downloader", msg)
-        await sleep(500)
         try {
           var url = data.data.images
+          var cptn = `*Id:* ${hasil.author.unique_id}\n`
+          cptn += `*Nickname:* ${hasil.author.nickname}\n`
+          cptn += `*Play Count:* ${hasil.play_count}\n`
+          cptn += `*Comment Count:* ${hasil.comment_count}\n`
+          cptn += `*Download Count:* ${hasil.download_count}\n`
+          cptn += `*Images Count:* ${url.length}\n`
+          cptn += `\n${hasil.title}`
+          await adReply(cptn, "Uploading Media...", "Tiktok Downloader", msg)
+          await sleep(500)
           for (let o = 0; o < url.length; o++) {
             await conn.sendMessage(from, {
               [url[o].includes("mp4") ? "video" : "image"]: { url: url[o] }
@@ -567,8 +568,15 @@ https://github.com/dragneel1111/Simple-Selfbot
           }
         } catch (err) {
           var url = data.data.play
+          var cptn = `*Id:* ${hasil.author.unique_id}\n`
+          cptn += `*Nickname:* ${hasil.author.nickname}\n`
+          cptn += `*Play Count:* ${hasil.play_count}\n`
+          cptn += `*Comment Count:* ${hasil.comment_count}\n`
+          cptn += `*Download Count:* ${hasil.download_count}\n`
+          cptn += `\n${hasil.title}`
           await conn.sendMessage(from, {
-            video: { url: url }
+            video: { url: url },
+            caption: cptn
           },
             { quoted: msg })
         }
