@@ -555,6 +555,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         cptn += `*Download Count:* ${hasil.download_count}\n`
         cptn += `*Desc:*\n${hasil.title}`
         await adReply(cptn, "Uploading Media...", "Tiktok Downloader")
+        await sleep(500)
         try {
           var url = data.data.images
           for (let o = 0; o < url.length; o++) {
