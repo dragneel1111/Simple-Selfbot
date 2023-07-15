@@ -222,24 +222,6 @@ module.exports = async (conn, msg, m, setting, store) => {
         })
     }
 
-    /*const ttdl = async (ling) => {
-      let urltt = ling
-      function getVideoInfo(urltt) {
-        return new Promise(async (resolve, reject) => {
-          try {
-            await axios
-              .get(`https://www.tikwm.com/api/?url=${urltt}?hd=1`)
-              .then((response) => {
-                resolve(response.data.data)
-              });
-          } catch (error) {
-            resolve(error);
-          }
-        })
-      };
-      getVideoInfo(urltt)
-    }*/
-
     if (!isCmd && isGroup && isAlreadyResponList(from, chats, db_respon_list)) {
       var get_data_respon = getDataResponList(from, chats, db_respon_list)
       if (get_data_respon.isImage === false) {
@@ -562,28 +544,33 @@ https://github.com/dragneel1111/Simple-Selfbot
         break
 
       case 'tiktok':
+      case 'tt':
         if (!q) return reply('example :\n#tiktok https://vt.tiktok.com/ZSLFmra4y/')
-        var data = await tiktok.v1(q)
-        var hasil = await getBuffer(data.hdplay)
-        var cptn = `*Tiktok Downloader*\n\n`
-        cptn += `*Nickname:* ${data.nickname}\n`
-        cptn += `*Duration:* ${data.duration}\n`
-        cptn += `*Description:* ${data.description}\n`
-        await conn.sendMessage(from, {
-          video: hasil,
-          caption: cptn,
-          contextInfo: {
-            "externalAdReply":
-            {
-              showAdAttribution: true,
-              title: "Tiktok Video Downloader",
-              body: "",
-              mediaType: 3, "thumbnail":
-                fs.readFileSync('./sticker/adreply.jpg'),
-              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-            }
+        var data = await fetchJson(`https://www.tikwm.com/api/?url=${q}?hd=1`)
+        hasil = data.data
+        var cptn = `*Id:* ${hasil.author.unique_id}\n`
+        cptn += `*Nickname:* ${hasil.author.nickname}\n`
+        cptn += `*Play Count:* ${hasil.play_count}\n`
+        cptn += `*Comment Count:* ${hasil.comment_count}\n`
+        cptn += `*Download Count:* ${hasil.download_count}\n`
+        cptn += `*Desc:*\n${hasil.title}`
+        await adReply(cptn, "Uploading Media...", "Tiktok Downloader")
+        try {
+          var url = data.data.images
+          for (let o = 0; o < url.length; o++) {
+            await conn.sendMessage(from, {
+              [url[o].includes("mp4") ? "video" : "image"]: { url: url[o] }
+            },
+              { quoted: msg })
+            await sleep(300)
           }
-        })
+        } catch (err) {
+          var url = data.data.play
+          await conn.sendMessage(from, {
+            video: { url: url }
+          },
+            { quoted: msg })
+        }
         break
 
       case 'mediafire':
@@ -1054,20 +1041,20 @@ _Wait Mengirim file..._
           adReply(teks, 'Otakudesu Ongoing')
         } else if (args[0].includes("search")) {
           try {
-          if (!args[1]) return reply(`example:\n${prefix + command} mushoku tensei`)
-          var data = await otakudesu.search(args[1])
-          var teks = `*${q}*\n\n`
-          for (let g of data) {
-            teks += `*Title:* ${g.title}\n`
-            teks += `*Rating:* ${g.rating}\n`
-            teks += `*Status:* ${g.status}\n`
-            teks += `*Genres:* ${g.genres}\n`
-            teks += `*Link:* ${g.url}\n\n────────────────────────\n\n`
+            if (!args[1]) return reply(`example:\n${prefix + command} mushoku tensei`)
+            var data = await otakudesu.search(args[1])
+            var teks = `*${q}*\n\n`
+            for (let g of data) {
+              teks += `*Title:* ${g.title}\n`
+              teks += `*Rating:* ${g.rating}\n`
+              teks += `*Status:* ${g.status}\n`
+              teks += `*Genres:* ${g.genres}\n`
+              teks += `*Link:* ${g.url}\n\n────────────────────────\n\n`
+            }
+            adReply(teks, 'Otakudesu Search')
+          } catch (err) {
+            adReply('*Not Found*', '404')
           }
-          adReply(teks, 'Otakudesu Search')
-        } catch(err) {
-          adReply('*Not Found*', '404')
-        }
         } else if (args[0].includes("detail")) {
           if (!args[1]) return reply(`example:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
           var data = await otakudesu.detail(args[1])
