@@ -15,7 +15,7 @@ const { color, bgcolor, pickRandom, randomNomor } = require('./function/Data_Ser
 const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmins, runtime, sleep, makeid, isUrl } = require("./function/func_Server");
 const { TelegraPh } = require("./function/uploader_Media");
 const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGroup, sendResponList, updateResponList, getDataResponList } = require('./function/func_Addlist');
-const { mess_JSON, setting_JSON, server_eror_JSON, db_respon_list_JSON } = require('./function/Data_Location.js')
+const { setting_JSON, server_eror_JSON, db_respon_list_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { jadibot, listJadibot } = require('./function/jadibot')
@@ -40,7 +40,6 @@ const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter')
 
 
 // DB
-const mess = mess_JSON
 const setting = setting_JSON
 const server_eror = server_eror_JSON
 const db_respon_list = db_respon_list_JSON
@@ -689,7 +688,7 @@ _Wait Mengirim file..._
 
       case 'fitnah':
       case 'reply':
-        if (!isGroup) return reply(mess.OnlyGrup)
+        if (!isGroup) return
         if (!q) return reply(`example *${prefix + command}* @tag|targetmessage|botmessage`)
         var org = q.split("|")[0]
         var target = q.split("|")[1]
@@ -706,7 +705,7 @@ _Wait Mengirim file..._
       case 'setppgrup':
       case 'setppgc':
       case 'spgc':
-        if (!isGroup) return reply(mess.OnlyGrup)
+        if (!isGroup) return
         if (isImage && isQuotedImage) return reply(`Kirim gambar dengan caption *#bukti* atau reply gambar yang sudah dikirim dengan caption *#bukti*`)
         await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split('@')[0]}.jpg`)
         var media = `./sticker/${sender.split('@')[0]}.jpg`
@@ -740,7 +739,7 @@ _Wait Mengirim file..._
         break
       case 'hidetag':
       case 'h':
-        if (!isGroup) return reply(mess.OnlyGrup)
+        if (!isGroup) return
         let mem = [];
         groupMembers.map(i => mem.push(i.id))
         conn.sendMessage(from, { text: q ? q : '', mentions: mem })
@@ -750,7 +749,7 @@ _Wait Mengirim file..._
       case 'infogrup':
       case 'infogroup':
 
-        if (!isGroup) return reply(mess.OnlyGrup)
+        if (!isGroup) return
         let cekgcnya = `*INFO GROUP*
 • *ID:* ${from}
 • *Name:* ${groupName}
@@ -810,7 +809,7 @@ _Wait Mengirim file..._
           fs.writeFileSync(`./${rand1}`, buffer)
           exec(`ffmpeg -i ./${rand1} ./${rand2}`, (err) => {
             fs.unlinkSync(`./${rand1}`)
-            if (err) return reply(mess.error.api)
+            if (err) return reply('*ERROR*')
             conn.sendMessage(from, { caption: `*Sticker Convert To Image!*`, image: fs.readFileSync(`./${rand2}`), jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') }, { quoted: msg })
             fs.unlinkSync(`./${rand2}`)
             fs.unlinkSync(`./sticker/${sender.split("@")[0]}.webp`)
@@ -843,7 +842,7 @@ _Wait Mengirim file..._
           .then(data => {
             var opt = { packname: setting.group.judul, author: pushname }
             conn.sendImageAsSticker(from, data.results[0].url, msg, opt)
-          }).catch((e) => reply(mess.error.api))
+          }).catch((e) => reply("*ERROR*"))
         break
 
       case 'tomp3': case 'toaudio':
