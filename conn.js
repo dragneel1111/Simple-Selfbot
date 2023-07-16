@@ -21,7 +21,7 @@ const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { jadibot, listJadibot } = require('./function/jadibot')
 
 //module
-const { instagram, youtube, tiktok, facebook, otakudesu } = require("@xct007/frieren-scraper")
+const { instagram, youtube, facebook, otakudesu } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
 const { youtubedl } = require("@bochilteam/scraper-sosmed")
 
