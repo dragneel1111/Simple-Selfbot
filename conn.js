@@ -419,38 +419,13 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'instagram':
       case 'igdl':
       case 'ig':
-        if (!q) return reply(`example:\n${prefix + command} https://www.instagram.com/reel/Cs3wXG-goqR/?igshid=MzRlODBiNWFlZA==`)
-        var data = await instagram.v1(`${q}`)
-        var hasil = await getBuffer(data[0].url)
-        if (/mp4/.test(hasil)) {
+        if (!q) return reply(`example:\n${prefix + command} https://www.instagram.com/p/Cr5CKyGo4NH/?igshid=MzRlODBiNWFlZA==`)
+        var data = await instagram.v1(q)
+        for (let o = 0; o < data.length; o++) {
           await conn.sendMessage(from, {
-            video: hasil, contextInfo: {
-              "externalAdReply":
-              {
-                showAdAttribution: true,
-                title: "Instagram Downloader",
-                body: "",
-                mediaType: 3, "thumbnail":
-                  fs.readFileSync('./sticker/adreply.jpg'),
-                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-              }
-            }
-          }, { quoted: msg })
-        } else {
-          await conn.sendMessage(from, {
-            image: hasil,
-            contextInfo: {
-              "externalAdReply":
-              {
-                showAdAttribution: true,
-                title: "Instagram Downloader",
-                body: "",
-                mediaType: 3, "thumbnail":
-                  fs.readFileSync('./sticker/adreply.jpg'),
-                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-              }
-            }
-          }, { quoted: msg })
+            [(/mp4/.test(data[o].url)) ? "video" : "image"]: { url: data[o].url },
+          }, { quoted: ftokoo })
+          await sleep(300)
         }
         break
 
@@ -561,7 +536,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           await sleep(500)
           for (let o = 0; o < url.length; o++) {
             await conn.sendMessage(from, {
-              [url[o].includes("mp4") ? "video" : "image"]: { url: url[o] }
+              image: { url: url[o] }
             },
               { quoted: msg })
             await sleep(300)
