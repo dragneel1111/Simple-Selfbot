@@ -176,30 +176,32 @@ module.exports = async (conn, msg, m, setting, store) => {
       }, { quoted: quo })
     }
 
-    const ftokoo = {
+    const fstatus = {
       key: {
-        fromMe: false,
-        participant: `0@s.whatsapp.net`,
-        ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {}),
-      },
-      message: {
-        productMessage: {
-          product: {
-            productImage: {
-              mimetype: "image/jpeg",
-              jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
-            },
-            title: setting.group.judul,
-            description: `a`,
-            currencyCode: "USD",
-            priceAmount1000: `111111`,
-            retailerId: "a",
-            productImageCount: 1,
+            fromMe: false,
+            participant: `0@s.whatsapp.net`,
+            ...(from ? { remoteJid: "status@broadcast" } : {}),
           },
-          businessOwnerJid: `0@s.whatsapp.net`,
-        },
-      },
-    };
+          message: {
+            imageMessage: {
+              url: "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc",
+              mimetype: "image/jpeg",
+              caption: setting.group.judul,
+              fileSha256: "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=",
+              fileLength: "28777",
+              height: 1080,
+              width: 1079,
+              mediaKey: "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=",
+              fileEncSha256: "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=",
+              directPath:
+                "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69",
+              mediaKeyTimestamp: "1610993486",
+              jpegThumbnail: fs.readFileSync("./sticker/thumb.jpg"),
+              scansSidecar:
+                "1W0XhfaAcDwc7xh1R8lca6Qg/1bB4naFCSngM2LKO2NoP5RI7K+zLw==",
+            },
+          },
+        }
 
     const adOwner = async (quo) => {
       conn.sendMessage(from, {
@@ -306,7 +308,7 @@ module.exports = async (conn, msg, m, setting, store) => {
 • Source Code :
 https://github.com/dragneel1111/Simple-Selfbot
 `,
-        `${tanggal}`, `${jam}`, ftokoo)
+        `${tanggal}`, `${jam}`, fstatus)
       console.log(color(`[ RUNTIME: ${runtime(process.uptime())} ] ${tanggal}`, 'cyan'))
     }
 
@@ -350,7 +352,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}ssweb\n\n`
           cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
           var vid = fs.readFileSync('./sticker/menu.mp4')
-          menugif(cptn, vid, `${tanggal}`, `${jam}`, ftokoo)
+          menugif(cptn, vid, `${tanggal}`, `${jam}`, fstatus)
         } else if (q.includes('owner')) {
           var cptn = `_Owner Tools_\n`
           cptn += `• ${prefix}setprefix\n`
@@ -377,7 +379,7 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'creator':
         var owner_Nya = setting.ChatOwner
         sendContact(from, owner_Nya, setting.ownerName, msg)
-        adOwner(ftokoo)
+        adOwner(fstatus)
         break
 
       // DOWNLOADER
@@ -388,9 +390,9 @@ https://github.com/dragneel1111/Simple-Selfbot
         adReply(`*_Please wait a few minutes..._*`, file.name, 'downloading...')
         var data = await file.downloadBuffer()
         if (/mp4/.test(data)) {
-          await conn.sendMessage(from, { document: data, mimetype: "video/mp4", fileName: `${file.name}.mp4` }, { quoted: msg })
+          await conn.sendMessage(from, { document: data, mimetype: "video/mp4", fileName: `${file.name}.mp4` }, { quoted: fstatus })
         } else if (/pdf/.test(data)) {
-          await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: `${file.name}.pdf` }, { quoted: msg })
+          await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: `${file.name}.pdf` }, { quoted: fstatus })
         }
         break
 
@@ -413,7 +415,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        }, { quoted: msg })
+        }, { quoted: fstatus })
         break
 
       case 'instagram':
@@ -424,8 +426,8 @@ https://github.com/dragneel1111/Simple-Selfbot
         for (let o = 0; o < data.length; o++) {
           await conn.sendMessage(from, {
             [(/mp4/.test(data[o].url)) ? "video" : "image"]: { url: data[o].url },
-          }, { quoted: ftokoo })
-          await sleep(300)
+          }, { quoted: fstatus })
+          await sleep(200)
         }
         break
 
@@ -453,7 +455,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             }
           }
         }, { quoted: msg })
-        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: ftokoo })
+        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: fstatus })
         break
 
       case 'ytmp3':
@@ -480,7 +482,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           }
         }, { quoted: msg })
         await sleep(500)
-        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: ftokoo })
+        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: fstatus })
         break
       case 'ytmp4':
       case 'mp4':
@@ -501,7 +503,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
             }
           }
-        }, { quoted: msg })
+        }, { quoted: fstatus })
         break
       case 'ytsearch':
       case 'yts':
@@ -515,7 +517,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• views: ${y.views}\n`
           cptn += `• url: ${y.url}\n\n`
         }
-        adReply(cptn, 'Youtube Search', q, msg)
+        adReply(cptn, 'Youtube Search', q, fstatus)
         break
 
       case 'tiktok':
@@ -538,7 +540,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             await conn.sendMessage(from, {
               image: { url: url[o] }
             },
-              { quoted: msg })
+              { quoted: fstatus })
             await sleep(300)
           }
         } catch (err) {
@@ -564,7 +566,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               }
             }
           },
-            { quoted: msg })
+            { quoted: fstatus })
         }
         break
 
@@ -588,7 +590,7 @@ _Wait Mengirim file..._
         break
       case 'grupbot':
       case 'groupbot':
-        conn.sendMessage(from, { text: `${setting.group.judul}\n${setting.group.link}` }, { quoted: msg })
+        conn.sendMessage(from, { text: `${setting.group.judul}\n${setting.group.link}` }, { quoted: fstatus })
         break
 
       case 'setmenu':
@@ -793,7 +795,7 @@ _Wait Mengirim file..._
           image: data,
           caption: q,
         },
-          { quoted: ftokoo }
+          { quoted: fstatus }
         )
         break
 
