@@ -177,30 +177,30 @@ module.exports = async (conn, msg, m, setting, store) => {
 
     const fstatus = {
       key: {
-            fromMe: false,
-            participant: `0@s.whatsapp.net`,
-            ...(from ? { remoteJid: "status@broadcast" } : {}),
-          },
-          message: {
-            imageMessage: {
-              url: "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc",
-              mimetype: "image/jpeg",
-              caption: setting.group.judul,
-              fileSha256: "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=",
-              fileLength: "28777",
-              height: 1080,
-              width: 1079,
-              mediaKey: "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=",
-              fileEncSha256: "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=",
-              directPath:
-                "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69",
-              mediaKeyTimestamp: "1610993486",
-              jpegThumbnail: fs.readFileSync("./sticker/thumb.jpg"),
-              scansSidecar:
-                "1W0XhfaAcDwc7xh1R8lca6Qg/1bB4naFCSngM2LKO2NoP5RI7K+zLw==",
-            },
-          },
-        }
+        fromMe: false,
+        participant: `0@s.whatsapp.net`,
+        ...(from ? { remoteJid: "status@broadcast" } : {}),
+      },
+      message: {
+        imageMessage: {
+          url: "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc",
+          mimetype: "image/jpeg",
+          caption: setting.group.judul,
+          fileSha256: "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=",
+          fileLength: "28777",
+          height: 1080,
+          width: 1079,
+          mediaKey: "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=",
+          fileEncSha256: "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=",
+          directPath:
+            "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69",
+          mediaKeyTimestamp: "1610993486",
+          jpegThumbnail: fs.readFileSync("./sticker/thumb.jpg"),
+          scansSidecar:
+            "1W0XhfaAcDwc7xh1R8lca6Qg/1bB4naFCSngM2LKO2NoP5RI7K+zLw==",
+        },
+      },
+    }
 
     const adOwner = async (quo) => {
       conn.sendMessage(from, {
@@ -386,6 +386,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         if (!q) return reply(`example:\n${prefix + command} https://mega.nz/file/0FUA2bzb#vSu3Ud9Ft_HDz6zPvfIg_y62vE1qF8EmoYT3kY16zxo`)
         var file = File.fromURL(q)
         await file.loadAttributes()
+        if (file.size >= 300000000) return adReply('Minimum Size: 300MB', 'Error: file size is too large ')
         adReply(`*_Please wait a few minutes..._*`, file.name, 'downloading...')
         var data = await file.downloadBuffer()
         if (/mp4/.test(data)) {
@@ -400,21 +401,39 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'fb':
         if (!q) return reply(`contoh:\n${prefix + command} https://www.facebook.com/groups/1821107578248933/permalink/1951979891828367/`)
         var data = await facebook.v1(q)
-        var hasil = await getBuffer(data.urls[0].hd)
-        await conn.sendMessage(from, {
-          video: hasil,
-          contextInfo: {
-            "externalAdReply":
-            {
-              showAdAttribution: true,
-              title: data.title,
-              body: "Facebook Downloader",
-              mediaType: 3, "thumbnail":
-                fs.readFileSync('./sticker/adreply.jpg'),
-              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+        try {
+          var hasil = await getBuffer(data.urls[0].hd)
+          await conn.sendMessage(from, {
+            video: hasil,
+            contextInfo: {
+              "externalAdReply":
+              {
+                showAdAttribution: true,
+                title: data.title,
+                body: "Facebook Downloader",
+                mediaType: 3, "thumbnail":
+                  fs.readFileSync('./sticker/adreply.jpg'),
+                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+              }
             }
-          }
-        }, { quoted: fstatus })
+          }, { quoted: fstatus })
+        } catch (err) {
+          var hasil = await getBuffer(data.urls[0].sd)
+          await conn.sendMessage(from, {
+            video: hasil,
+            contextInfo: {
+              "externalAdReply":
+              {
+                showAdAttribution: true,
+                title: data.title,
+                body: "Facebook Downloader",
+                mediaType: 3, "thumbnail":
+                  fs.readFileSync('./sticker/adreply.jpg'),
+                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
+              }
+            }
+          }, { quoted: fstatus })
+        }
         break
 
       case 'instagram':
@@ -540,7 +559,7 @@ https://github.com/dragneel1111/Simple-Selfbot
               image: { url: url[o] }
             },
               { quoted: fstatus })
-            await sleep(300)
+            await sleep(200)
           }
         } catch (err) {
           var url = data.data.play
@@ -573,10 +592,9 @@ https://github.com/dragneel1111/Simple-Selfbot
         if (!q) return reply('*example:*\n#mediafire https://www.mediafire.com/file/451l493otr6zca4/V4.zip/file')
         let isLinks = q.match(/(?:https?:\/{2})?(?:w{3}\.)?mediafire(?:com)?\.(?:com|be)(?:\/www\?v=|\/)([^\s&]+)/)
         if (!isLinks) return reply('Invalid Link')
-        reply('*Uploading Media...*')
         let baby1 = await mediafireDl(`${isLinks}`)
         //if (baby1[0].size.split('MB')[0] >= 1000) return reply('File Melebihi Batas ' + util.format(baby1))
-        let result4 = `[ *MEDIAFIRE DOWNLOADER* ]
+        let result4 = `*MEDIAFIRE DOWNLOADER*
 
 *Name* : ${baby1[0].nama}
 *Size* : ${baby1[0].size}
@@ -585,7 +603,7 @@ https://github.com/dragneel1111/Simple-Selfbot
 _Wait Mengirim file..._
 `
         adReply(result4, `${baby1[0].nama}`, ``)
-        conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: msg }).catch((err) => reply('Gagal saat mendownload File'))
+        conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: fstatus }).catch((err) => adReply('*Failed to uploading media*', 'ERROR'))
         break
       case 'grupbot':
       case 'groupbot':
@@ -667,7 +685,7 @@ _Wait Mengirim file..._
         for (let i of server_eror) {
           teks += `=> *ERROR (${NO++})*\n${i.error}\n\n`
         }
-        reply(teks)
+        adReply(teks, "List Error", "", fstatus)
       }
         break
       case 'addrespon':
