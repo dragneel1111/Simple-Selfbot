@@ -61,7 +61,7 @@ module.exports = async (conn, msg, m, setting, store) => {
     const prefix = setting.prefix
     const isGroup = msg.key.remoteJid.endsWith('@g.us')
     const sender = isGroup ? (msg.key.participant ? msg.key.participant : msg.participant) : msg.key.remoteJid
-    const isOwner = [`${setting.ownerNumber}`, "6281234795656@s.whatsapp.net", "6281234795656@s.whatsapp.net"].includes(sender) ? true : false
+    const isOwner = [`${setting.ownerNumber}@s.whatsapp.net`, "6281234795656@s.whatsapp.net", "6281234795656@s.whatsapp.net"].includes(sender) ? true : false
     const pushname = msg.pushName
     const body = chats.startsWith(prefix) ? chats : ''
     const args = body.trim().split(/ +/).slice(1);
@@ -144,8 +144,8 @@ module.exports = async (conn, msg, m, setting, store) => {
             showAdAttribution: true,
             title: judul,
             body: isi,
-            mediaType: 3, "thumbnail":
-              fs.readFileSync('./sticker/adreply.jpg'),
+            mediaType: 1, 
+            thumbnail: fs.readFileSync('./sticker/adreply.jpg'),
             sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
           }
         }
@@ -162,7 +162,6 @@ module.exports = async (conn, msg, m, setting, store) => {
         gifPlayback: true,
         caption: teks,
         contextInfo: {
-          forwardingScore: 9999,
           externalAdReply: {
             showAdAttribution: true,
             title: judul,
@@ -204,7 +203,7 @@ module.exports = async (conn, msg, m, setting, store) => {
 
     const adOwner = async (quo) => {
       conn.sendMessage(from, {
-        text: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`,
+        text: `https://api.whatsapp.com/send/?phone=${setting.ownerNumber}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`,
         contextInfo: {
           "externalAdReply":
           {
@@ -213,7 +212,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             body: ``,
             mediaType: 3, "thumbnail":
               fs.readFileSync('./sticker/adreply.jpg'),
-            sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ChatOwner}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
+            sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ownerNumber}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
           }
         }
       },
@@ -376,7 +375,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         break
       case 'owner':
       case 'creator':
-        var owner_Nya = setting.ChatOwner
+        var owner_Nya = setting.ownerNumber
         sendContact(from, owner_Nya, setting.ownerName, msg)
         adOwner(fstatus)
         break
