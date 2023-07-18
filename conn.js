@@ -534,7 +534,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• views: ${y.views}\n`
           cptn += `• url: ${y.url}\n\n`
         }
-        adReply(cptn, 'Youtube Search', q, fstatus)
+        adReply(cptn, q, 'Youtube Search', fstatus)
         break
 
       case 'tiktok':
