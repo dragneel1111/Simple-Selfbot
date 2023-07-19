@@ -23,7 +23,7 @@ const { jadibot, listJadibot } = require('./function/jadibot')
 //module
 const { instagram, youtube, facebook, otakudesu } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
-const { youtubedl } = require("@bochilteam/scraper-sosmed")
+const { youtubedl } = require("@bochilteam/scraper")
 
 
 const fs = require("fs");
@@ -348,7 +348,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}readmore\n`
           cptn += `• ${prefix}hidetag\n`
           cptn += `• ${prefix}ssweb\n\n`
-          cptn += `${setting.group.judul}\n_Create by ${setting.ownerName}_\n_Since 01-12-2020_`
+          cptn += `${setting.group.judul}\n_Create by @Rafly͘~_\n_Since 01-12-2020_`
           var vid = fs.readFileSync('./sticker/menu.mp4')
           menugif(cptn, vid, `${tanggal}`, `${jam}`, fstatus)
         } else if (q.includes('owner')) {
