@@ -144,7 +144,7 @@ module.exports = async (conn, msg, m, setting, store) => {
             showAdAttribution: true,
             title: judul,
             body: isi,
-            mediaType: 1, 
+            mediaType: 1,
             thumbnail: fs.readFileSync('./sticker/adreply.jpg'),
             sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
           }
@@ -357,6 +357,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}setmenu\n`
           cptn += `• ${prefix}setadreply\n`
           cptn += `• ${prefix}setthumb\n`
+          cptn += `• ${prefix}setgrouplink\n`
           cptn += `• ${prefix}error\n`
           cptn += `• ${prefix}clear\n`
           cptn += `• ${prefix}sendsesi\n`
@@ -609,6 +610,8 @@ _Wait Mengirim file..._
         conn.sendMessage(from, { text: `${setting.group.judul}\n${setting.group.link}` }, { quoted: fstatus })
         break
 
+      // Owner tools
+
       case 'setmenu':
         if (isVideo || isQuotedVideo) {
           await conn.downloadAndSaveMediaMessage(msg, 'video', `./sticker/menu.mp4`)
@@ -654,6 +657,12 @@ _Wait Mengirim file..._
         break
       case 'setprefix':
         setting.prefix = args[0]
+        fs.writeFileSync('./config.json', JSON.stringify(setting, null, 2))
+        reply('done')
+        break
+      case 'setgclink':
+      case 'setgrouplink':
+        setting.group.link = args[0]
         fs.writeFileSync('./config.json', JSON.stringify(setting, null, 2))
         reply('done')
         break
@@ -971,7 +980,7 @@ _Wait Mengirim file..._
             background: 'transparent' // The sticker background color (only for full stickers)
           })
           const stikk = await sticker.toBuffer()
-          conn.sendMessage(from, { sticker: stikk }, { quoted: msg })
+          conn.sendMessage(from, { sticker: stikk, fileLength: 99999999 }, { quoted: msg })
           fs.unlinkSync(`./sticker/${sender.split("@")[0]}.mp4`)
         }
         break
@@ -1005,7 +1014,7 @@ _Wait Mengirim file..._
             background: 'transparent' // The sticker background color (only for full stickers)
           })
           const stikk = await sticker.toBuffer()
-          conn.sendMessage(from, { sticker: stikk }, { quoted: msg })
+          conn.sendMessage(from, { sticker: stikk, fileLength: 99999999 }, { quoted: msg })
           fs.unlinkSync(`./sticker/${sender.split("@")[0]}.mp4`)
         }
         break
