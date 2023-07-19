@@ -75,7 +75,7 @@ You can add the new command or function in [`conn.js`](https://github.com/dragne
 * [`WhatsApp`](https://wa.me/447466989823?text=Hai%20orang%20ganteng:v)
  
 ## Join To Whatsapp Group
-* [`WhatsApp Group`](https://chat.whatsapp.com/Jrl8ponqQE87XtBt7zytfa)
+* [`WhatsApp Group`](https://chat.whatsapp.com/IzIA5CzvEygKJXhTtmkElk)
   
 ## ```Thanks to ✨```
 * [`WhisKeyShockets`](https://github.com/WhiskeySockets/Baileys)
