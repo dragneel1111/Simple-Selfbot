@@ -418,7 +418,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             }
           }, { quoted: fstatus })
         } catch (err) {
-          var hasil = await getBuffer(data.urls[0].sd)
+          var hasil = await getBuffer(data.urls[1].sd)
           await conn.sendMessage(from, {
             video: hasil,
             contextInfo: {
@@ -506,7 +506,7 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'mp4':
         if (!q) return reply(`example\n${prefix + command} https://youtu.be/Pp2p4WABjos`)
         var data = await youtubedl(q)
-        var url = await data.video['360p'].download()
+        var url = await data.video['auto'].download()
         var hasil = await getBuffer(url)
         await conn.sendMessage(from, {
           video: hasil,
