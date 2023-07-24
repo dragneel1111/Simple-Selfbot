@@ -399,39 +399,19 @@ https://github.com/dragneel1111/Simple-Selfbot
       case 'facebook':
       case 'fbdl':
       case 'fb':
-        if (!q) return reply(`contoh:\n${prefix + command} https://www.facebook.com/groups/1821107578248933/permalink/1951979891828367/`)
+        if (!q) return reply(`example:\n${prefix + command} https://www.facebook.com/groups/1821107578248933/permalink/1951979891828367/`)
         var data = await facebook.v1(q)
         try {
           var hasil = await getBuffer(data.urls[0].hd)
           await conn.sendMessage(from, {
             video: hasil,
-            contextInfo: {
-              "externalAdReply":
-              {
-                showAdAttribution: true,
-                title: data.title,
-                body: "Facebook Downloader",
-                mediaType: 3, "thumbnail":
-                  fs.readFileSync('./sticker/adreply.jpg'),
-                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-              }
-            }
+            caption: data.title,
           }, { quoted: fstatus })
         } catch (err) {
           var hasil = await getBuffer(data.urls[1].sd)
           await conn.sendMessage(from, {
             video: hasil,
-            contextInfo: {
-              "externalAdReply":
-              {
-                showAdAttribution: true,
-                title: data.title,
-                body: "Facebook Downloader",
-                mediaType: 3, "thumbnail":
-                  fs.readFileSync('./sticker/adreply.jpg'),
-                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-              }
-            }
+            caption: data.title,
           }, { quoted: fstatus })
         }
         break
@@ -461,18 +441,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           mimetype: "audio/mp4",
           fileName: `${data.title}.mp3`,
           jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
-          contextInfo: {
-            "externalAdReply":
-            {
-              showAdAttribution: true,
-              title: data.title,
-              body: "Youtube Downloader",
-              mediaType: 3, "thumbnail":
-                fs.readFileSync('./sticker/adreply.jpg'),
-              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-            }
-          }
-        }, { quoted: msg })
+        }, { quoted: fstatus })
         await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: fstatus })
         break
 
@@ -487,18 +456,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           mimetype: "audio/mp4",
           fileName: `${data.title}.mp3`,
           jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
-          contextInfo: {
-            "externalAdReply":
-            {
-              showAdAttribution: true,
-              title: data.title,
-              body: "Youtube Downloader",
-              mediaType: 3, "thumbnail":
-                fs.readFileSync('./sticker/adreply.jpg'),
-              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-            }
-          }
-        }, { quoted: msg })
+        }, { quoted: fstatus })
         await sleep(500)
         await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: fstatus })
         break
@@ -510,17 +468,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         var hasil = await getBuffer(url)
         await conn.sendMessage(from, {
           video: hasil,
-          contextInfo: {
-            "externalAdReply":
-            {
-              showAdAttribution: true,
-              title: data.title,
-              body: "Youtube Downloader",
-              mediaType: 3, "thumbnail":
-                fs.readFileSync('./sticker/adreply.jpg'),
-              sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-            }
-          }
+          caption: data.title,
         }, { quoted: fstatus })
         break
       case 'ytsearch':
@@ -572,17 +520,6 @@ https://github.com/dragneel1111/Simple-Selfbot
           await conn.sendMessage(from, {
             video: { url: url },
             caption: cptn,
-            contextInfo: {
-              "externalAdReply":
-              {
-                showAdAttribution: true,
-                title: "Tiktok Downloader",
-                body: q,
-                mediaType: 3, "thumbnail":
-                  fs.readFileSync('./sticker/adreply.jpg'),
-                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-              }
-            }
           },
             { quoted: fstatus })
         }
