@@ -405,13 +405,11 @@ https://github.com/dragneel1111/Simple-Selfbot
           var hasil = await getBuffer(data.urls[0].hd)
           await conn.sendMessage(from, {
             video: hasil,
-            caption: data.title,
           }, { quoted: fstatus })
         } catch (err) {
           var hasil = await getBuffer(data.urls[1].sd)
           await conn.sendMessage(from, {
             video: hasil,
-            caption: data.title,
           }, { quoted: fstatus })
         }
         break
