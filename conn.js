@@ -540,6 +540,8 @@ _Wait Mengirim file..._
         adReply(result4, `${baby1[0].nama}`, ``)
         conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: fstatus }).catch((err) => adReply('*Failed to uploading media*', 'ERROR'))
         break
+
+        
       case 'grupbot':
       case 'groupbot':
         conn.sendMessage(from, { text: `${setting.group.judul}\n${setting.group.link}` }, { quoted: fstatus })
@@ -709,14 +711,21 @@ _Wait Mengirim file..._
       case 'infogc':
       case 'infogrup':
       case 'infogroup':
-
         if (!isGroup) return
+        var ppgc = await conn.profilePictureUrl(from, 'image')
         let cekgcnya = `*INFO GROUP*
+        
 • *ID:* ${from}
 • *Name:* ${groupName}
 • *Member:* ${groupMembers.length}
-• *Total Admin:* ${groupAdmins.length}`
-        reply(cekgcnya)
+• *Total Admin:* ${groupAdmins.length}
+• *Description:*\n ${groupMetadata.desc}
+`
+await conn.sendMessage(from,{
+  image: {url: ppgc},
+  caption: cekgcnya
+},
+{quoted: fstatus})
         break
 
       //TOOLS
@@ -761,7 +770,6 @@ _Wait Mengirim file..._
 
       // CONVERT
       case 'toimg': case 'toimage':
-
         if (isSticker || isQuotedSticker) {
           await conn.downloadAndSaveMediaMessage(msg, "sticker", `./sticker/${sender.split("@")[0]}.webp`)
           let buffer = fs.readFileSync(`./sticker/${sender.split("@")[0]}.webp`)
@@ -780,7 +788,6 @@ _Wait Mengirim file..._
         }
         break
       case 'tomp4': case 'tovideo':
-
         if (isSticker || isQuotedSticker) {
           await conn.downloadAndSaveMediaMessage(msg, "sticker", `./sticker/${sender.split("@")[0]}.webp`)
           let buffer = `./sticker/${sender.split("@")[0]}.webp`
@@ -791,21 +798,6 @@ _Wait Mengirim file..._
           reply('*Reply sticker gif dengan pesan #tovideo*')
         }
         break
-      case 'emojimix': case 'mixemoji':
-      case 'emojmix': case 'emojinua':
-
-        if (!q) return reply(`Kirim perintah ${command} emoji1+emoji2\nexampl : !${command} 😜+😅`)
-        if (!q.includes('+')) return reply(`Format salah, exampl pemakaian !${command} 😅+😭`)
-        var emo1 = q.split("+")[0]
-        var emo2 = q.split("+")[1]
-        if (!isEmoji(emo1) || !isEmoji(emo2)) return reply(`Itu bukan emoji!`)
-        fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emo1)}_${encodeURIComponent(emo2)}`)
-          .then(data => {
-            var opt = { packname: setting.group.judul, author: pushname }
-            conn.sendImageAsSticker(from, data.results[0].url, msg, opt)
-          }).catch((e) => reply("*ERROR*"))
-        break
-
       case 'tomp3': case 'toaudio':
         if (isVideo || isQuotedVideo) {
           await conn.downloadAndSaveMediaMessage(msg, 'video', `./sticker/${sender.split("@")[0]}.mp4`)
@@ -824,7 +816,21 @@ _Wait Mengirim file..._
           })
         }
         break;
-
+        case 'emojimix': case 'mixemoji':
+          case 'emojmix': case 'emojinua':
+    
+            if (!q) return reply(`Kirim perintah ${command} emoji1+emoji2\nexampl : !${command} 😜+😅`)
+            if (!q.includes('+')) return reply(`Format salah, exampl pemakaian !${command} 😅+😭`)
+            var emo1 = q.split("+")[0]
+            var emo2 = q.split("+")[1]
+            if (!isEmoji(emo1) || !isEmoji(emo2)) return reply(`Itu bukan emoji!`)
+            fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emo1)}_${encodeURIComponent(emo2)}`)
+              .then(data => {
+                var opt = { packname: setting.group.judul, author: pushname }
+                conn.sendImageAsSticker(from, data.results[0].url, msg, opt)
+              }).catch((e) => reply("*ERROR*"))
+            break
+    
       case 'emojimix2': case 'mixemoji2':
       case 'emojmix2': case 'emojinua2': {
         if (!q) return reply(`Example : ${prefix + command} 😅`)
@@ -885,8 +891,7 @@ _Wait Mengirim file..._
           reply(`reply dengan caption ${prefix + command} packname|author atau balas video/foto yang sudah dikirim`)
         }
         break
-      case 'sticker': case 's': case 'stiker':
-
+      case 'sticker': case 's': case 'stiker': case 'stc':
         if (isImage || isQuotedImage) {
           await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split("@")[0]}.jpeg`)
           let stci = fs.readFileSync(`./sticker/${sender.split("@")[0]}.jpeg`)
@@ -951,6 +956,15 @@ _Wait Mengirim file..._
           const stikk = await sticker.toBuffer()
           conn.sendMessage(from, { sticker: stikk, fileLength: 99999999 }, { quoted: msg })
           fs.unlinkSync(`./sticker/${sender.split("@")[0]}.mp4`)
+        }
+        break
+
+      case 'toanime':
+        if (isImage || isQuotedImage) {
+          var media = await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/${sender.split('@')[0]}.jpg`)
+          var url = await TelegraPh(media)
+          var data = await getBuffer(`https://xzn.wtf/api/toanime?url=${url}&apikey=rafly111104`)
+          await conn.sendMessage(from, { image: data }, { quoted: fstatus })
         }
         break
 
