@@ -72,10 +72,10 @@ Just Install and run without change anything the selfbot can run normally.
 You can add the new command or function in [`conn.js`](https://github.com/dragneel1111/Simple-Selfbot/blob/main/conn.js)
 
 ## Contact Me
-* [`WhatsApp`](https://wa.me/447466989823?text=Hai%20orang%20ganteng:v)
+* [`WhatsApp`](https://wa.me/6281234795656?text=Hai%20orang%20ganteng:v)
  
 ## Join To Whatsapp Group
-* [`WhatsApp Group`](https://chat.whatsapp.com/IzIA5CzvEygKJXhTtmkElk)
+* [`WhatsApp Group`](https://chat.whatsapp.com/H3oKeocqelb0EfNCJZE02m)
   
 ## ```Thanks to ✨```
 * [`WhisKeyShockets`](https://github.com/WhiskeySockets/Baileys)
