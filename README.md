@@ -74,6 +74,10 @@ you can change the prefix use command in menu owner or change it in file [`confi
 Simple Selfbot with common feature, nothing special here.
 Just Install and run without change anything the selfbot can run normally.
 You can add the new command or function in [`conn.js`](https://github.com/dragneel1111/Simple-Selfbot/blob/main/conn.js)
+
+<b>Don't spam ur selfbot feature</b>, because your number can be blocked by WhatsApp
+
+<b>Nb</b>
 Saya masih belajar, jgn dibully ya sepuh² sekalian😁🙏
 
 ## Contact Me
