@@ -28,7 +28,11 @@ Then run
 ```
 npm start
 ```
-Then scan the qrcode using your WhatsApp
+Open your WhatsApp linked devices and use "Link with phone number instead", make sure u r using the new version of whatsapp, and then input ur whatsapp number
+<p>
+<img src="https://telegra.ph/file/94be068070c76bd790c53.jpg">
+<b>Now enjoy your bot without scanning the qrcode</b>
+</p>
 
 ## Main Command
 ```
