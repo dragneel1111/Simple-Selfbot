@@ -390,9 +390,9 @@ https://github.com/dragneel1111/Simple-Selfbot
         adReply(`*_Please wait a few minutes..._*`, file.name, 'downloading...')
         var data = await file.downloadBuffer()
         if (/mp4/.test(data)) {
-          await conn.sendMessage(from, { document: data, mimetype: "video/mp4", fileName: `${file.name}.mp4` }, { quoted: fstatus })
+          await conn.sendMessage(from, { document: data, mimetype: "video/mp4", fileName: `${file.name}.mp4` }, { quoted: msg })
         } else if (/pdf/.test(data)) {
-          await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: `${file.name}.pdf` }, { quoted: fstatus })
+          await conn.sendMessage(from, { document: data, mimetype: "application/pdf", fileName: `${file.name}.pdf` }, { quoted: msg })
         }
         break
 
@@ -405,12 +405,12 @@ https://github.com/dragneel1111/Simple-Selfbot
           var hasil = await getBuffer(data.urls[0].hd)
           await conn.sendMessage(from, {
             video: hasil,
-          }, { quoted: fstatus })
+          }, { quoted: msg })
         } catch (err) {
           var hasil = await getBuffer(data.urls[1].sd)
           await conn.sendMessage(from, {
             video: hasil,
-          }, { quoted: fstatus })
+          }, { quoted: msg })
         }
         break
 
@@ -422,7 +422,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         for (let o = 0; o < data.length; o++) {
           await conn.sendMessage(from, {
             [(/mp4/.test(data[o].url)) ? "video" : "image"]: { url: data[o].url },
-          }, { quoted: fstatus })
+          }, { quoted: msg })
           await sleep(200)
         }
         break
@@ -439,8 +439,8 @@ https://github.com/dragneel1111/Simple-Selfbot
           mimetype: "audio/mp4",
           fileName: `${data.title}.mp3`,
           jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
-        }, { quoted: fstatus })
-        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: fstatus })
+        }, { quoted: msg })
+        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: msg })
         break
 
       case 'ytmp3':
@@ -454,9 +454,9 @@ https://github.com/dragneel1111/Simple-Selfbot
           mimetype: "audio/mp4",
           fileName: `${data.title}.mp3`,
           jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'),
-        }, { quoted: fstatus })
+        }, { quoted: msg })
         await sleep(500)
-        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: fstatus })
+        await conn.sendMessage(from, { audio: hasil, mimetype: "audio/mp4" }, { quoted: msg })
         break
       case 'ytmp4':
       case 'mp4':
@@ -467,7 +467,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         await conn.sendMessage(from, {
           video: hasil,
           caption: data.title,
-        }, { quoted: fstatus })
+        }, { quoted: msg })
         break
       case 'ytsearch':
       case 'yts':
@@ -481,7 +481,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• views: ${y.views}\n`
           cptn += `• url: ${y.url}\n\n`
         }
-        adReply(cptn, q, 'Youtube Search', fstatus)
+        adReply(cptn, q, 'Youtube Search', msg)
         break
 
       case 'tiktok':
@@ -504,7 +504,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             await conn.sendMessage(from, {
               image: { url: url[o] }
             },
-              { quoted: fstatus })
+              { quoted: msg })
             await sleep(200)
           }
         } catch (err) {
@@ -519,7 +519,7 @@ https://github.com/dragneel1111/Simple-Selfbot
             video: { url: url },
             caption: cptn,
           },
-            { quoted: fstatus })
+            { quoted: msg })
         }
         break
 
@@ -538,7 +538,7 @@ https://github.com/dragneel1111/Simple-Selfbot
 _Wait Mengirim file..._
 `
         adReply(result4, `${baby1[0].nama}`, ``)
-        conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: fstatus }).catch((err) => adReply('*Failed to uploading media*', 'ERROR'))
+        conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: msg }).catch((err) => adReply('*Failed to uploading media*', 'ERROR'))
         break
 
         
