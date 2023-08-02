@@ -98,8 +98,6 @@ module.exports = async (conn, msg, m, setting, store) => {
     mention != undefined ? mention.push(mentionByReply) : []
     const mentionUser = mention != undefined ? mention.filter(n => n) : []
 
-    await conn.sendPresenceUpdate('unavailable', from)
-
     try {
       var pp_user = await conn.profilePictureUrl(sender, 'image')
     } catch {
@@ -243,6 +241,9 @@ module.exports = async (conn, msg, m, setting, store) => {
         + 'END:VCARD'
       return conn.sendMessage(from, { contacts: { displayName: name, contacts: [{ vcard }] }, mentions: mn ? mn : [] }, { quoted: quoted })
     }
+
+    // presence update
+    await conn.sendPresenceUpdate('unavailable', from)
 
     // Logs cmd
     if (!isGroup && isCmd) {
