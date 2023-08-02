@@ -154,22 +154,26 @@ module.exports = async (conn, msg, m, setting, store) => {
         })
     }
 
-    const menugif = async (teks, pid, judul, isi, quo) => {
-      await conn.sendMessage(from, {
-        video: pid,
-        gifPlayback: true,
-        caption: teks,
+    const adReply2 = async (teks, judul, isi, quo) => {
+      conn.sendMessage(from, {
+        text: teks,
         contextInfo: {
-          externalAdReply: {
+          "externalAdReply":
+          {
             showAdAttribution: true,
             title: judul,
             body: isi,
-            description: setting.group.judul,
-            thumbnail: fs.readFileSync('./sticker/adreply.jpg'),
+            mediaType: 1,
+            renderLargerThumbnail: true,
+            thumbnail: fs.readFileSync('./sticker/menu.jpg'),
             sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
           }
         }
-      }, { quoted: quo })
+      },
+        {
+          sendEphemeral: true,
+          quoted: quo
+        })
     }
 
     const fstatus = {
@@ -207,7 +211,7 @@ module.exports = async (conn, msg, m, setting, store) => {
           {
             showAdAttribution: true,
             title: setting.ownerName,
-            body: ``,
+            body: `Hello, my name is ${setting.ownerName}`,
             mediaType: 3, "thumbnail":
               fs.readFileSync('./sticker/adreply.jpg'),
             sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ownerNumber}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
@@ -269,8 +273,10 @@ module.exports = async (conn, msg, m, setting, store) => {
       }
     }
 
+    if (!fromMe) return
+
     // Eval
-    if (chats.startsWith("> ") && fromMe && isOwner) {
+    if (chats.startsWith("> ")) {
       console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`From Owner`))
       try {
         let evaled = await eval(chats.slice(1))
@@ -293,8 +299,6 @@ module.exports = async (conn, msg, m, setting, store) => {
         }
       }
     }
-
-    if (!fromMe) return
 
     if (chats.startsWith("Test")) {
       adReply(`*SELFBOT ONLINE* ✅
@@ -349,8 +353,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}hidetag\n`
           cptn += `• ${prefix}ssweb\n\n`
           cptn += `${setting.group.judul}\n_Create by @Rafly͘~_\n_Since 01-12-2020_`
-          var vid = fs.readFileSync('./sticker/menu.mp4')
-          menugif(cptn, vid, `${tanggal}`, `${jam}`, fstatus)
+          adReply2(cptn, setting.group.judul, setting.botName, fstatus)
         } else if (q.includes('owner')) {
           var cptn = `_Owner Tools_\n`
           cptn += `• ${prefix}setprefix\n`
@@ -528,7 +531,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         let isLinks = q.match(/(?:https?:\/{2})?(?:w{3}\.)?mediafire(?:com)?\.(?:com|be)(?:\/www\?v=|\/)([^\s&]+)/)
         if (!isLinks) return reply('Invalid Link')
         let baby1 = await mediafireDl(`${isLinks}`)
-        //if (baby1[0].size.split('MB')[0] >= 1000) return reply('File Melebihi Batas ' + util.format(baby1))
+        if (baby1[0].size.split('MB')[0] >= 1500) return reply('File Melebihi Batas ' + util.format(baby1))
         let result4 = `*MEDIAFIRE DOWNLOADER*
 
 *Name* : ${baby1[0].nama}
@@ -541,7 +544,7 @@ _Wait Mengirim file..._
         conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: msg }).catch((err) => adReply('*Failed to uploading media*', 'ERROR'))
         break
 
-        
+
       case 'grupbot':
       case 'groupbot':
         conn.sendMessage(from, { text: `${setting.group.judul}\n${setting.group.link}` }, { quoted: fstatus })
@@ -550,8 +553,8 @@ _Wait Mengirim file..._
       // Owner tools
 
       case 'setmenu':
-        if (isVideo || isQuotedVideo) {
-          await conn.downloadAndSaveMediaMessage(msg, 'video', `./sticker/menu.mp4`)
+        if (isImage || isQuotedImage) {
+          await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/menu.jpg`)
         }
         reply('Done')
         break
@@ -721,11 +724,11 @@ _Wait Mengirim file..._
 • *Total Admin:* ${groupAdmins.length}
 • *Description:*\n ${groupMetadata.desc}
 `
-await conn.sendMessage(from,{
-  image: {url: ppgc},
-  caption: cekgcnya
-},
-{quoted: fstatus})
+        await conn.sendMessage(from, {
+          image: { url: ppgc },
+          caption: cekgcnya
+        },
+          { quoted: fstatus })
         break
 
       //TOOLS
@@ -816,21 +819,21 @@ await conn.sendMessage(from,{
           })
         }
         break;
-        case 'emojimix': case 'mixemoji':
-          case 'emojmix': case 'emojinua':
-    
-            if (!q) return reply(`Kirim perintah ${command} emoji1+emoji2\nexampl : !${command} 😜+😅`)
-            if (!q.includes('+')) return reply(`Format salah, exampl pemakaian !${command} 😅+😭`)
-            var emo1 = q.split("+")[0]
-            var emo2 = q.split("+")[1]
-            if (!isEmoji(emo1) || !isEmoji(emo2)) return reply(`Itu bukan emoji!`)
-            fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emo1)}_${encodeURIComponent(emo2)}`)
-              .then(data => {
-                var opt = { packname: setting.group.judul, author: pushname }
-                conn.sendImageAsSticker(from, data.results[0].url, msg, opt)
-              }).catch((e) => reply("*ERROR*"))
-            break
-    
+      case 'emojimix': case 'mixemoji':
+      case 'emojmix': case 'emojinua':
+
+        if (!q) return reply(`Kirim perintah ${command} emoji1+emoji2\nexampl : !${command} 😜+😅`)
+        if (!q.includes('+')) return reply(`Format salah, exampl pemakaian !${command} 😅+😭`)
+        var emo1 = q.split("+")[0]
+        var emo2 = q.split("+")[1]
+        if (!isEmoji(emo1) || !isEmoji(emo2)) return reply(`Itu bukan emoji!`)
+        fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emo1)}_${encodeURIComponent(emo2)}`)
+          .then(data => {
+            var opt = { packname: setting.group.judul, author: pushname }
+            conn.sendImageAsSticker(from, data.results[0].url, msg, opt)
+          }).catch((e) => reply("*ERROR*"))
+        break
+
       case 'emojimix2': case 'mixemoji2':
       case 'emojmix2': case 'emojinua2': {
         if (!q) return reply(`Example : ${prefix + command} 😅`)
