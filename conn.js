@@ -505,7 +505,7 @@ https://github.com/dragneel1111/Simple-Selfbot
           await sleep(500)
           for (let o = 0; o < url.length; o++) {
             await conn.sendMessage(from, {
-              image: { url: url[o] }
+              [(/mp4/.test(url[o])) ? "video" : "image"]: { url: url[o] }
             },
               { quoted: msg })
             await sleep(200)
