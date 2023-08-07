@@ -78,7 +78,7 @@ You can add the new command or function in [`conn.js`](https://github.com/dragne
 <b>Don't spam ur selfbot feature</b>, because your number can be blocked by WhatsApp
 
 <b>Nb:</b>
-Saya masih belajar, jgn dibully ya sepuh² sekalian😁🙏
+Masih belajar puh😁🙏
 
 ## Contact Me
 * [`WhatsApp`](https://wa.me/6281234795656?text=Hai%20orang%20ganteng:v)
