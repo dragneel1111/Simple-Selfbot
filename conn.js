@@ -18,7 +18,6 @@ const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGr
 const { setting_JSON, server_eror_JSON, db_respon_list_JSON } = require('./function/Data_Location.js')
 const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
-const { jadibot, listJadibot } = require('./function/jadibot')
 
 //module
 const { instagram, youtube, facebook, otakudesu } = require("@xct007/frieren-scraper")
@@ -57,7 +56,7 @@ module.exports = async (conn, msg, m, setting, store) => {
     const from = msg.key.remoteJid
     const time = moment(new Date()).format("HH:mm");
     var chats = (type === 'conversation' && msg.message.conversation) ? msg.message.conversation : (type === 'imageMessage') && msg.message.imageMessage.caption ? msg.message.imageMessage.caption : (type === 'videoMessage') && msg.message.videoMessage.caption ? msg.message.videoMessage.caption : (type === 'extendedTextMessage') && msg.message.extendedTextMessage.text ? msg.message.extendedTextMessage.text : (type === 'buttonsResponseMessage') && quotedMsg.fromMe && msg.message.buttonsResponseMessage.selectedButtonId ? msg.message.buttonsResponseMessage.selectedButtonId : (type === 'templateButtonReplyMessage') && quotedMsg.fromMe && msg.message.templateButtonReplyMessage.selectedId ? msg.message.templateButtonReplyMessage.selectedId : (type === 'messageContextInfo') ? (msg.message.buttonsResponseMessage?.selectedButtonId || msg.message.listResponseMessage?.singleSelectReply.selectedRowId) : (type == 'listResponseMessage') && quotedMsg.fromMe && msg.message.listResponseMessage.singleSelectReply.selectedRowId ? msg.message.listResponseMessage.singleSelectReply.selectedRowId : ""
-    if (chats == undefined) { chats = 'undifined' }
+    if (chats == undefined) { chats = 'undefined' }
     const prefix = setting.prefix
     const isGroup = msg.key.remoteJid.endsWith('@g.us')
     const sender = isGroup ? (msg.key.participant ? msg.key.participant : msg.participant) : msg.key.remoteJid
@@ -787,7 +786,7 @@ _Wait Mengirim file..._
             fs.unlinkSync(`./sticker/${sender.split("@")[0]}.webp`)
           })
         } else {
-          reply('*Reply sticker nya dengan pesan #toimg*\n\n*Atau bisa sticker gif dengan pesan #tovideo*')
+          reply(`Tag/reply picture with caption ${prefix+command}`)
         }
         break
       case 'tomp4': case 'tovideo':
@@ -798,7 +797,7 @@ _Wait Mengirim file..._
           conn.sendMessage(from, { video: { url: webpToMp4.result }, caption: 'Convert Webp To Video', jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') }, { quoted: msg })
           fs.unlinkSync(buffer)
         } else {
-          reply('*Reply sticker gif dengan pesan #tovideo*')
+          reply(`Tag/reply picture with caption ${prefix+command}`)
         }
         break
       case 'tomp3': case 'toaudio':
@@ -818,32 +817,8 @@ _Wait Mengirim file..._
             fs.unlinkSync(`./sticker/${sender.split("@")[0]}.mp4`)
           })
         }
-        break;
-      case 'emojimix': case 'mixemoji':
-      case 'emojmix': case 'emojinua':
-
-        if (!q) return reply(`Kirim perintah ${command} emoji1+emoji2\nexampl : !${command} 😜+😅`)
-        if (!q.includes('+')) return reply(`Format salah, exampl pemakaian !${command} 😅+😭`)
-        var emo1 = q.split("+")[0]
-        var emo2 = q.split("+")[1]
-        if (!isEmoji(emo1) || !isEmoji(emo2)) return reply(`Itu bukan emoji!`)
-        fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emo1)}_${encodeURIComponent(emo2)}`)
-          .then(data => {
-            var opt = { packname: setting.group.judul, author: pushname }
-            conn.sendImageAsSticker(from, data.results[0].url, msg, opt)
-          }).catch((e) => reply("*ERROR*"))
         break
 
-      case 'emojimix2': case 'mixemoji2':
-      case 'emojmix2': case 'emojinua2': {
-        if (!q) return reply(`Example : ${prefix + command} 😅`)
-        let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(q)}`)
-        for (let res of anu.results) {
-          var opt = { packname: setting.group.judul, author: pushname }
-          let encmedia = await conn.sendImageAsSticker(from, res.url, msg, opt)
-        }
-      }
-        break
       case 'smeme':
       case 'stikermeme':
       case 'stickermeme':
@@ -856,14 +831,20 @@ _Wait Mengirim file..._
         if (!q) return reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
         if (isImage || isQuotedImage) {
           var media = await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/${sender.split('@')[0]}.jpg`)
-          var media_url = (await TelegraPh(media))
+          var media_url = await TelegraPh(media)
           var meme_url = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${media_url}`
-          var opt = { packname: ``, author: setting.group.judul }
-          conn.sendImageAsSticker(from, meme_url, msg, opt)
+          let stcmeme = new Sticker(meme_url, {
+            pack: `${pname}`, // The pack name
+            author: `${athor}`, // The author name
+            type: StickerTypes.FULL, // The sticker type
+            categories: ['🤩', '🎉'], // The sticker category
+            id: '12345', // The sticker id
+            quality: 50, // The quality of the output file
+            background: 'transparent' // The sticker background color (only for full stickers)
+          })
+          var buffer = await stcmeme.toBuffer()
+          conn.sendMessage(from, { sticker: buffer, fileLength: 1000000000000 }, { quoted: msg })
           fs.unlinkSync(media)
-        } else {
-          reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
-
         }
         break
 
@@ -1047,26 +1028,6 @@ _Wait Mengirim file..._
               }
             }
           })
-        }
-        break
-
-
-      case 'jadibot': case 'newsession': case 'addsession': {
-        jadibot(conn, msg, from)
-      }
-        break
-      case 'listjadibot': case 'listsession':
-        try {
-          let user = [... new Set([...global.conns.filter(conn => conn.user).map(conn => conn.user)])]
-          te = "*List Jadibot*\n\n"
-          for (let i of user) {
-            let y = await conn.decodeJid(i.id)
-            te += " × User : @" + y.split("@")[0] + "\n"
-            te += " × Name : " + i.name + "\n\n"
-          }
-          conn.sendMessage(from, { text: te, mentions: [y], }, { quoted: msg })
-        } catch (err) {
-          reply(`Belum Ada User Yang Jadibot`)
         }
         break
 
