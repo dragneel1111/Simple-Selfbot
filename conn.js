@@ -367,7 +367,6 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}delrespon\n`
           cptn += `• ${prefix}setppbot\n`
           cptn += `• ${prefix}setppgc\n`
-          cptn += `• ${prefix}addsession\n`
           adReply(cptn, tanggal, jam)
         }
         break
