@@ -24,7 +24,6 @@ const { instagram, youtube, facebook, otakudesu } = require("@xct007/frieren-scr
 const { File } = require("megajs")
 const { youtubedl } = require("@bochilteam/scraper")
 
-
 const fs = require("fs");
 const ms = require("ms");
 const chalk = require('chalk');
@@ -616,7 +615,6 @@ _Wait Mengirim file..._
       }
         break
 
-
       case 'clear':
       case 'clearer':
       case 'clearerr': {
@@ -908,7 +906,6 @@ _Wait Mengirim file..._
         }
         break
       case 'stickercrop': case 'scrop': case 'stikercrop':
-
         if (isImage || isQuotedImage) {
           await conn.downloadAndSaveMediaMessage(msg, "image", `./sticker/${sender.split("@")[0]}.jpeg`)
           let stci = fs.readFileSync(`./sticker/${sender.split("@")[0]}.jpeg`)
@@ -944,34 +941,17 @@ _Wait Mengirim file..._
 
       // ANIMANGA
       case 'ppcouple': case 'ppcp': {
-        let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
-        let random = anu[Math.floor(Math.random() * anu.length)]
+        var anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
+        var random = anu[Math.floor(Math.random() * anu.length)]
         conn.sendMessage(from, { image: { url: random.male }, caption: `Foto Couple Male` }, { quoted: msg })
         conn.sendMessage(from, { image: { url: random.female }, caption: `Fofo Couple Female` }, { quoted: msg })
       }
         break
 
       case 'genshin':
-        const gsn = JSON.parse(fs.readFileSync('./database/genshin.json'))
-        var data = gsn[Math.floor(Math.random() * gsn.length)]
-        var hasil = await getBuffer(data)
-        await conn.sendMessage(from, { image: hasil, jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg'), fileLength: 999999999 })
-        break
-      case 'addgenshin':
-      case 'addgsn':
-        if (isImage || isQuotedImage) {
-          const genshin = JSON.parse(fs.readFileSync('./database/genshin.json'));
-          var mediany = await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/${sender.split("@")[0]}.jpg`)
-          let buffer_up = fs.readFileSync(mediany)
-          var rand2 = 'sticker/' + getRandom('.png')
-          fs.writeFileSync(`./${rand2}`, buffer_up)
-          var text = await TelegraPh(rand2)
-          genshin.push(text)
-          fs.writeFileSync('./database/genshin.json', JSON.stringify(genshin, null, 2))
-          adReply('*Done add picture to database!*', 'Genshin Impact', `Total Picture: ${genshin.length}`)
-          fs.unlinkSync(mediany)
-          fs.unlinkSync(rand2)
-        }
+        var anu = await fetchJson('https://raw.githubusercontent.com/dragneel1111/database/main/genshin.json')
+        var random = anu[Math.floor(Math.random() * anu.length)]
+        conn.sendMessage(from, { image: {url: random} }, { quoted: msg })
         break
 
       case 'otakudesu':
