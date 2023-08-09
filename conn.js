@@ -22,7 +22,7 @@ const { webp2mp4File } = require("./function/Webp_Tomp4")
 //module
 const { instagram, youtube, facebook, otakudesu } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
-const { youtubedl } = require("@bochilteam/scraper")
+const { youtubedl, snapsave } = require("@bochilteam/scraper")
 
 const fs = require("fs");
 const ms = require("ms");
@@ -414,7 +414,7 @@ https://github.com/dragneel1111/Simple-Selfbot
         }
         break
 
-      case 'instagram':
+      /*case 'instagram':
       case 'igdl':
       case 'ig':
         if (!q) return reply(`example:\n${prefix + command} https://www.instagram.com/p/Cr5CKyGo4NH/?igshid=MzRlODBiNWFlZA==`)
@@ -425,6 +425,16 @@ https://github.com/dragneel1111/Simple-Selfbot
           }, { quoted: msg })
           await sleep(200)
         }
+        break*/
+      case 'instagram':
+      case 'igdl':
+      case 'ig':
+        if (!q) return reply(`example:\n${prefix + command} https://www.instagram.com/p/Cr5CKyGo4NH/?igshid=MzRlODBiNWFlZA==`)
+        var data = await snapsave(q)
+        var hasil = await getBuffer(data[0].url)
+        await conn.sendMessage(from, {
+          [(/mp4/.test(hasil)) ? "video" : "image"]: hasil,
+        }, { quoted: msg})
         break
 
       case 'play':
@@ -783,7 +793,7 @@ _Wait Mengirim file..._
             fs.unlinkSync(`./sticker/${sender.split("@")[0]}.webp`)
           })
         } else {
-          reply(`Tag/reply picture with caption ${prefix+command}`)
+          reply(`Tag/reply picture with caption ${prefix + command}`)
         }
         break
       case 'tomp4': case 'tovideo':
@@ -794,7 +804,7 @@ _Wait Mengirim file..._
           conn.sendMessage(from, { video: { url: webpToMp4.result }, caption: 'Convert Webp To Video', jpegThumbnail: fs.readFileSync('./sticker/thumb.jpg') }, { quoted: msg })
           fs.unlinkSync(buffer)
         } else {
-          reply(`Tag/reply picture with caption ${prefix+command}`)
+          reply(`Tag/reply picture with caption ${prefix + command}`)
         }
         break
       case 'tomp3': case 'toaudio':
@@ -951,7 +961,7 @@ _Wait Mengirim file..._
       case 'genshin':
         var anu = await fetchJson('https://raw.githubusercontent.com/dragneel1111/database/main/genshin.json')
         var random = anu[Math.floor(Math.random() * anu.length)]
-        conn.sendMessage(from, { image: {url: random} }, { quoted: msg })
+        conn.sendMessage(from, { image: { url: random } }, { quoted: msg })
         break
 
       case 'otakudesu':
