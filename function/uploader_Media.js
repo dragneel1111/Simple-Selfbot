@@ -24,4 +24,4 @@ function TelegraPh (Path) {
 	})
 }
 
-module.exports = { TelegraPh, UploadFileUgu, AnonFiles }
+module.exports = { TelegraPh }
