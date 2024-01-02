@@ -1,5 +1,4 @@
-﻿
-"use strict";
+﻿"use strict";
 const { BufferJSON,
   WA_DEFAULT_EPHEMERAL,
   proto,
@@ -20,7 +19,7 @@ const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
 
 //module
-const { instagram, youtube, facebook, otakudesu } = require("@xct007/frieren-scraper")
+const { youtube, facebook } = require("@xct007/frieren-scraper")
 const { File } = require("megajs")
 const { youtubedl, snapsave } = require("@bochilteam/scraper")
 
@@ -34,7 +33,7 @@ const colors = require('colors/safe');
 const ffmpeg = require("fluent-ffmpeg");
 const moment = require("moment-timezone");
 const util = require("util");
-const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
+const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 
 
 // DB
@@ -50,7 +49,6 @@ module.exports = async (conn, msg, m, setting, store) => {
     const jam = moment.tz('asia/jakarta').format('HH:mm:ss')
     const tanggal = moment().tz("Asia/Jakarta").format("ll")
     let dt = moment(Date.now()).tz('Asia/Jakarta').locale('id').format('a')
-    const ucapanWaktu = "Selamat " + dt.charAt(0).toUpperCase() + dt.slice(1)
     const content = JSON.stringify(msg.message)
     const from = msg.key.remoteJid
     const time = moment(new Date()).format("HH:mm");
@@ -59,7 +57,7 @@ module.exports = async (conn, msg, m, setting, store) => {
     const prefix = setting.prefix
     const isGroup = msg.key.remoteJid.endsWith('@g.us')
     const sender = isGroup ? (msg.key.participant ? msg.key.participant : msg.participant) : msg.key.remoteJid
-    const isOwner = [`${setting.ownerNumber}@s.whatsapp.net`, "6281234795656@s.whatsapp.net", "6281234795656@s.whatsapp.net"].includes(sender) ? true : false
+    const isOwner = [`${setting.ownerNumber}@s.whatsapp.net`].includes(sender) ? true : false
     const pushname = msg.pushName
     const body = chats.startsWith(prefix) ? chats : ''
     const args = body.trim().split(/ +/).slice(1);
@@ -96,11 +94,11 @@ module.exports = async (conn, msg, m, setting, store) => {
     mention != undefined ? mention.push(mentionByReply) : []
     const mentionUser = mention != undefined ? mention.filter(n => n) : []
 
-    try {
+    /*try {
       var pp_user = await conn.profilePictureUrl(sender, 'image')
     } catch {
       var pp_user = 'https://i.ibb.co/0M6Hppv/3626e36344a1.jpg'
-    }
+    }*/
 
     function mentions(teks, mems = [], id) {
       if (id == null || id == undefined || id == false) {
@@ -184,7 +182,7 @@ module.exports = async (conn, msg, m, setting, store) => {
         imageMessage: {
           url: "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc",
           mimetype: "image/jpeg",
-          caption: setting.group.judul,
+          caption: setting.wm,
           fileSha256: "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=",
           fileLength: "28777",
           height: 1080,
@@ -199,27 +197,6 @@ module.exports = async (conn, msg, m, setting, store) => {
             "1W0XhfaAcDwc7xh1R8lca6Qg/1bB4naFCSngM2LKO2NoP5RI7K+zLw==",
         },
       },
-    }
-
-    const adOwner = async (quo) => {
-      conn.sendMessage(from, {
-        text: `https://api.whatsapp.com/send/?phone=${setting.ownerNumber}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`,
-        contextInfo: {
-          "externalAdReply":
-          {
-            showAdAttribution: true,
-            title: setting.ownerName,
-            body: `Hello, my name is ${setting.ownerName}`,
-            mediaType: 3, "thumbnail":
-              fs.readFileSync('./sticker/adreply.jpg'),
-            sourceUrl: `https://api.whatsapp.com/send/?phone=${setting.ownerNumber}&text=Hai+orang+ganteng%3Av&type=phone_number&app_absent=0`
-          }
-        }
-      },
-        {
-          sendEphemeral: true,
-          quoted: quo
-        })
     }
 
     if (!isCmd && isGroup && isAlreadyResponList(from, chats, db_respon_list)) {
@@ -245,14 +222,11 @@ module.exports = async (conn, msg, m, setting, store) => {
     }
 
     // presence update
-    //await conn.sendPresenceUpdate('unavailable', from)
+    // await conn.sendPresenceUpdate('unavailable', from)
 
     // Logs cmd
-    if (!isGroup && isCmd) {
+    if (isCmd && fromMe) {
       console.log(color('[COMMAND PC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
-    }
-    if (isGroup && isCmd) {
-      console.log(color('[COMMAND GC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupName))
     }
 
     // Logs chats
@@ -284,22 +258,22 @@ module.exports = async (conn, msg, m, setting, store) => {
         reply(err)
       }
     }
-      if (chats.startsWith("> ")) {
-        console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`Dari Owner aowkoakwoak`))
-        const ev = (sul) => {
-          var sat = JSON.stringify(sul, null, 2)
-          var bang = util.format(sat)
-          if (sat == undefined) {
-            bang = util.format(sul)
-          }
-          return reply(bang)
+    if (chats.startsWith("> ")) {
+      console.log(color('[EVAL]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`Dari Owner aowkoakwoak`))
+      const ev = (sul) => {
+        var sat = JSON.stringify(sul, null, 2)
+        var bang = util.format(sat)
+        if (sat == undefined) {
+          bang = util.format(sul)
         }
-        try {
-          reply(util.format(eval(`;(async () => { ${chats.slice(1)} })()`)))
-        } catch (e) {
-          reply(util.format(e))
-        }
+        return reply(bang)
       }
+      try {
+        reply(util.format(eval(`;(async () => { ${chats.slice(1)} })()`)))
+      } catch (e) {
+        reply(util.format(e))
+      }
+    }
 
     if (chats.startsWith("Test")) {
       adReply(`*SELFBOT ONLINE* ✅
@@ -312,8 +286,8 @@ module.exports = async (conn, msg, m, setting, store) => {
 • Source Code :
 https://github.com/dragneel1111/Simple-Selfbot
 `,
-        `${tanggal}`, `${jam}`, fstatus)
-      console.log(color(`[ RUNTIME: ${runtime(process.uptime())} ] ${tanggal}`, 'cyan'))
+        `${tanggal}`, `${jam}`)
+      console.log(color(`[ SELFBOT ONLINE || RUNTIME: ${runtime(process.uptime())} ] ${tanggal}`, 'cyan'))
     }
 
     switch (command) {
@@ -339,49 +313,29 @@ https://github.com/dragneel1111/Simple-Selfbot
           cptn += `• ${prefix}tiktok\n`
           cptn += `• ${prefix}mediafire\n`
           cptn += `• ${prefix}mega\n\n`
-          cptn += `_Weaboo_\n`
-          cptn += `• ${prefix}genshin\n`
-          cptn += `• ${prefix}ppcp\n`
-          cptn += `• ${prefix}otakudesu ongoing\n`
-          cptn += `• ${prefix}otakudesu search\n`
-          cptn += `• ${prefix}otakudesu detail\n\n`
           cptn += `_Tools_\n`
           cptn += `• ${prefix}creator\n`
-          cptn += `• ${prefix}setpp\n`
+          cptn += `• ${prefix}setppbot\n`
+          cptn += `• ${prefix}setppbot\n`
           cptn += `• ${prefix}infogroup\n`
           cptn += `• ${prefix}reply\n`
           cptn += `• ${prefix}readmore\n`
-          cptn += `• ${prefix}hidetag\n`
-          cptn += `• ${prefix}ssweb\n\n`
-          cptn += `${setting.group.judul}\n_Create by @Rafly͘~_\n_Since 01-12-2020_`
-          adReply2(cptn, setting.group.judul, setting.botName, fstatus)
+          cptn += `• ${prefix}hidetag\n\n`
+          cptn += `${setting.wm}\n_Create by @Rafly͘~_\n_Since 01-12-2020_`
+          adReply2(cptn, setting.wm, setting.botName)
         } else if (q.includes('owner')) {
           var cptn = `_Owner Tools_\n`
           cptn += `• ${prefix}setprefix\n`
           cptn += `• ${prefix}setmenu\n`
           cptn += `• ${prefix}setadreply\n`
           cptn += `• ${prefix}setthumb\n`
-          cptn += `• ${prefix}setgrouplink\n`
           cptn += `• ${prefix}error\n`
           cptn += `• ${prefix}clear\n`
           cptn += `• ${prefix}sendsesi\n`
           cptn += `• ${prefix}addrespon\n`
           cptn += `• ${prefix}delrespon\n`
-          cptn += `• ${prefix}setppbot\n`
-          cptn += `• ${prefix}setppgc\n`
           adReply(cptn, tanggal, jam)
         }
-        break
-
-      case 'runtime':
-      case 'tes':
-        reply(`*Runtime :* ${runtime(process.uptime())}`)
-        break
-      case 'owner':
-      case 'creator':
-        var owner_Nya = setting.ownerNumber
-        sendContact(from, owner_Nya, setting.ownerName, msg)
-        adOwner(fstatus)
         break
 
       // DOWNLOADER
@@ -417,27 +371,15 @@ https://github.com/dragneel1111/Simple-Selfbot
         }
         break
 
-      /*case 'instagram':
-      case 'igdl':
-      case 'ig':
-        if (!q) return reply(`example:\n${prefix + command} https://www.instagram.com/p/Cr5CKyGo4NH/?igshid=MzRlODBiNWFlZA==`)
-        var data = await instagram.v1(q)
-        for (let o = 0; o < data.length; o++) {
-          await conn.sendMessage(from, {
-            [(/mp4/.test(data[o].url)) ? "video" : "image"]: { url: data[o].url },
-          }, { quoted: msg })
-          await sleep(200)
-        }
-        break*/
       case 'instagram':
       case 'igdl':
       case 'ig':
-        if (!q) return reply(`example:\n${prefix + command} https://www.instagram.com/p/Cr5CKyGo4NH/?igshid=MzRlODBiNWFlZA==`)
+        if (!q) return reply(`example:\n${prefix + command} https://www.instagram.com/p/C036XZdvBI2/?igsh=MzRlODBiNWFlZA==`)
         var data = await snapsave(q)
         var hasil = await getBuffer(data[0].url)
         await conn.sendMessage(from, {
           [(/mp4/.test(hasil)) ? "video" : "image"]: hasil,
-        }, { quoted: msg})
+        }, { quoted: msg })
         break
 
       case 'play':
@@ -554,12 +496,6 @@ _Wait Mengirim file..._
         conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: msg }).catch((err) => adReply('*Failed to uploading media*', 'ERROR'))
         break
 
-
-      case 'grupbot':
-      case 'groupbot':
-        conn.sendMessage(from, { text: `${setting.group.judul}\n${setting.group.link}` }, { quoted: fstatus })
-        break
-
       // Owner tools
 
       case 'setmenu':
@@ -610,12 +546,6 @@ _Wait Mengirim file..._
         fs.writeFileSync('./config.json', JSON.stringify(setting, null, 2))
         reply('done')
         break
-      case 'setgclink':
-      case 'setgrouplink':
-        setting.group.link = args[0]
-        fs.writeFileSync('./config.json', JSON.stringify(setting, null, 2))
-        reply('done')
-        break
       case 'mysesi': case 'sendsesi': case 'session': {
         reply('please wait..')
         await sleep(3000)
@@ -642,7 +572,7 @@ _Wait Mengirim file..._
         for (let i of server_eror) {
           teks += `=> *ERROR (${NO++})*\n${i.error}\n\n`
         }
-        adReply(teks, "List Error", "", fstatus)
+        adReply(teks, "List Error", "")
       }
         break
       case 'addrespon':
@@ -736,8 +666,7 @@ _Wait Mengirim file..._
         await conn.sendMessage(from, {
           image: { url: ppgc },
           caption: cekgcnya
-        },
-          { quoted: fstatus })
+        })
         break
 
       //TOOLS
@@ -768,16 +697,6 @@ _Wait Mengirim file..._
         var txt1 = q.split('|')[0]
         var txt2 = q.split('|')[1]
         await conn.sendMessage(from, { text: `${txt1}${readmore}${txt2}` })
-        break
-
-      case 'ssweb':
-        var data = await getBuffer(`https://api.nataganz.com/api/tools/ssweb?link=${q}&apikey=92a0kk2bc9`)
-        await conn.sendMessage(from, {
-          image: data,
-          caption: q,
-        },
-          { quoted: fstatus }
-        )
         break
 
       // CONVERT
@@ -835,8 +754,7 @@ _Wait Mengirim file..._
       case 'memestiker':
       case 'stcmeme':
         anu = q.split("|");
-        var tengah = `‎`
-        var atas = anu[0] !== "" ? anu[0] : `${tengah}`;
+        var atas = anu[0] !== "" ? anu[0] : " ";
         var bawah = q.split('|')[1]
         if (!q) return reply(`Kirim gambar dengan caption ${prefix + command} text_atas|text_bawah atau balas gambar yang sudah dikirim`)
         if (isImage || isQuotedImage) {
@@ -845,7 +763,7 @@ _Wait Mengirim file..._
           var meme_url = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${media_url}`
           let stcmeme = new Sticker(meme_url, {
             pack: '', // The pack name
-            author: setting.group.judul, // The author name
+            author: setting.wm, // The author name
             type: StickerTypes.FULL, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -891,7 +809,7 @@ _Wait Mengirim file..._
           let stci = fs.readFileSync(`./sticker/${sender.split("@")[0]}.jpeg`)
           let stc = new Sticker(stci, {
             pack: '', // The pack name
-            author: setting.group.judul, // The author name
+            author: setting.wm, // The author name
             type: StickerTypes.FULL, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -906,7 +824,7 @@ _Wait Mengirim file..._
           let stcg = fs.readFileSync(`./sticker/${sender.split("@")[0]}.mp4`)
           let sticker = new Sticker(stcg, {
             pack: '', // The pack name
-            author: setting.group.judul, // The author name
+            author: setting.wm, // The author name
             type: StickerTypes.FULL, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -924,7 +842,7 @@ _Wait Mengirim file..._
           let stci = fs.readFileSync(`./sticker/${sender.split("@")[0]}.jpeg`)
           let stc = new Sticker(stci, {
             pack: '', // The pack name
-            author: setting.group.judul, // The author name
+            author: setting.wm, // The author name
             type: StickerTypes.CROPPED, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -939,7 +857,7 @@ _Wait Mengirim file..._
           let stcg = fs.readFileSync(`./sticker/${sender.split("@")[0]}.mp4`)
           let sticker = new Sticker(stcg, {
             pack: '', // The pack name
-            author: setting.group.judul, // The author name
+            author: setting.wm, // The author name
             type: StickerTypes.CROPPED, // The sticker type
             categories: ['🤩', '🎉'], // The sticker category
             id: '12345', // The sticker id
@@ -949,77 +867,6 @@ _Wait Mengirim file..._
           const stikk = await sticker.toBuffer()
           conn.sendMessage(from, { sticker: stikk, fileLength: 99999999 }, { quoted: msg })
           fs.unlinkSync(`./sticker/${sender.split("@")[0]}.mp4`)
-        }
-        break
-
-      // ANIMANGA
-      case 'ppcouple': case 'ppcp': {
-        var anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
-        var random = anu[Math.floor(Math.random() * anu.length)]
-        conn.sendMessage(from, { image: { url: random.male }, caption: `Foto Couple Male` }, { quoted: msg })
-        conn.sendMessage(from, { image: { url: random.female }, caption: `Fofo Couple Female` }, { quoted: msg })
-      }
-        break
-
-      case 'genshin':
-        var anu = await fetchJson('https://raw.githubusercontent.com/dragneel1111/database/main/genshin.json')
-        var random = anu[Math.floor(Math.random() * anu.length)]
-        conn.sendMessage(from, { image: { url: random } }, { quoted: msg })
-        break
-
-      case 'otakudesu':
-        if (args[0].includes("ongoing") || args[0].includes("Latest")) {
-          var data = await otakudesu.latest()
-          var teks = `Otakudesu Ongoing\n\n`
-          for (let g of data) {
-            teks += `• *Title* : ${g.title}\n`
-            teks += `• *Upload* : ${g.day} ${g.date}\n`
-            teks += `• *Link* : ${g.url}\n\n────────────────────────\n\n`
-          }
-          adReply(teks, 'Otakudesu Ongoing')
-        } else if (args[0].includes("search")) {
-          try {
-            if (!args[1]) return reply(`example:\n${prefix + command} mushoku tensei`)
-            var data = await otakudesu.search(args[1])
-            var teks = `*${q}*\n\n`
-            for (let g of data) {
-              teks += `*Title:* ${g.title}\n`
-              teks += `*Rating:* ${g.rating}\n`
-              teks += `*Status:* ${g.status}\n`
-              teks += `*Genres:* ${g.genres}\n`
-              teks += `*Link:* ${g.url}\n\n────────────────────────\n\n`
-            }
-            adReply(teks, 'Otakudesu Search')
-          } catch (err) {
-            adReply('*Not Found*', '404')
-          }
-        } else if (args[0].includes("detail")) {
-          if (!args[1]) return reply(`example:\n${prefix + command} https://otakudesu.lol/anime/tegoku-daimau-sub-indo/`)
-          var data = await otakudesu.detail(args[1])
-          var teks = `*Title:* ${data.judul}\n`
-          teks += `*Score:* ${data.skor}\n`
-          teks += `*Uploaded:* ${data.tanggal_rilis}\n`
-          teks += `*Studio:* ${data.studio}\n`
-          teks += `*Genre:* ${data.genre}\n\n`
-          for (let h of data.url.episodes) {
-            teks += `• *Episode:* ${h.title}\n`
-            teks += `• *Link:* ${h.url}\n────────────────────────\n\n`
-          }
-          var buff = await getBuffer(data.thumbnail)
-          await conn.sendMessage(from, {
-            text: teks,
-            contextInfo: {
-              "externalAdReply":
-              {
-                showAdAttribution: true,
-                title: data.japanese,
-                body: args[1],
-                mediaType: 3, "thumbnail":
-                  buff,
-                sourceUrl: 'https://github.com/dragneel1111/Simple-Selfbot'
-              }
-            }
-          })
         }
         break
 
