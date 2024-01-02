@@ -441,7 +441,7 @@ https://github.com/dragneel1111/Simple-Selfbot
 
       case 'tiktok':
       case 'tt':
-        if (!q) return reply(`example :\n${prefix + command} https://vt.tiktok.com/ZSLFmra4y/`)
+        if (!q) return reply(`example :\n${prefix + command} https://vt.tiktok.com/ZSN7Lf1dg/`)
         var data = await fetchJson(`https://www.tikwm.com/api/?url=${q}?hd=1`)
         hasil = data.data
         try {
