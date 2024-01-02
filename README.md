@@ -17,7 +17,6 @@
 
 Clone the project
 ```
-git clone https://github.com/dragneel1111/Simple-Selfbot
 cd Simple-Selfbot
 ```
 Install the project
