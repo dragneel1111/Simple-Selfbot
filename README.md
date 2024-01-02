@@ -6,7 +6,7 @@
  <a href="#"><img title="Sedative SelfBot" src="https://img.shields.io/badge/Sedative Community-green?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
 </p>
 <p align="center">
-<a href="https://github.com/dragneel1111"><img title="Author" src="https://img.shields.io/badge/AUTHOR-Rafly11-blue.svg?style=for-the-badge&logo=github"></a>
+<a href="https://github.com/dragneel1111"><img title="Author" src="https://img.shields.io/badge/AUTHOR-Rafly_A.-blue.svg?style=for-the-badge&logo=github"></a>
 </p>
 <p align="center">
 
@@ -88,7 +88,7 @@ Masih belajar puh😁🙏
   
 ## ```Thanks to ✨```
 * [`WhisKeyShockets`](https://github.com/WhiskeySockets/Baileys)
-* [`Rafly11⁩`](https://github.com/dragneel1111)
+* [`Rafly A.`](https://github.com/dragneel1111)
 * [`ImYanXiao`](https://github.com/ImYanXiao)
 * [`MRoy25`](https://github.com/mroy-25)
 
