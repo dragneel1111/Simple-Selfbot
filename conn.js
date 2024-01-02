@@ -1,4 +1,5 @@
-﻿"use strict";
+
+"use strict";
 const { BufferJSON,
   WA_DEFAULT_EPHEMERAL,
   proto,
