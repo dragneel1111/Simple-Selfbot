@@ -12,6 +12,7 @@ const { nocache, uncache } = require('./function/Chache_Data.js');
 const { serialize, fetchJson, getBuffer } = require("./function/func_Server");
 const { status_Connection } = require('./function/Data_Server_Bot/Status_Connect.js')
 const { Memory_Store } = require('./function/Data_Server_Bot/Memory_Store.js')
+const { color } = require('./function/Data_Server_Bot/Console_Data')
 
 let setting = JSON.parse(fs.readFileSync('./config.json'));
 const botLogger = logg({ level: 'silent' })
@@ -46,7 +47,7 @@ async function sedative() {
 			printQRInTerminal: !usePairingCode,
 			markOnlineOnConnect: false,
 			logger: botLogger,
-			browser: [ 'Chrome (Linux)', 'Simple-Selfbot', '1.0.0'],
+			browser: ['Chrome (Linux)', 'Simple-Selfbot', '1.0.0'],
 			auth: state,
 			mobile: useMobile,
 			generateHighQualityLinkPreview: true,
@@ -152,16 +153,24 @@ async function sedative() {
 		conn.reply = (from, content, msg) => conn.sendMessage(from, { text: content }, { quoted: msg })
 
 
-		conn.ev.on('connection.update', (update) => {
+		conn.ev.on('connection.update', async (update, anu) => {
 			status_Connection(conn, update, connectToWhatsApp)
 		})
 
-		conn.ev.on('group-participants.update', async (update) => {
-			console.log(update)
-		})
-
-		conn.ev.on('group-update', async (anu) => {
-			updateGroup(conn, anu, MessageType)
+		conn.ev.on('group-participants.update', (update) => {
+			if (update.action == 'remove') {
+				var txt = "\n" + color('───────────────> PARTICIPANTS REMOVE', 'red') + "\n"
+				txt += color(`• Id		: ` + update.id, 'red') + "\n"
+				txt += color(`• Participants	: ` + update.participants, 'red') + "\n"
+				txt += color('─────────────────────────────────────>', 'red') + "\n"
+				console.log(txt)
+			} else if (update.action == 'add') {
+				var txt = "\n" + color('──────────────────> PARTICIPANTS ADD', 'green') + "\n"
+				txt += color(`• Id		: ` + update.id) + "\n"
+				txt += color(`• Participants	: ` + update.participants) + "\n"
+				txt += color('─────────────────────────────────────>', 'green') + "\n"
+				console.log(txt)
+			}
 		})
 
 		conn.sendImage = async (jid, path, caption = '', quoted = '', options) => {

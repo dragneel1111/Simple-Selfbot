@@ -1,5 +1,4 @@
-
-"use strict";
+﻿﻿"use strict";
 const { BufferJSON,
   WA_DEFAULT_EPHEMERAL,
   proto,
@@ -227,23 +226,32 @@ module.exports = async (conn, msg, m, setting, store) => {
 
     // Logs cmd
     if (isCmd && fromMe) {
-      console.log(color('[COMMAND PC]'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${command} [${args.length}]`), 'from', color(pushname))
+      var txt = color('──────────────────> COMMAND') + "\n"
+      txt += `• Time  : ` + color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white') + "\n"
+      txt += `• From  : ` + color(sender) + " as " + color(pushname) + "\n"
+      txt += `• In    : ` + color(from) + "\n"
+      txt += `• Cmd   : ` + color(`${command} [${args.length}]`) + "\n"
+      txt += color('────────────────────────────>') + "\n"
+      console.log(txt)
     }
 
     // Logs chats
-    if (!isGroup && !fromMe && chats && !isSticker && !isMedia) {
-      if (!chats.slice(200)) {
-        console.log(color('[CHAT PC]', 'red'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(from))
-      } else if (chats.slice(200)) {
-        console.log(color('[CHAT PC]', 'red'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(from))
-      }
+    if (!isGroup && chats && !isSticker && !isMedia) {
+      var txt = color('──────────────────> Personal Chat', 'red') + "\n"
+      txt += `• Time  : ` + color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white') + "\n"
+      txt += `• From  : ` + color(sender) + " as " + color(pushname) + "\n"
+      txt += `• Text  : ` + color(`${chats}`, 'yellow') + "\n"
+      txt += color('─────────────────────────────────>', 'red') + "\n"
+      console.log(txt)
     }
-    if (isGroup && !fromMe && chats && !isSticker && !isMedia) {
-      if (!chats.slice(200)) {
-        console.log(color('[CHAT GC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`${chats}`, 'yellow'), 'from', color(sender), 'in', color(groupName))
-      } else if (chats.slice(200)) {
-        console.log(color('[CHAT GC]', 'yellow'), color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white'), color(`LONG TEXT`, 'red'), 'from', color(sender), 'in', color(groupName))
-      }
+    if (isGroup && chats && !isSticker && !isMedia) {
+      var txt = "\n" + color('──────────────────> GROUP CHAT', 'yellow') + "\n"
+      txt += `• Time  : ` + color(moment(msg.messageTimestamp * 1000).format('DD/MM/YYYY HH:mm:ss'), 'white') + "\n"
+      txt += `• From  : ` + color(sender) + " as " + color(pushname) + "\n"
+      txt += `• Group : ` + color(from) + " as " + color(groupName) + "\n"
+      txt += `• Text  : ` + color(`${chats}`, 'yellow') + "\n"
+      txt += color('──────────────────────────────>', 'yellow') + "\n"
+      console.log(txt)
     }
 
     if (!fromMe) return
