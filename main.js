@@ -47,7 +47,7 @@ async function sedative() {
 			printQRInTerminal: !usePairingCode,
 			markOnlineOnConnect: false,
 			logger: botLogger,
-			browser: ['Chrome (Linux)', 'Simple-Selfbot', '1.0.0'],
+			browser: ['Mac OS', 'safari', '5.1.10'],
 			auth: state,
 			mobile: useMobile,
 			generateHighQualityLinkPreview: true,
